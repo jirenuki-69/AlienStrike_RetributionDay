@@ -2,84 +2,80 @@ import pygame
 import sys
 from pygame import mixer
 from clases.Button import Button
+import demo as demo
+import my_settings as my_settings
 
-pygame.init()
-pygame.display.set_caption("Alien Strike: Retribution Day")
-width = 600
-height = 900
-size = (width, height)
-screen = pygame.display.set_mode(size)
+def main():
+    pygame.init()
+    pygame.display.set_caption("Alien Strike: Retribution Day")
+    pygame.mixer.music.load("assets/music/Alien Soldier - Title Theme(sugiero como musica del titulo).mp3")
+    pygame.mixer.music.set_volume(.2)
+    pygame.mixer.music.play(-1)
+    width = 1200
+    height = 800
+    size = (width, height)
+    screen = pygame.display.set_mode(size)
 
-#Global values
-background = pygame.image.load("img/Fondo.png")
-background = pygame.transform.scale(background, size)
-clock = pygame.time.Clock()
-fps = 30
-font = pygame.font.Font("Fonts\\Thewitcher-jnOj.ttf", 30)
+    #Global values
+    background = pygame.image.load("assets/menu.png")
+    background = pygame.transform.scale(background, size)
+    settings = pygame.image.load("assets/settings.png")
 
-#Colores
-GREEN = (0, 255, 0)
-DARK_GREEN = (51, 97, 28)
-BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
-GRAY = (150, 150, 150)
+    settings = pygame.transform.scale(settings, (80, 80))
+    settingsRect = settings.get_rect()
+    settingsRect[0], settingsRect[1] = 20, int(height * 0.85)
 
-#My values
-rectSize = (275, 100)
-menu_button = Button(
-    screen,
-    (int(width / 2 - rectSize[0] / 2),
-    int(height / 2 - rectSize[1])),
-    rectSize[0],
-    rectSize[1],
-    GREEN,
-    DARK_GREEN,
-    "Iniciar",
-    font,
-    BLACK
-)
+    clock = pygame.time.Clock()
+    fps = 60
+    font = pygame.font.Font("fonts/ufonts.com_windpower.ttf", 50)
 
-secondary_button = Button(
-    screen,
-    (int(width / 2 - rectSize[0] / 2),
-    int(height / 2 - rectSize[1] + menu_button.height + 30)),
-    rectSize[0],
-    rectSize[1],
-    WHITE,
-    GRAY,
-    "Boton secundario",
-    font,
-    BLACK
-)
+    #Colores
+    RED = (217, 31, 11)
+    DARK_RED = (156, 24, 9)
+    BLACK = (0, 0, 0)
+    WHITE = (255, 255, 255)
 
-def event_manager():
-    global menu_button, secondary_button
+    #My values
+    rectSize = (275, 100)
+    menu_button = Button(
+        screen,
+        (int(width / 2 - rectSize[0] / 2),
+        int(height * 0.75 - rectSize[1])),
+        rectSize[0],
+        rectSize[1],
+        RED,
+        DARK_RED,
+        "Jugar",
+        font,
+        WHITE
+    )
 
-    for event in pygame.event.get():
-        mouse_x, mouse_y = pygame.mouse.get_pos()
+    def event_manager():
 
-        if event.type == pygame.QUIT:
-            sys.exit()
+        for event in pygame.event.get():
+            mouse_x, mouse_y = pygame.mouse.get_pos()
 
-        #Compruebo la posicion del cursos para validar el hover del botón
-        menu_button.is_hovered(mouse_x, mouse_y)
-        secondary_button.is_hovered(mouse_x, mouse_y)
+            if event.type == pygame.QUIT:
+                sys.exit()
 
-        if pygame.mouse.get_pressed()[0]:
-            x, y = event.pos
-            if menu_button.is_pressed(event, x, y):
-                print("Botón del menú presionado")
-            elif secondary_button.is_pressed(event, x, y):
-                print("Botón secundario presionado")
+            #Compruebo la posicion del cursos para validar el hover del botón
+            menu_button.is_hovered(mouse_x, mouse_y)
 
-while True:
-    event_manager()
+            if pygame.mouse.get_pressed()[0]:
+                x, y = event.pos
+                if menu_button.is_pressed(event, x, y):
+                    demo.demo()
+                if settingsRect.collidepoint(x, y):
+                    my_settings.settings()
 
-    screen.blit(background, [0, 0])
-    menu_button.init_button()
-    secondary_button.init_button()
+    while True:
+        event_manager()
 
-    pygame.display.flip()
-    clock.tick(fps)
+        screen.blit(background, [0, 0])
+        screen.blit(settings, [settingsRect[0], settingsRect[1]])
+        menu_button.init_button()
 
-pygame.quit()
+        pygame.display.flip()
+        clock.tick(fps)
+
+    pygame.quit()
