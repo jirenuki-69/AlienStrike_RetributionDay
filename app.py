@@ -1,6 +1,6 @@
 import pygame, sys
 from pygame import mixer
 from clases.Button import Button
-import main
+import title_screen, history, main_menu
 
-main.main()
+history.history()

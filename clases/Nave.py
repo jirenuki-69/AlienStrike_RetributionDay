@@ -20,6 +20,9 @@ class Nave():
         #Qué respuesta dar a la clase principal
         self.response = 0
 
+    def shoot(self):
+        pass
+
     def update(self, direction):
         if direction == "left" and self.rect.x - self.movementSpeed > 0:
 

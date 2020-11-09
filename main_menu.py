@@ -1,0 +1,96 @@
+import pygame, sys
+from pygame import mixer
+import const, demo
+from clases.Texto import Texto
+
+def main_menu():
+    pygame.init()
+    pygame.display.set_caption("Alien Strike: Retribution Day")
+    pygame.mixer.music.load("assets/music/menu_music/Chilling and Grilling.mp3")
+    pygame.mixer.music.set_volume(.1)
+    pygame.mixer.music.play(-1)
+    width = 1200
+    height = 800
+    size = (width, height)
+    screen = pygame.display.set_mode(size)
+
+    #Global values
+    background = pygame.image.load("assets/visual/gameplay_assets/select_mode_menu.png")
+    background = pygame.transform.scale(background, size)
+
+    clock = pygame.time.Clock()
+    fps = 60
+    font = pygame.font.Font("fonts/Pixel LCD-7.ttf", 25)
+    description_font = pygame.font.Font("fonts/Pixel LCD-7.ttf", 20)
+
+    texto_arcade = Texto(
+        "ARCADE",
+        (width * 0.852, height * 0.05),
+        font,
+        screen,
+        None
+    )
+
+    texto_practice = Texto(
+        "PRACTICE",
+        (width * 0.84, height * 0.13),
+        font,
+        screen,
+        None
+    )
+
+    texto_tutorial = Texto(
+        "TUTORIAL",
+        (width * 0.84, height * 0.21),
+        font,
+        screen,
+        None
+    )
+
+    texto_return = Texto(
+        "RETURN",
+        (width * 0.852, height * 0.29),
+        font,
+        screen,
+        None
+    )
+
+    texto_descripcion = Texto(
+        const.USUARIO_DESCRIPCION,
+        (width * 0.09, height * 0.74),
+        description_font,
+        screen,
+        55
+    )
+
+    def event_manager():
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+
+            if pygame.mouse.get_pressed()[0]:
+                x, y = pygame.mouse.get_pos()
+                if texto_arcade.text_rect.collidepoint(x, y):
+                    print("ARCADE SELECCIONADO")
+                elif texto_practice.text_rect.collidepoint(x, y):
+                    print("PRACTICE SELECCIONADO")
+                elif texto_tutorial.text_rect.collidepoint(x, y):
+                    demo.demo()
+                elif texto_return.text_rect.collidepoint(x, y):
+                    print("RETURN SELECCIONADO")
+
+    while True:
+        event_manager()
+
+        screen.blit(background, [0, 0])
+
+        texto_arcade.show_text()
+        texto_practice.show_text()
+        texto_tutorial.show_text()
+        texto_return.show_text()
+        texto_descripcion.show_text()
+
+        pygame.display.flip()
+        clock.tick(fps)
+
+    pygame.quit()

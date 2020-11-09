@@ -7,7 +7,7 @@ def demo():
     pygame.init()
     pygame.display.set_caption("Alien Strike: Retribution Day")
     pygame.mixer.music.load("assets/music/Alien Soldier - Runner AD2025.mp3")
-    pygame.mixer.music.set_volume(.1)
+    pygame.mixer.music.set_volume(.05)
     pygame.mixer.music.play(-1)
     width = 1200
     height = 800
@@ -15,28 +15,20 @@ def demo():
     screen = pygame.display.set_mode(size)
 
     #Global values
-    background = pygame.image.load("assets/menu.png")
-    background = pygame.transform.scale(background, size)
-    settings = pygame.image.load("assets/settings.png")
+    background = pygame.image.load("assets/visual/gameplay_assets/gencity.png")
+    ackground = pygame.transform.scale(background, size)
+    # settings = pygame.image.load("assets/settings.png")
 
     clock = pygame.time.Clock()
     fps = 60
-    font = pygame.font.Font("Fonts\\Thewitcher-jnOj.ttf", 30)
+    font = pygame.font.Font("fonts/ufonts.com_windpower.ttf", 50)
 
     nave = Nave(
         (int(width * 0.10), int(height * 0.85)),
         5,
         size,
-        "assets/gameplay_images/main_ship.png"
+        "assets/visual/gameplay_assets/main_ship.png"
     )
-
-    #Colores
-    GREEN = (0, 255, 0)
-    RED = (217, 31, 11)
-    DARK_GREEN = (51, 97, 28)
-    BLACK = (0, 0, 0)
-    WHITE = (255, 255, 255)
-    GRAY = (150, 150, 150)
 
     #My values
     rectSize = (275, 100)
@@ -51,7 +43,7 @@ def demo():
     while True:
         event_manager()
 
-        screen.fill(BLACK)
+        screen.blit(background, [0, 0])
         screen.blit(nave.image, nave.rect)
         pygame.display.flip()
         clock.tick(fps)
