@@ -4,7 +4,7 @@ class Nave():
     def __init__(self, position, movementSpeed, screenSize, img):
         #Cargo la imagen en memoria
         self.sheet = pygame.image.load(img)
-        self.sheet = pygame.transform.scale(self.sheet, (int(screenSize[0] * 0.10), int(screenSize[1] * 0.10)))
+        self.sheet = pygame.transform.scale(self.sheet, (int(screenSize[0] * 0.15), int(screenSize[1] * 0.15)))
         #Se genera el surface para mostrar algo en la pantalla
         self.image = self.sheet.subsurface(self.sheet.get_clip())
         #Se representa la imagen y moverla

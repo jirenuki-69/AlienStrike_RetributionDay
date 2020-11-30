@@ -11,7 +11,7 @@ def history():
     pygame.init()
     pygame.display.set_caption("Alien Strike: Retribution Day")
     pygame.mixer.music.load("assets/music/Alien Soldier - Sidelimits.mp3")
-    pygame.mixer.music.set_volume(.1)
+    pygame.mixer.music.set_volume(const.MUSIC_VOLUME)
     pygame.mixer.music.play(-1)
     width = 1200
     height = 800
@@ -26,7 +26,7 @@ def history():
     fps = 60
     font = pygame.font.Font("fonts/ufonts.com_windpower.ttf", 30)
     timer_event = pygame.USEREVENT + 1
-    pygame.time.set_timer(timer_event, 10000)
+    pygame.time.set_timer(timer_event, 1000)
     escena = Escena(
         const.ESCENAS[index],
         const.ESCENAS_TEXTO[index],
@@ -34,7 +34,7 @@ def history():
         font,
         screen,
         size,
-        (int(size[0] * 0.8), int(size[1] * 0.7))
+        (size[0], size[1])
     )
 
     def change_scene():

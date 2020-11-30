@@ -31,8 +31,9 @@ def username():
                 return
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
-                    return text
+                    print(const.NOMBRE_USUARIO)
                     text = ''
+                    return
                 elif event.key == pygame.K_BACKSPACE:
                     text = text[:-1]
                 else:
@@ -53,8 +54,3 @@ def username():
 
 
     pygame.quit()
-
-
-Name = username()
-
-print(Name)

@@ -1,25 +1,28 @@
+#Numeros
+MUSIC_VOLUME = 0.1
+
 #Textos
 NOMBRE_USUARIO = "Miguel Fuentes"
 
 USUARIO_DESCRIPCION = f"Soy {NOMBRE_USUARIO}, ex piloto estrella de la armada15, he sobrevivido incontables guerras espaciales desde que tengo memoria y ahora solo estoy cansado de pelear, quiero morir en una vida aburrida y tranquila junto a mi esposa."
 
 ESCENAS = [
-    "assets/visual/history_scenes/1.jpg",
+    "assets/visual/history_scenes/1.png",
     "assets/visual/history_scenes/2.png",
     "assets/visual/history_scenes/3.png",
     "assets/visual/history_scenes/3.png",
-    "assets/visual/history_scenes/4.jpg",
+    "assets/visual/history_scenes/4.png",
     "assets/visual/history_scenes/5.png",
     "assets/visual/history_scenes/6.png",
     "assets/visual/history_scenes/7.png",
-    "assets/visual/history_scenes/8.jpg",
+    "assets/visual/history_scenes/8.png",
     "assets/visual/history_scenes/9.png",
     "assets/visual/history_scenes/10.png",
     "assets/visual/history_scenes/11.png",
     "assets/visual/history_scenes/12.png",
-    "assets/visual/history_scenes/13.jpg",
-    "assets/visual/history_scenes/14.jpg",
-    "assets/visual/history_scenes/15.jpg",
+    "assets/visual/history_scenes/13.png",
+    "assets/visual/history_scenes/14.png",
+    "assets/visual/history_scenes/15.png",
 ]
 
 ESCENAS_TEXTO = [
@@ -37,13 +40,9 @@ ESCENAS_TEXTO = [
     "Destrozado en llanto con el cuerpo de tu supuesta esposa en tus brazos, decides aceptar el trabajo.",
     "Destrozado en llanto con el cuerpo de tu supuesta esposa en tus brazos, decides aceptar el trabajo.",
     "Al llegar al hangar de despegue, te encuentras con tu vieja nave “IKARUGA” en la cual entras inmediatamente para no perder mas tiempo y terminar con esta invasión…",
-    """Recuerda…. Eres la única esperanza para proteger a la tierra….
-
-       ¡¡¡Adelante soldado… EL MUNDO TE NECESITA!!!
+    """Recuerda…. Eres la única esperanza para proteger a la tierra…. ¡¡¡Adelante soldado… EL MUNDO TE NECESITA!!!
     """,
-    """Recuerda…. Eres la única esperanza para proteger a la tierra….
-
-       ¡¡¡Adelante soldado… EL MUNDO TE NECESITA!!!
+    """Recuerda…. Eres la única esperanza para proteger a la tierra…. ¡¡¡Adelante soldado… EL MUNDO TE NECESITA!!!
     """
 ]
 

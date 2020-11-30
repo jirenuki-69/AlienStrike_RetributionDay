@@ -1,13 +1,14 @@
 import pygame, sys
 from pygame import mixer
 import const, demo
+import title_screen
 from clases.Texto import Texto
 
 def main_menu():
     pygame.init()
     pygame.display.set_caption("Alien Strike: Retribution Day")
     pygame.mixer.music.load("assets/music/menu_music/Chilling and Grilling.mp3")
-    pygame.mixer.music.set_volume(.1)
+    pygame.mixer.music.set_volume(const.MUSIC_VOLUME)
     pygame.mixer.music.play(-1)
     width = 1200
     height = 800
@@ -77,7 +78,7 @@ def main_menu():
                 elif texto_tutorial.text_rect.collidepoint(x, y):
                     demo.demo()
                 elif texto_return.text_rect.collidepoint(x, y):
-                    print("RETURN SELECCIONADO")
+                    title_screen.title_screen()
 
     while True:
         event_manager()

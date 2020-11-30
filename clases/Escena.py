@@ -10,14 +10,12 @@ class Escena():
         self.size = size
         self.image = pygame.transform.scale(self.image, self.size)
         self.image_rect = self.image.get_rect()
-        self.image_rect.x, self.image_rect.y = (screen_size[0] / 2 - self.size[0] / 2, self.size[1] * 0.1)
         self.screen_size = screen_size
 
     def load_new_image(self, image, text):
         self.image = pygame.image.load(image).convert()
         self.image = pygame.transform.scale(self.image, self.size)
         self.image_rect = self.image.get_rect()
-        self.image_rect.x, self.image_rect.y = (self.screen_size[0] / 2 - self.size[0] / 2, self.size[1] * 0.1)
         self.text = text
 
     def show_scene(self):
