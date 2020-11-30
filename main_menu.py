@@ -4,6 +4,11 @@ import const, demo
 import title_screen
 from clases.Texto import Texto
 
+def conseguir_nombre():
+    with open ("nombre.txt") as archivo:
+        for linea in archivo.readlines():
+            return str(linea.split("-")[0])
+
 def main_menu():
     pygame.init()
     pygame.display.set_caption("Alien Strike: Retribution Day")
@@ -18,6 +23,9 @@ def main_menu():
     #Global values
     background = pygame.image.load("assets/visual/gameplay_assets/select_mode_menu.png")
     background = pygame.transform.scale(background, size)
+    nombre = conseguir_nombre()
+    USUARIO_DESCRIPCION = f"Soy {str(nombre)}, ex piloto estrella de la armada15, he sobrevivido incontables guerras espaciales desde que tengo memoria y ahora solo estoy cansado de pelear, quiero morir en una vida aburrida y tranquila junto a mi esposa."
+
 
     clock = pygame.time.Clock()
     fps = 60
@@ -57,7 +65,7 @@ def main_menu():
     )
 
     texto_descripcion = Texto(
-        const.USUARIO_DESCRIPCION,
+        USUARIO_DESCRIPCION,
         (width * 0.09, height * 0.74),
         description_font,
         screen,

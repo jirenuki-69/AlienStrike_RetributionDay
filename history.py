@@ -5,6 +5,11 @@ import const, title_screen
 
 index = 0
 
+def conseguir_nombre():
+    with open ("nombre.txt") as archivo:
+        for linea in archivo.readlines():
+            return str(linea.split("-")[0])
+
 def history():
     global index
 
@@ -19,17 +24,35 @@ def history():
     screen = pygame.display.set_mode(size)
 
     #Global values
-    # background = pygame.image.load("assets/menu.png")
-    # background = pygame.transform.scale(background, size)
-    # settings = pygame.image.load("assets/settings.png")
+    nombre = conseguir_nombre()
+    ESCENAS_TEXTO = [
+        "El año era 20xx. Después de una pandemia Biológica espontanea por parte de los aliados Comunistas de china, la humanidad se encontraba en un momento de caos total.",
+        "Todos los países estaban en tensiones políticas Enormes.",
+        "China no pudo guardar el secreto más tiempo, admitiendo que ellos crearon el virus, pero no para un propósito de conquista global…",
+        "El verdadero motivo de la creación de un arma biológica de tal poder, era para erradicar a los invasores que se han mantenido en secreto por mucho tiempo…",
+        "Pero ahora se han descontrolado, los “SNATCHERS” han tomado acción y se han infiltrado en los armamentos y defensas de todos los países…",
+        "Los gobiernos de todo el mundo se ponen de acuerdo para llamar al piloto mas experimentado, el cual fue el único que logro defender al planeta del primer ataque de los SNATCHERS…",
+        f"Ahí es donde entras tú, {nombre} el piloto estrella de la ex armada 15, al recibir la llamada del gobierno la rechazas inmediatamente, porque prefieres pasar el máximo tiempo posible con tu esposa a arriesgar tu vida otra vez….",
+        f"Ahí es donde entras tú, {nombre} el piloto estrella de la ex armada 15, al recibir la llamada del gobierno la rechazas inmediatamente, porque prefieres pasar el máximo tiempo posible con tu esposa a arriesgar tu vida otra vez….",
+        "PERO justo después de recibir la llamada tu esposa empieza a actuar de manera extraña… ella es uno de ellos, tu esposa había sido sustituida por los SNATCHERS, ella te empieza a atacar y tú en defensa propia, acabas con ella…",
+        "PERO justo después de recibir la llamada tu esposa empieza a actuar de manera extraña… ella es uno de ellos, tu esposa había sido sustituida por los SNATCHERS, ella te empieza a atacar y tú en defensa propia, acabas con ella…",
+        "PERO justo después de recibir la llamada tu esposa empieza a actuar de manera extraña… ella es uno de ellos, tu esposa había sido sustituida por los SNATCHERS, ella te empieza a atacar y tú en defensa propia, acabas con ella…",
+        "Destrozado en llanto con el cuerpo de tu supuesta esposa en tus brazos, decides aceptar el trabajo.",
+        "Destrozado en llanto con el cuerpo de tu supuesta esposa en tus brazos, decides aceptar el trabajo.",
+        "Al llegar al hangar de despegue, te encuentras con tu vieja nave “IKARUGA” en la cual entras inmediatamente para no perder mas tiempo y terminar con esta invasión…",
+        """Recuerda…. Eres la única esperanza para proteger a la tierra…. ¡¡¡Adelante soldado… EL MUNDO TE NECESITA!!!
+        """,
+        """Recuerda…. Eres la única esperanza para proteger a la tierra…. ¡¡¡Adelante soldado… EL MUNDO TE NECESITA!!!
+        """
+    ]
     clock = pygame.time.Clock()
     fps = 60
     font = pygame.font.Font("fonts/ufonts.com_windpower.ttf", 30)
     timer_event = pygame.USEREVENT + 1
-    pygame.time.set_timer(timer_event, 1000)
+    pygame.time.set_timer(timer_event, 300)
     escena = Escena(
         const.ESCENAS[index],
-        const.ESCENAS_TEXTO[index],
+        ESCENAS_TEXTO[index],
         const.WHITE,
         font,
         screen,
@@ -40,7 +63,7 @@ def history():
     def change_scene():
         escena.load_new_image(
             const.ESCENAS[index],
-            const.ESCENAS_TEXTO[index],
+            ESCENAS_TEXTO[index],
         )
 
     def event_manager():
