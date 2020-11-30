@@ -2,6 +2,7 @@ import pygame
 import sys
 from pygame import mixer
 from clases.Nave import Nave
+import const
 
 def demo():
     pygame.init()
@@ -33,10 +34,19 @@ def demo():
     #My values
     rectSize = (275, 100)
 
+    def text(data, x, y, color, size, screen):
+        font = pygame.font.Font(const.FONT, size)
+        texto_marcador = font.render(data, True, color)
+        texto_marcador_rect = texto_marcador.get_rect()
+        screen_rec = screen.get_rect()
+
+        texto_marcador_rect.center = screen_rec.center
+
     def event_manager():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
+
 
         response = nave.event_manager()
 
@@ -45,6 +55,7 @@ def demo():
 
         screen.blit(background, [0, 0])
         screen.blit(nave.image, nave.rect)
+        text("prueba", 0, 0, const.WHITE, 50, screen)
         pygame.display.flip()
         clock.tick(fps)
 
