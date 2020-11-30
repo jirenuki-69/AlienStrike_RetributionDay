@@ -24,13 +24,8 @@ def username():
     y = 0
 
     #Global values
-    background = pygame.image.load("assets/visual/menu.png")
+    background = pygame.image.load("assets/visual/history_scenes/nombre.png")
     background = pygame.transform.scale(background, size)
-    settings = pygame.image.load("assets/visual/settings.png")
-
-    settings = pygame.transform.scale(settings, (80, 80))
-    settingsRect = settings.get_rect()
-    settingsRect[0], settingsRect[1] = 20, int(height * 0.85)
 
     clock = pygame.time.Clock()
     fps = 60
@@ -56,8 +51,8 @@ def username():
 
 
 
-        screen.fill((const.BLACK))
-        txt_surface = font.render(text, True, const.RED)
+        screen.blit(background, [0, 0])
+        txt_surface = font.render(text, True, const.WHITE)
 
 
         screen.blit(txt_surface, (x, y))

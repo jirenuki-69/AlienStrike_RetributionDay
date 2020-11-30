@@ -27,7 +27,8 @@ def tutorial():
     font = pygame.font.Font("fonts/ufonts.com_windpower.ttf", 50)
     ban = False
     cont = 0
-    mag = False
+    mag = True
+    time = 1.5
 
     nave = Nave(
         (int(width * 0.10), int(height * 0.85)),
@@ -56,6 +57,7 @@ def tutorial():
 
     def fire(character):
         screen.blit(character.misilimage, character.misilrect)
+        nave.get_frame()
         character.misilrect.y -= 10
         #for x in objarrg:
         #    if character.misilrect.colliderect(x.rect):
@@ -81,13 +83,20 @@ def tutorial():
         event_manager()
         screen.blit(background, [0, 0])
         if ban:
-            if cont < fps * 2:
+            if cont < fps * time:
                 cont += 1
             fire(nave)
+            nave.get_frame()
         screen.blit(nave.image, nave.rect)
         text(const.TUTORIAL[0], 0, 750, const.WHITE, 50, screen)
-        if response != 0:
+        if cont == fps * time:
+            cont = 0
+            mag = True
+
+        if response != 0 and mag:
+            mag = False
             nave.misilrect.center = response.center
+            nave.misilrect.y -= nave.rect.y * .1
             ban = True
         text(const.TUTORIAL[step], 0, 0, const.WHITE, 50, screen)
         print(cont)

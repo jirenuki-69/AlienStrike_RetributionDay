@@ -20,19 +20,30 @@ class Nave():
         #Qué respuesta dar a la clase principal
         self.response = 0
         #Disparo
-        self.misil = pygame.image.load("assets/visual/gameplay_assets/disparo_prueba.png")
+        self.misil = pygame.image.load("assets/visual/gameplay_assets/laser/propersize/1.png")
+        self.misilbool = True
         self.misilimage = self.misil.subsurface(self.misil.get_clip())
         self.misilrect = self.misilimage.get_rect()
+
+
+
+    def get_frame(self):
+        if self.misilbool:
+            self.misil = pygame.image.load("assets/visual/gameplay_assets/laser/propersize/1.png")
+            self.misilbool = False
+        else:
+            self.misil = pygame.image.load("assets/visual/gameplay_assets/laser/propersize/2.png")
+            self.misilbool = True
 
     def shoot(self):
         self.response = self.rect
 
     def update(self, direction):
-        if direction == "left" and self.rect.x - self.movementSpeed > 0:
+        if direction == "left" and self.rect.x - self.movementSpeed > -15:
 
             self.rect.x -= self.movementSpeed
 
-        elif direction == "right" and self.rect.x + self.movementSpeed < self.screenSize[0] - 50:
+        elif direction == "right" and self.rect.x + self.movementSpeed < self.screenSize[0] - self.rect.x * .15:
 
             self.rect.x += self.movementSpeed
 
