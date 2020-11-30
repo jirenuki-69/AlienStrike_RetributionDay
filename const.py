@@ -33,10 +33,3 @@ GRAY = (150, 150, 150)
 
 #Fuente principal
 #FONT = pygame.font.Font("fonts/ufonts.com_windpower.ttf", 50)
-
-#Métodos
-def cambiar_nombre(nombre):
-    if nombre.strip() != "":
-        NOMBRE_USUARIO = nombre
-    else:
-        print("Nombre inválido")

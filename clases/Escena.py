@@ -21,7 +21,7 @@ class Escena():
     def show_scene(self):
         self.screen.blit(self.image, [self.image_rect.x, self.image_rect.y])
 
-        text_wrapped = textwrap.wrap(self.text, 100)
+        text_wrapped = textwrap.wrap(self.text, 85)
 
         scene_text_list = []
 
@@ -34,6 +34,6 @@ class Escena():
         for i in range(len(scene_text_list)):
             scene_text = self.font.render(scene_text_list[i], True, self.text_color)
             scene_text_rect = scene_text.get_rect()
-            scene_text_rect.x, scene_text_rect.y = (self.screen_size[0] * 0.05 , self.screen_size[1] * 0.8 + (50 * i))
+            scene_text_rect.x, scene_text_rect.y = (self.screen_size[0] * 0.1 , self.screen_size[1] * 0.78 + (50 * i))
 
             self.screen.blit(scene_text, scene_text_rect)

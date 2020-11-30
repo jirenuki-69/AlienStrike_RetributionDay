@@ -49,7 +49,7 @@ def history():
     fps = 60
     font = pygame.font.Font("fonts/ufonts.com_windpower.ttf", 30)
     timer_event = pygame.USEREVENT + 1
-    pygame.time.set_timer(timer_event, 300)
+    pygame.time.set_timer(timer_event, 1000)
     escena = Escena(
         const.ESCENAS[index],
         ESCENAS_TEXTO[index],
