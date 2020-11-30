@@ -20,6 +20,7 @@ def username():
     size = (width, height)
     screen = pygame.display.set_mode(size)
     text = ""
+    text_cont = 0
     x = 0
     y = 0
 
@@ -44,18 +45,23 @@ def username():
                         return
                 elif event.key == pygame.K_BACKSPACE:
                     text = text[:-1]
+                    if text_cont > 0:
+                        text_cont -= 1
                 else:
                     text += event.unicode
-            elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                x, y = pygame.mouse.get_pos()
+                    text_cont += 1
 
 
 
         screen.blit(background, [0, 0])
+        txt_escribir = font.render("Escriba su nombre, jugador", True, const.WHITE)
+
         txt_surface = font.render(text, True, const.WHITE)
+        txt_surface_rect = txt_surface.get_rect()
+        txt_surface_rect.x, txt_surface_rect.y = (int( (width * 0.3) ), int( height * 0.85 ))
 
-
-        screen.blit(txt_surface, (x, y))
+        screen.blit(txt_escribir, (350, 625))
+        screen.blit(txt_surface, (txt_surface_rect.x, txt_surface_rect.y))
 
         pygame.display.flip()
         clock.tick(30)
