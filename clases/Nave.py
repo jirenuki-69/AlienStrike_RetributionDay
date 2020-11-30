@@ -19,9 +19,13 @@ class Nave():
         self.ban = True
         #Qué respuesta dar a la clase principal
         self.response = 0
+        #Disparo
+        self.misil = pygame.image.load("assets/visual/gameplay_assets/disparo_prueba.png")
+        self.misilimage = self.misil.subsurface(self.misil.get_clip())
+        self.misilrect = self.misilimage.get_rect()
 
     def shoot(self):
-        pass
+        self.response = self.rect
 
     def update(self, direction):
         if direction == "left" and self.rect.x - self.movementSpeed > 0:
@@ -40,7 +44,7 @@ class Nave():
             self.update("left")
         if keys[pygame.K_d]:
             self.update("right")
-        if mouse[0]:
+        if mouse[0] or keys[pygame.K_SPACE]:
             self.ban = True
             self.shoot()
         else:

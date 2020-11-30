@@ -1,5 +1,16 @@
 import pygame
-import const, title_screen, sys
+import const, title_screen, sys, os
+
+my_file = open("nombre.txt", "w")
+my_file.writelines("James")
+
+my_file.close()
+
+def cambiar_nombre(nombre):
+    my_file = open("nombre.txt", "w")
+    my_file.writelines(str(nombre))
+
+    my_file.close()
 
 def username():
     pygame.init()
@@ -28,12 +39,14 @@ def username():
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                return
+                sys.exit()
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
-                    print(const.NOMBRE_USUARIO)
-                    text = ''
-                    return
+                    if text.strip() != "":
+                        cambiar_nombre(text)
+                        return
+                    else:
+                        return
                 elif event.key == pygame.K_BACKSPACE:
                     text = text[:-1]
                 else:
