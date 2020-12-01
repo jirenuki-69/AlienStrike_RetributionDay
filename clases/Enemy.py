@@ -1,8 +1,8 @@
 import pygame
-from Kboom import Explosion
+from clases.Kboom import Explosion
 
 class Enemy():
-    def __init__(self, position, movementSpeed, screenSize, img):
+    def __init__(self, position, movementSpeed, screenSize, screen, img):
         #Cargo la imagen en memoria
         self.sheet = pygame.image.load(img)
         self.sheet = pygame.transform.scale(self.sheet, (int(screenSize[0] * 0.15), int(screenSize[1] * 0.15)))
@@ -13,6 +13,7 @@ class Enemy():
         #Paso el rect a la posicion del personaje
         self.rect.center = position
         #En qué superficie se encuentra
+        self.screen = screen
         self.screenSize = screenSize
         #Velocidad de movimiento del Personaje
         self.movementSpeed = movementSpeed
@@ -33,11 +34,13 @@ class Enemy():
         )
         self.exploded = False
 
+    def update_explode_position(self):
+        self.boom.rect.x, self.boom.rect.y = (self.rect.x, self.rect.y)
+
     def explode(self):
+        self.update_explode_position()
         self.boom.update()
         self.screen.blit(self.boom.image, (self.rect.x - 20, self.rect.y - 70))
-
-
 
     def get_frame(self):
         if self.misilbool:

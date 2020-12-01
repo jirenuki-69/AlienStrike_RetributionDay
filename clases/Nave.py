@@ -1,4 +1,5 @@
 import pygame
+from pygame import mixer
 
 class Nave():
     def __init__(self, position, movementSpeed, screenSize, img):
@@ -25,6 +26,9 @@ class Nave():
         self.misilimage = self.misil.subsurface(self.misil.get_clip())
         self.misilrect = self.misilimage.get_rect()
 
+        #Mixer
+        self.shoot_sound = pygame.mixer.Sound("assets/music/SFX/player_shoot.wav")
+        self.shoot_sound.set_volume(.01)
 
 
     def get_frame(self):
@@ -36,6 +40,7 @@ class Nave():
             self.misilbool = True
 
     def shoot(self):
+        self.shoot_sound.play()
         self.response = self.rect
 
     def update(self, direction):

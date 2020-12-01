@@ -12,9 +12,9 @@ def conseguir_nombre():
 def main_menu():
     pygame.init()
     pygame.display.set_caption("Alien Strike: Retribution Day")
-    #pygame.mixer.music.load("assets/music/menu_music/Chilling and Grilling.mp3")
-    #pygame.mixer.music.set_volume(const.MUSIC_VOLUME)
-    #pygame.mixer.music.play(-1)
+    pygame.mixer.music.load("assets/music/menu_music/Chilling and Grilling.mp3")
+    pygame.mixer.music.set_volume(const.MUSIC_VOLUME)
+    pygame.mixer.music.play(-1)
     width = 1200
     height = 800
     size = (width, height)

@@ -17,19 +17,21 @@ def tutorial():
     step = 0
     pygame.init()
     pygame.display.set_caption("Alien Strike: Retribution Day")
-    #pygame.mixer.music.load("assets/music/Alien Soldier - Runner AD2025.mp3")
-    #pygame.mixer.music.set_volume(.1)
-    #pygame.mixer.music.play(-1)
+    pygame.mixer.music.load("assets/music/special_tracks/teachmenow.mp3")
+    pygame.mixer.music.set_volume(.1)
+    pygame.mixer.music.play(-1)
     width = 1200
     height = 800
     size = (width, height)
     screen = pygame.display.set_mode(size)
 
     #Global values
-    background = pygame.image.load("assets/visual/gameplay_assets/gencity.png")
+    background = pygame.image.load("assets/visual/gameplay_assets/another level.gif")
+    background = pygame.transform.scale(background, size)
     # settings = pygame.image.load("assets/settings.png")
     dialogo = pygame.image.load("assets/visual/gameplay_assets/Tutorial/tutoverde.png")
-    dialogo = pygame.transform.scale(dialogo, (width, 200))
+    gui_movement = pygame.image.load("assets/visual/gameplay_assets/Tutorial/movement.png")
+    gui_shoot = pygame.image.load("assets/visual/gameplay_assets/Tutorial/shoot.png")
     clock = pygame.time.Clock()
     fps = 60
     ban = False
@@ -43,9 +45,10 @@ def tutorial():
 
     for x in range(cantidad):
         objenemy = Enemy(
-            (int(width * 0.10 * random.randint(1, 8)), int(height * 0.15)),
+            (int(width * 0.10 * 1), int(height * 0.15)),
             5,
             size,
+            screen,
             "assets/visual/gameplay_assets/other_ship.png"
         )
         objarrg.append(objenemy)
@@ -56,12 +59,6 @@ def tutorial():
         size,
         "assets/visual/gameplay_assets/main_ship.png"
     )
-    boom = Explosion(
-        (int(width * 0.50), int(height * .5)),
-        size
-    )
-
-    print(boom.rect)
 
     #My values
     rectSize = (275, 100)
@@ -91,7 +88,7 @@ def tutorial():
                 if character.misilrect.colliderect(x.rect):
                     #objarrg.remove(x)
                     #print("hit")
-                    expolded = True
+                    exploded = True
                     character.misilrect.x = -100
 
 
@@ -122,6 +119,12 @@ def tutorial():
                 cont += 1
             fire(nave, objarrg)
             nave.get_frame()
+
+        if step == 1 or step == 2:
+            screen.blit(gui_movement, [width * 0.7, height * 0.05])
+
+        if step == 3 or step == 4:
+            screen.blit(gui_shoot, [width * 0.7, height * 0.05])
 
         screen.blit(nave.image, nave.rect)
         text(const.TUTORIAL[step], width * .135, height * .88, const.BLACK, 18, screen)

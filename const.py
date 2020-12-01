@@ -29,7 +29,7 @@ TUTORIAL = [
     "Presiona Espacio o haz click izquierdo en el mouse para disparar",
     "Hay enemigos en cada nivel y debes eliminarlos",
     "O pueden atacarte",
-    ""
+    "Vuelve a presionar Enter para regresar al menu principal"
 ]
 
 #Colores
