@@ -1,6 +1,6 @@
 import pygame
 
-class Nave():
+class Enemy():
     def __init__(self, position, movementSpeed, screenSize, img):
         #Cargo la imagen en memoria
         self.sheet = pygame.image.load(img)

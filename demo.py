@@ -6,9 +6,9 @@ from clases.Nave import Nave
 def demo():
     pygame.init()
     pygame.display.set_caption("Alien Strike: Retribution Day")
-    pygame.mixer.music.load("assets/music/Alien Soldier - Runner AD2025.mp3")
-    pygame.mixer.music.set_volume(.1)
-    pygame.mixer.music.play(-1)
+    #pygame.mixer.music.load("assets/music/Alien Soldier - Runner AD2025.mp3")
+    #pygame.mixer.music.set_volume(.1)
+    #pygame.mixer.music.play(-1)
     width = 1200
     height = 800
     size = (width, height)

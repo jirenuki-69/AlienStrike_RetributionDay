@@ -22,6 +22,16 @@ ESCENAS = [
     "assets/visual/history_scenes/15.png",
 ]
 
+TUTORIAL = [
+    "Presione la tecla Enter para continuar en el tutorial",
+    "Manten presionado D para mover a la derecha",
+    "Manten presionado A para mover a la izquierda",
+    "Presiona Espacio o haz click izquierdo en el mouse para disparar",
+    "Hay enemigos en cada nivel y debes eliminarlos",
+    "O pueden atacarte",
+    ""
+]
+
 #Colores
 GREEN = (0, 255, 0)
 RED = (217, 31, 11)
@@ -32,4 +42,11 @@ WHITE = (255, 255, 255)
 GRAY = (150, 150, 150)
 
 #Fuente principal
-#FONT = pygame.font.Font("fonts/ufonts.com_windpower.ttf", 50)
+FONT = "fonts/ufonts.com_windpower.ttf"
+
+#Métodos
+def cambiar_nombre(nombre):
+    if nombre.strip() != "":
+        NOMBRE_USUARIO = nombre
+    else:
+        print("Nombre inválido")
