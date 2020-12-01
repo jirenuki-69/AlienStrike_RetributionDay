@@ -26,7 +26,10 @@ TUTORIAL = [
     "Presione la tecla Enter para continuar en el tutorial",
     "Manten presionado D para mover a la derecha",
     "Manten presionado A para mover a la izquierda",
-    "Presiona Espacio o haz click izquierdo en el mouse para disparar"
+    "Presiona Espacio o haz click izquierdo en el mouse para disparar",
+    "Hay enemigos en cada nivel y debes eliminarlos",
+    "O pueden atacarte",
+    ""
 ]
 
 #Colores

@@ -3,6 +3,7 @@ import sys
 from pygame import mixer
 from clases.Nave import Nave
 import const
+from clases.Enemy import Enemy
 
 step = 1
 response = 0
@@ -35,6 +36,13 @@ def tutorial():
         5,
         size,
         "assets/visual/gameplay_assets/main_ship.png"
+    )
+
+    enemy = Enemy(
+        (int(width * 0.10), int(height * 0.15)),
+        5,
+        size,
+        "assets/visual/gameplay_assets/other_ship.png"
     )
 
     #My values
@@ -87,18 +95,24 @@ def tutorial():
                 cont += 1
             fire(nave)
             nave.get_frame()
+
         screen.blit(nave.image, nave.rect)
         text(const.TUTORIAL[0], 0, 750, const.WHITE, 50, screen)
         if cont == fps * time:
             cont = 0
             mag = True
 
-        if response != 0 and mag:
+        if response != 0 and mag and step !=5:
             mag = False
             nave.misilrect.center = response.center
             nave.misilrect.y -= nave.rect.y * .1
             ban = True
         text(const.TUTORIAL[step], 0, 0, const.WHITE, 50, screen)
+        if step == 4 or step == 5:
+            screen.blit(enemy.image, (int(nave.rect.x), int(enemy.rect.y)))
+            nave.movementSpeed = 0
+        else:
+            nave.movementSpeed = 5
         print(cont)
         pygame.display.flip()
         clock.tick(fps)
