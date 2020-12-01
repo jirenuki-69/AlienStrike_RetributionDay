@@ -43,6 +43,7 @@ GRAY = (150, 150, 150)
 
 #Fuente principal
 FONT = "fonts/ufonts.com_windpower.ttf"
+FONT_v2 = "fonts/Pixel LCD-7.ttf"
 
 #Métodos
 def cambiar_nombre(nombre):

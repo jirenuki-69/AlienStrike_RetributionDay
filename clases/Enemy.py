@@ -1,4 +1,5 @@
 import pygame
+from Kboom import Explosion
 
 class Enemy():
     def __init__(self, position, movementSpeed, screenSize, img):
@@ -24,6 +25,17 @@ class Enemy():
         self.misilbool = True
         self.misilimage = self.misil.subsurface(self.misil.get_clip())
         self.misilrect = self.misilimage.get_rect()
+
+        #Explosion
+        self.boom = Explosion(
+            (int(position[0] * 0.50), int(position[1] * .5)),
+            screenSize
+        )
+        self.exploded = False
+
+    def explode(self):
+        self.boom.update()
+        self.screen.blit(self.boom.image, (self.rect.x - 20, self.rect.y - 70))
 
 
 
