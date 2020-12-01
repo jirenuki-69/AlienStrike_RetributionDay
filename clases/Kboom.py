@@ -1,5 +1,5 @@
 import pygame
-from pygame import mixer
+#from pygame import mixer
 
 class Explosion(pygame.sprite.Sprite):
     def __init__(self, position, screenSize):
@@ -26,9 +26,9 @@ class Explosion(pygame.sprite.Sprite):
         self.secs = 1
         self.boom_initiaded = False
         #Mixer
-        pygame.mixer.init()
-        self.boom_sound = pygame.mixer.Sound("assets/music/SFX/dead_boom.wav")
-        self.boom_sound.set_volume(.1)
+        #pygame.mixer.init()
+        #self.boom_sound = pygame.mixer.Sound("assets/music/SFX/dead_boom.wav")
+        #self.boom_sound.set_volume(.1)
 
     def get_frame(self, frame_set):
         if self.cont % 4 * self.secs == 0:
@@ -50,11 +50,11 @@ class Explosion(pygame.sprite.Sprite):
     def update(self):
         if self.cont > 60 * self.secs:
             self.cont = 0
-            self.boom_sound.stop()
+            #self.boom_sound.stop()
             self.boom_initiaded = False
 
         if not self.boom_initiaded:
-            self.boom_sound.play()
+            #self.boom_sound.play()
             self.boom_initiaded = True
 
         self.cont += 1

@@ -11,22 +11,26 @@ from clases.Kboom import Explosion
 step = 0
 response = 0
 exploded = False
+EnemyShoot = True
+mainExplode = False
 def tutorial():
+    global enemyShoot
     global step
     global exploded
+    global mainExplode
     step = 0
     pygame.init()
     pygame.display.set_caption("Alien Strike: Retribution Day")
-    pygame.mixer.music.load("assets/music/special_tracks/teachmenow.mp3")
-    pygame.mixer.music.set_volume(.1)
-    pygame.mixer.music.play(-1)
+    #pygame.mixer.music.load("assets/music/special_tracks/teachmenow.mp3")
+    #pygame.mixer.music.set_volume(.1)
+    #pygame.mixer.music.play(-1)
     width = 1200
     height = 800
     size = (width, height)
     screen = pygame.display.set_mode(size)
 
     #Global values
-    background = pygame.image.load("assets/visual/gameplay_assets/another level.gif")
+    background = pygame.image.load("assets/visual/gameplay_assets/gencity.png")
     background = pygame.transform.scale(background, size)
     # settings = pygame.image.load("assets/settings.png")
     dialogo = pygame.image.load("assets/visual/gameplay_assets/Tutorial/tutoverde.png")
@@ -40,23 +44,19 @@ def tutorial():
     time = 1.5
     objarrg = []
     cantidad = 1
-
+    shootCont = 0
     exCont = 0
+    enemyShoot = True
+    boolEnemy = True
+    mainExplode = False
 
-    for x in range(cantidad):
-        objenemy = Enemy(
-            (int(width * 0.10 * 1), int(height * 0.15)),
-            5,
-            size,
-            screen,
-            "assets/visual/gameplay_assets/other_ship.png"
-        )
-        objarrg.append(objenemy)
+
 
     nave = Nave(
         (int(width * 0.10), int(height * 0.65)),
         5,
         size,
+        screen,
         "assets/visual/gameplay_assets/main_ship.png"
     )
 
@@ -81,7 +81,7 @@ def tutorial():
     def fire(character, objarrg):
         global exploded
         screen.blit(character.misilimage, character.misilrect)
-        nave.get_frame()
+        character.get_frame()
         character.misilrect.y -= 10
         if len(objarrg) > 0:
             for x in objarrg:
@@ -89,7 +89,18 @@ def tutorial():
                     #objarrg.remove(x)
                     #print("hit")
                     exploded = True
-                    character.misilrect.x = -100
+                    character.misilrect.y = -100
+
+    def enemyFire(character, objarrg):
+        global mainExplode
+        global enemyShoot
+        screen.blit(character.misilimage, character.misilrect)
+        character.get_frame()
+        character.misilrect.y += 10
+        if character.misilrect.colliderect(objarrg.rect):
+            mainExplode = True
+            character.misilrect.y = -100
+            enemyShoot = False
 
 
     def event_manager():
@@ -110,7 +121,7 @@ def tutorial():
 
     while True:
         event_manager()
-        screen.blit(background, [0, 0])
+        screen.blit(background, [width * 0, height * 0])
         screen.blit(dialogo, [0, height - 200])
 
 
@@ -139,11 +150,34 @@ def tutorial():
             ban = True
 
         if step == 4 or step == 5:
+            if len(objarrg) < cantidad:
+                for x in range(cantidad):
+                    objenemy = Enemy(
+                        (int(width * 0.10 * 1), int(height * 0.15)),
+                        5,
+                        size,
+                        screen,
+                        "assets/visual/gameplay_assets/other_ship.png"
+                    )
+                    objarrg.append(objenemy)
             screen.blit(objarrg[0].image, (int(nave.rect.x), int(objarrg[0].rect.y)))
             objarrg[0].rect.x = int(nave.rect.x)
             nave.movementSpeed = 0
         else:
             nave.movementSpeed = 5
+
+        if step == 5:
+            shootCont += 1
+            responseEnemy = objarrg[0].event_manager(shootCont)
+            if responseEnemy != 0:
+                objarrg[0].misilrect.center = responseEnemy.center
+                #objarrg[0].misilrect.y += objarrg[0].rect.y * .1
+            if shootCont >= 180 and enemyShoot:
+                if boolEnemy:
+                    objarrg[0].misilrect.y += objarrg[0].rect.y * 1
+                    boolEnemy = False
+                enemyFire(objarrg[0], nave)
+
 
         if exploded:
             exCont += 1
@@ -151,6 +185,14 @@ def tutorial():
             if exCont >= 60 * 1:
                 exploded = False
                 exCont = 0
+
+        if mainExplode:
+            exCont += 1
+            nave.explode()
+            if exCont >= 60 / 3:
+                mainExplode = False
+                exCont = 0
+
         pygame.display.flip()
         clock.tick(fps)
 

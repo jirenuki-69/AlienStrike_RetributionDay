@@ -22,7 +22,7 @@ class Enemy():
         #Qué respuesta dar a la clase principal
         self.response = 0
         #Disparo
-        self.misil = pygame.image.load("assets/visual/gameplay_assets/laser/propersize/1.png")
+        self.misil = pygame.image.load("assets/visual/gameplay_assets/laser/propersize/alien1.png")
         self.misilbool = True
         self.misilimage = self.misil.subsurface(self.misil.get_clip())
         self.misilrect = self.misilimage.get_rect()
@@ -44,10 +44,10 @@ class Enemy():
 
     def get_frame(self):
         if self.misilbool:
-            self.misil = pygame.image.load("assets/visual/gameplay_assets/laser/propersize/1.png")
+            self.misil = pygame.image.load("assets/visual/gameplay_assets/laser/propersize/alien1.png")
             self.misilbool = False
         else:
-            self.misil = pygame.image.load("assets/visual/gameplay_assets/laser/propersize/2.png")
+            self.misil = pygame.image.load("assets/visual/gameplay_assets/laser/propersize/alien1.png")
             self.misilbool = True
 
     def shoot(self):
@@ -62,15 +62,8 @@ class Enemy():
 
             self.rect.x += self.movementSpeed
 
-    def event_manager(self):
-        keys = pygame.key.get_pressed()
-        mouse = pygame.mouse.get_pressed()
-
-        if keys[pygame.K_a]:
-            self.update("left")
-        if keys[pygame.K_d]:
-            self.update("right")
-        if mouse[0] or keys[pygame.K_SPACE]:
+    def event_manager(self, cont):
+        if cont == 180:
             self.ban = True
             self.shoot()
         else:

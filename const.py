@@ -28,7 +28,7 @@ TUTORIAL = [
     "Manten presionado A para mover a la izquierda",
     "Presiona Espacio o haz click izquierdo en el mouse para disparar",
     "Hay enemigos en cada nivel y debes eliminarlos",
-    "O pueden atacarte",
+    "O pueden atacarte y quitarte vida",
     "Vuelve a presionar Enter para regresar al menu principal"
 ]
 
