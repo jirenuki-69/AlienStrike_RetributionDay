@@ -7,9 +7,9 @@ import main_menu, const, my_settings, demo
 def title_screen():
     pygame.init()
     pygame.display.set_caption("Alien Strike: Retribution Day")
-    #pygame.mixer.music.load("assets/music/Alien Soldier - Title Theme(sugiero como musica del titulo).mp3")
-    #pygame.mixer.music.set_volume(const.MUSIC_VOLUME)
-    #pygame.mixer.music.play(-1)
+    pygame.mixer.music.load("assets/music/Alien Soldier - Title Theme(sugiero como musica del titulo).mp3")
+    pygame.mixer.music.set_volume(const.MUSIC_VOLUME)
+    pygame.mixer.music.play(-1)
     width = 1200
     height = 800
     size = (width, height)

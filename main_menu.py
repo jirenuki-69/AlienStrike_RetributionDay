@@ -1,6 +1,6 @@
 import pygame, sys
 from pygame import mixer
-import const, demo
+import const, tutorial
 import title_screen
 from clases.Texto import Texto
 
@@ -12,9 +12,9 @@ def conseguir_nombre():
 def main_menu():
     pygame.init()
     pygame.display.set_caption("Alien Strike: Retribution Day")
-    #pygame.mixer.music.load("assets/music/menu_music/Chilling and Grilling.mp3")
-    #pygame.mixer.music.set_volume(const.MUSIC_VOLUME)
-    #pygame.mixer.music.play(-1)
+    pygame.mixer.music.load("assets/music/menu_music/Chilling and Grilling.mp3")
+    pygame.mixer.music.set_volume(const.MUSIC_VOLUME)
+    pygame.mixer.music.play(-1)
     width = 1200
     height = 800
     size = (width, height)
@@ -84,7 +84,7 @@ def main_menu():
                 elif texto_practice.text_rect.collidepoint(x, y):
                     print("PRACTICE SELECCIONADO")
                 elif texto_tutorial.text_rect.collidepoint(x, y):
-                    demo.demo()
+                    tutorial.tutorial()
                 elif texto_return.text_rect.collidepoint(x, y):
                     title_screen.title_screen()
 

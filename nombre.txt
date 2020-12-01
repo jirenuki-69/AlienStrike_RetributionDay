@@ -1,5 +1,1 @@
-<<<<<<< HEAD
-Miguel Fuentes
-=======
-James
->>>>>>> 309a7a79ddbc8a2494a877b6f8f247f1edf620d7
+Miguel fuentes

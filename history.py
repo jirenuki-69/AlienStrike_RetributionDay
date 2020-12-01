@@ -15,9 +15,9 @@ def history():
 
     pygame.init()
     pygame.display.set_caption("Alien Strike: Retribution Day")
-    #pygame.mixer.music.load("assets/music/Alien Soldier - Sidelimits.mp3")
-    #pygame.mixer.music.set_volume(const.MUSIC_VOLUME)
-    #pygame.mixer.music.play(-1)
+    pygame.mixer.music.load("assets/music/Alien Soldier - Sidelimits.mp3")
+    pygame.mixer.music.set_volume(const.MUSIC_VOLUME)
+    pygame.mixer.music.play(-1)
     width = 1200
     height = 800
     size = (width, height)
@@ -49,7 +49,7 @@ def history():
     fps = 60
     font = pygame.font.Font("fonts/ufonts.com_windpower.ttf", 30)
     timer_event = pygame.USEREVENT + 1
-    pygame.time.set_timer(timer_event, 1000)
+    pygame.time.set_timer(timer_event, 10000)
     escena = Escena(
         const.ESCENAS[index],
         ESCENAS_TEXTO[index],
@@ -72,6 +72,17 @@ def history():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                x, y = pygame.mouse.get_pos()
+                if escena.next_pressed(x, y):
+                    if index < len(const.ESCENAS) - 1:
+                        index += 1
+                        change_scene()
+                    else:
+                        title_screen.title_screen()
+                if escena.skip_pressed(x, y):
+                    title_screen.title_screen()
+
             elif event.type == timer_event:
                 if index < len(const.ESCENAS) - 1:
                     index += 1
