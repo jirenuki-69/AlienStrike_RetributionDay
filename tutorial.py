@@ -4,15 +4,18 @@ from pygame import mixer
 from clases.Nave import Nave
 import const
 from clases.Enemy import Enemy
+import main_menu
 
 step = 1
 response = 0
 def tutorial():
+    global step
+    step = 1
     pygame.init()
     pygame.display.set_caption("Alien Strike: Retribution Day")
-    pygame.mixer.music.load("assets/music/Alien Soldier - Runner AD2025.mp3")
-    pygame.mixer.music.set_volume(.1)
-    pygame.mixer.music.play(-1)
+    #pygame.mixer.music.load("assets/music/Alien Soldier - Runner AD2025.mp3")
+    #pygame.mixer.music.set_volume(.1)
+    #pygame.mixer.music.play(-1)
     width = 1200
     height = 800
     size = (width, height)
@@ -81,6 +84,8 @@ def tutorial():
                 sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
+                    if step == len(const.TUTORIAL) - 1:
+                        main_menu.main_menu()
                     step += 1
 
 
