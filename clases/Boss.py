@@ -3,10 +3,10 @@ import pygame
 class Boss(pygame.sprite.Sprite):
     def __init__(self, position, screenSize, screen):
         #Cargo la imagen en memoria
-        self.sheet = pygame.image.load("assets/visual/boss_frames/Boss_Sheet_v4.png")
+        self.sheet = pygame.image.load("assets/visual/boss_frames/Boss_Sheet_v5.png")
         #self.sheet = pygame.transform.scale(self.sheet, (int(screenSize[0] * 0.15), int(screenSize[1] * 0.15)))
-        self.x_value = 872
-        self.y_value = 632
+        self.x_value = 697.6
+        self.y_value = 505.5
         self.sheet.set_clip(pygame.Rect(0, 0, self.x_value, self.y_value ))
         #Se genera el surface para mostrar algo en la pantalla
         self.image = self.sheet.subsurface(self.sheet.get_clip())
