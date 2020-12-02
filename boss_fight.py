@@ -23,7 +23,7 @@ def boss_fight():
     screen = pygame.display.set_mode(size)
 
     #Global values
-    background = pygame.image.load("assets/visual/gameplay_assets/last_level.png")
+    background = pygame.image.load("assets/visual/gameplay_assets/boss_background.png")
     background = pygame.transform.scale(background, size)
     # settings = pygame.image.load("assets/settings.png")
     clock = pygame.time.Clock()
