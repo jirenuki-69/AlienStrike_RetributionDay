@@ -1,6 +1,6 @@
 import pygame
 from pygame import mixer
-from clases.Kboom import Explosion
+from clases.MiniKboom import Explosion
 
 class Nave():
     def __init__(self, position, movementSpeed, screenSize, screen, img):
@@ -45,7 +45,7 @@ class Nave():
     def explode(self):
         self.update_explode_position()
         self.boom.update()
-        self.screen.blit(self.boom.image, (self.rect.x - 20, self.rect.y - 70))
+        self.screen.blit(self.boom.image, (self.rect.x + 20, self.rect.y + 15))
 
     def get_frame(self):
         if self.misilbool:
