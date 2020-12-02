@@ -26,9 +26,6 @@ def boss_fight():
     background = pygame.image.load("assets/visual/gameplay_assets/last_level.png")
     background = pygame.transform.scale(background, size)
     # settings = pygame.image.load("assets/settings.png")
-    dialogo = pygame.image.load("assets/visual/gameplay_assets/Tutorial/tutoverde.png")
-    gui_movement = pygame.image.load("assets/visual/gameplay_assets/Tutorial/movement.png")
-    gui_shoot = pygame.image.load("assets/visual/gameplay_assets/Tutorial/shoot.png")
     clock = pygame.time.Clock()
     fps = 60
     ban = False
