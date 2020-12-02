@@ -7,6 +7,7 @@ from clases.Enemy import Enemy
 import main_menu
 import random
 from clases.Kboom import Explosion
+from clases.Music import Music
 
 step = 0
 response = 0
@@ -19,11 +20,8 @@ def tutorial():
     global exploded
     global mainExplode
     step = 0
-    pygame.init()
-    pygame.display.set_caption("Alien Strike: Retribution Day")
-    #pygame.mixer.music.load("assets/music/special_tracks/teachmenow.mp3")
-    #pygame.mixer.music.set_volume(.1)
-    #pygame.mixer.music.play(-1)
+    music = Music()
+    music.tutorial()
     width = 1200
     height = 800
     size = (width, height)

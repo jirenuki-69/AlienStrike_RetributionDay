@@ -1,6 +1,7 @@
 import pygame, sys
 from pygame import mixer
 from clases.Escena import Escena
+from clases.Music import Music
 import const, title_screen
 
 index = 0
@@ -13,11 +14,8 @@ def conseguir_nombre():
 def history():
     global index
 
-    pygame.init()
-    pygame.display.set_caption("Alien Strike: Retribution Day")
-    pygame.mixer.music.load("assets/music/Alien Soldier - Sidelimits.mp3")
-    pygame.mixer.music.set_volume(const.MUSIC_VOLUME)
-    pygame.mixer.music.play(-1)
+    music = Music()
+    music.history_music()
     width = 1200
     height = 800
     size = (width, height)

@@ -3,6 +3,7 @@ from pygame import mixer
 import const, tutorial
 import title_screen
 from clases.Texto import Texto
+from clases.Music import Music
 
 def conseguir_nombre():
     with open ("nombre.txt") as archivo:
@@ -10,11 +11,8 @@ def conseguir_nombre():
             return str(linea.split("-")[0])
 
 def main_menu():
-    pygame.init()
-    pygame.display.set_caption("Alien Strike: Retribution Day")
-    #pygame.mixer.music.load("assets/music/menu_music/Chilling and Grilling.mp3")
-    #pygame.mixer.music.set_volume(const.MUSIC_VOLUME)
-    #pygame.mixer.music.play(-1)
+    music = Music()
+    music.chilling_grilling()
     width = 1200
     height = 800
     size = (width, height)
