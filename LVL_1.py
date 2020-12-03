@@ -3,15 +3,22 @@ import sys
 from pygame import mixer
 from clases.Nave import Nave
 import const
-from clases.Enemy import Enemy
 import main_menu
 import random
-from clases.Kboom import Explosion
-from clases.Boss import Boss
+from clases.Shield import Escudo
+from clases.MiniEnemy import MiniEnemy
+
+
 
 response = 0
+boom = []
+boomExplode = []
+cont = 0
 def lvl_1():
     global response
+    global boom
+    global boomExplode
+    global cont
     pygame.init()
     pygame.display.set_caption("Alien Strike: Retribution Day")
     #pygame.mixer.music.load("assets/music/special_tracks/teachmenow.mp3")
@@ -33,9 +40,15 @@ def lvl_1():
     mag = True
     time = 1.5
     objarrg = []
-    cantidad = 1
+    #enemigos
+    cantidad = 20
+    rows = 3
     mainExplode = False
     response = 0
+    shields = []
+    boom = []
+    boomExplode = []
+    vidas = 5
 
 
     nave = Nave(
@@ -45,20 +58,76 @@ def lvl_1():
         screen,
         "assets/visual/gameplay_assets/main_ship.png"
     )
+    shield1 = Escudo(
+        (int(width * .20), int(height * .75)),
+        size,
+        screen
+    )
+    shield2 = Escudo(
+        (int(width * .5), int(height * .75)),
+        size,
+        screen
+    )
+    shield3 = Escudo(
+        (int(width * .80), int(height * .75)),
+        size,
+        screen
+    )
+
+    shields.append(shield1)
+    shields.append(shield2)
+    shields.append(shield3)
+
+
 
 
     def fire(character, objarrg):
+        global boom
         global exploded
         screen.blit(character.misilimage, character.misilrect)
         character.get_frame()
         character.misilrect.y -= 10
-        #if len(objarrg) > 0:
-            #for x in objarrg:
-                #if character.misilrect.colliderect(x.rect):
+
+        if len(objarrg) > 0:
+            for x in objarrg:
+                if character.misilrect.colliderect(x.rect):
                     #objarrg.remove(x)
-                    #print("hit")
-                    #exploded = True
-                    #character.misilrect.y = -100
+                    boom.append(x)
+                    exploded = True
+                    character.misilrect.y = -100
+
+    def explosion(list):
+        global boom
+        global cont
+        for x in boom:
+            x.explode()
+            if x in list:
+                list.remove(x)
+        if len(boom) == 1 and cont > fps:
+            boom.pop()
+
+    def shield_enemy(shields, objarrg):
+        for x in shields:
+            for i in objarrg:
+                if i.rect.colliderect(x.rect) and x.print and not i.damageShield:
+                    i.damageShield = True
+                    objarrg.remove(i)
+                    if x.change:
+                        x.destroy()
+                        return
+                    x.update(True)
+
+    def main_enemy(nave, objarrg):
+        damage = 0
+        for i in objarrg:
+            if i.rect.colliderect(nave.rect) and not i.damageNave:
+                i.damageNave = True
+                objarrg.remove(i)
+                damage += 1
+        return damage
+
+
+
 
     def event_manager():
         global step
@@ -70,15 +139,42 @@ def lvl_1():
         response = nave.event_manager()
 
     while True:
+        print(vidas)
         event_manager()
         screen.blit(background, [width * 0, height * 0])
         screen.blit(nave.image, nave.rect)
-        print(cont)
+        if rows > 0 and len(objarrg) == 0:
+            for x in range(cantidad):
+                num = random.randint(1, 3)
+                if num == 1:
+                    ship = "assets/visual/gameplay_assets/alien_ships/1.png"
+                elif num == 2:
+                    ship = "assets/visual/gameplay_assets/alien_ships/2.png"
+                if num == 3:
+                    ship = "assets/visual/gameplay_assets/alien_ships/3.png"
+
+                enemy = MiniEnemy(
+                    (int(width * 0.045 *(x+1)), int(height * (-.1))),
+                    num,
+                    size,
+                    screen,
+                    ship
+                )
+                objarrg.append(enemy)
+            rows -= 1
+
+        for i in objarrg:
+            i.move()
+            if not i.alive:
+                objarrg.remove(i)
+                vidas -= 1
+            screen.blit(i.image, i.rect)
         if ban:
             if cont < fps * time:
                 cont += 1
             fire(nave, objarrg)
             nave.get_frame()
+            explosion(objarrg)
 
         if cont == fps * time:
             cont = 0
@@ -92,6 +188,13 @@ def lvl_1():
             nave.misilrect.y -= nave.rect.y * .1
             ban = True
 
+
+        shield_enemy(shields, objarrg)
+
+        for i in shields:
+            if i.print:
+                screen.blit(i.image, i.rect)
+        vidas -= main_enemy(nave, objarrg)
         pygame.display.flip()
         clock.tick(fps)
 
