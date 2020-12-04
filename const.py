@@ -1,3 +1,8 @@
+import pygame
+
+#Logo
+LOGO = pygame.image.load("assets/visual/logo.png")
+
 #Numeros
 MUSIC_VOLUME = 0.1
 

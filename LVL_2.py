@@ -152,7 +152,7 @@ def lvl_2():
         if vidas <= 0:
             break
         if rows < 0:
-            #LVL_3.lvl_3()
+            LVL_3.lvl_3()
             break
         screen.blit(background, [width * 0, height * 0])
         screen.blit(nave.image, nave.rect)
