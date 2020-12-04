@@ -26,6 +26,14 @@ class Boss(pygame.sprite.Sprite):
         self.frame = 0
         self.cont = 0
         self.secs = 2
+        self.hitBox_center = ((self.rect.center[0] - 40, self.rect.center[1] - 30), (70, 10))
+        self.hitBox_left = ((self.rect.center[0] - 120, self.rect.center[1] - 30), (10, 10)) #-117, -23
+        self.hitBox_right = ((self.rect.center[0] + 101, self.rect.center[1] - 30), (10, 10))#+105, -23
+        self.screen = screen
+        self.contador = 0
+        self.hit_left = 0
+        self.hit_right = 0
+        self.health = 100
 
     def get_frame(self, frame_set):
         if self.cont % 3 * self.secs == 0:
@@ -51,3 +59,9 @@ class Boss(pygame.sprite.Sprite):
         self.cont += 1
         self.clip(self.states)
         self.image = self.sheet.subsurface(self.sheet.get_clip())
+
+    def show(self):
+        print(self.rect.center)
+        pygame.draw.rect(self.screen, (255, 0, 0),  self.hitBox_center, 1)
+        pygame.draw.rect(self.screen, (255, 0, 0),  self.hitBox_left)
+        pygame.draw.rect(self.screen, (255, 0, 0),  self.hitBox_right)

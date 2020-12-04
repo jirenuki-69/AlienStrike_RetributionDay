@@ -148,6 +148,7 @@ def lvl_1():
         response = nave.event_manager()
 
     while True:
+        print(rows)
         event_manager()
         if vidas <= 0:
             break
