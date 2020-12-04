@@ -31,7 +31,7 @@ def lvl_2():
     screen = pygame.display.set_mode(size)
 
     #Global values
-    background = pygame.image.load("assets/visual/gameplay_assets/last_level.png")
+    background = pygame.image.load("assets/visual/gameplay_assets/mas_ciudad.png")
     background = pygame.transform.scale(background, size)
     vidaImage = pygame.image.load("assets/visual/gameplay_assets/navevidas.png")
     # settings = pygame.image.load("assets/settings.png")
@@ -152,7 +152,8 @@ def lvl_2():
         if vidas <= 0:
             break
         if rows < 0:
-            LVL_3.lvl_3()
+            #LVL_3.lvl_3()
+            break
         screen.blit(background, [width * 0, height * 0])
         screen.blit(nave.image, nave.rect)
         if rows > -1 and len(objarrg) == 0:
@@ -231,3 +232,5 @@ def lvl_2():
         clock.tick(fps)
 
     pygame.quit()
+
+lvl_2()
