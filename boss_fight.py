@@ -42,7 +42,7 @@ def boss_fight():
     response = 0
 
     boss = Boss(
-        (int(width * 0.10), int(height * 0.65)),
+        (int(width * 0.5), int(height * 0.35)),
         size,
         screen
     )
@@ -81,7 +81,7 @@ def boss_fight():
         event_manager()
         screen.blit(background, [width * 0, height * 0])
         boss.update()
-        screen.blit(boss.image,[width *.125, height *.025])
+        screen.blit(boss.image,boss.rect)
         screen.blit(nave.image, nave.rect)
         print(cont)
         if ban:

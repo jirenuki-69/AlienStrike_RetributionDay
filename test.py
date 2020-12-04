@@ -129,5 +129,3 @@ def boss_fight():
         clock.tick(fps)
 
     pygame.quit()
-
-boss_fight()
