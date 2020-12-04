@@ -34,3 +34,8 @@ class Music():
         self.music.music.load("assets/music/special_tracks/teachmenow.mp3")
         self.music.music.play(-1)
         pass
+
+    def game_over(self):
+        self.music.music.load("assets/music/GAME OVER MUSIC.mp3")
+        self.music.music.play(-1)
+        pass

@@ -232,5 +232,3 @@ def lvl_2():
         clock.tick(fps)
 
     pygame.quit()
-
-lvl_2()
