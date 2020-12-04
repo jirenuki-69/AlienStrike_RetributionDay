@@ -26,6 +26,7 @@ def lvl_3():
     global vidas
     pygame.init()
     pygame.display.set_caption("Alien Strike: Retribution Day")
+    pygame.display.set_icon(const.LOGO)
     #pygame.mixer.music.load("assets/music/special_tracks/teachmenow.mp3")
     #pygame.mixer.music.set_volume(.1)
     #pygame.mixer.music.play(-1)
