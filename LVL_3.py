@@ -7,7 +7,7 @@ import main_menu
 import random
 from clases.Shield import Escudo
 from clases.MiniEnemy import MiniEnemy
-import LVL_2
+from clases.Enemy import Enemy
 
 
 
@@ -15,11 +15,15 @@ response = 0
 boom = []
 boomExplode = []
 cont = 0
-def lvl_1():
+enemyShoot = True
+mainExplode = False
+vidas = 0
+def lvl_3():
     global response
     global boom
     global boomExplode
     global cont
+    global vidas
     pygame.init()
     pygame.display.set_caption("Alien Strike: Retribution Day")
     #pygame.mixer.music.load("assets/music/special_tracks/teachmenow.mp3")
@@ -31,7 +35,7 @@ def lvl_1():
     screen = pygame.display.set_mode(size)
 
     #Global values
-    background = pygame.image.load("assets/visual/gameplay_assets/BG_level1.png")
+    background = pygame.image.load("assets/visual/gameplay_assets/last_level.png")
     background = pygame.transform.scale(background, size)
     vidaImage = pygame.image.load("assets/visual/gameplay_assets/navevidas.png")
     # settings = pygame.image.load("assets/settings.png")
@@ -52,6 +56,10 @@ def lvl_1():
     boomExplode = []
     vidas = 5
     exCont = 0
+    bigShip = []
+    shootCont = [0, 0, 0]
+    responseEnemy = [0, 0, 0]
+    deathCont = [0, 0, 0]
 
     nave = Nave(
         (int(width * 0.50), int(height * 0.87)),
@@ -80,6 +88,31 @@ def lvl_1():
     shields.append(shield2)
     shields.append(shield3)
 
+    enemigo1 = Enemy(
+        (int(width * 0.20), int(height * 0.15)),
+        5,
+        size,
+        screen,
+        "assets/visual/gameplay_assets/other_ship.png"
+    )
+    enemigo2 = Enemy(
+        (int(width * 0.50), int(height * 0.15)),
+        5,
+        size,
+        screen,
+        "assets/visual/gameplay_assets/other_ship.png"
+    )
+    enemigo3 = Enemy(
+        (int(width * 0.80), int(height * 0.15)),
+        5,
+        size,
+        screen,
+        "assets/visual/gameplay_assets/other_ship.png"
+    )
+
+    bigShip.append(enemigo1)
+    bigShip.append(enemigo2)
+    bigShip.append(enemigo3)
 
 
 
@@ -118,6 +151,17 @@ def lvl_1():
                         return
                     x.update(True)
 
+    def shield_fire(shields, bigShip):
+        for i in shields:
+            for x in bigShip:
+                if x.misilrect.colliderect(i.rect)and i.print:
+                    x.misilrect.y = 900
+                    if i.change:
+                        i.destroy()
+                        return
+                    i.update(True)
+
+
     def main_enemy(nave, objarrg):
         damage = 0
         for i in objarrg:
@@ -128,6 +172,15 @@ def lvl_1():
                 damage += 1
         return damage
 
+    def main_bigShip(character, objarrg):
+        if len(objarrg) > 0:
+            for x in objarrg:
+                if character.misilrect.colliderect(x.rect):
+                    x.health -= 1
+                    character.misilrect.y = -100
+                    break
+
+
     def magazine(screen, x, y, data):
         largo  = 180
         ancho = 15
@@ -136,6 +189,19 @@ def lvl_1():
         rectangulo = pygame.Rect(x, y, calculo_barra, ancho)
         pygame.draw.rect(screen, (255, 255, 255), borde, 3)
         pygame.draw.rect(screen, (255, 255, 255), rectangulo)
+
+    def enemyFire(character, objarrg):
+        global mainExplode
+        global enemyShoot
+        global vidas
+        screen.blit(character.misilimage, character.misilrect)
+        character.get_frame()
+        character.misilrect.y += 10
+        if character.misilrect.colliderect(objarrg.rect):
+            vidas -= 1
+            objarrg.exploded = True
+            character.misilrect.y = 900
+            enemyShoot = False
 
 
     def event_manager():
@@ -151,11 +217,12 @@ def lvl_1():
         event_manager()
         if vidas <= 0:
             break
-        if rows < 0:
-            LVL_2.lvl_2()
+        if rows < 0 and len(bigShip) <= 0:
+            print("finished")
+            break
         screen.blit(background, [width * 0, height * 0])
         screen.blit(nave.image, nave.rect)
-        if rows > -1 and len(objarrg) == 0:
+        if rows > 0 and len(objarrg) == 0:
             while len(boom) > 0:
                 boom.pop()
 
@@ -186,6 +253,9 @@ def lvl_1():
                 screen.blit(vidaImage, [width - 40 * (x) - 40 - (10 * x), height * .95])
 
 
+
+
+
         for i in objarrg:
             i.move()
             if not i.alive:
@@ -193,10 +263,14 @@ def lvl_1():
                 vidas -= 1
             screen.blit(i.image, i.rect)
 
+        for x in bigShip:
+            screen.blit(x.image, x.rect)
+
         if ban:
             if cont < fps * time:
                 cont += 1
             fire(nave, objarrg)
+            main_bigShip(nave, bigShip)
             nave.get_frame()
             explosion(objarrg)
 
@@ -219,6 +293,29 @@ def lvl_1():
             if exCont >= 60 / 3:
                 nave.exploded = False
                 exCont = 0
+        step = 0
+        for x in bigShip:
+            shootCont[step] += 1
+            responseEnemy[step] = x.event_manager(shootCont[step])
+            if responseEnemy[step] != 0:
+                x.misilrect.center = responseEnemy[step].center
+                #bigShip[x].misilrect.y += bigShip[x].rect.y * .1
+            if shootCont[step] >= 180:
+                if x.misilrect.y > height:
+                    shootCont[step] = 0
+                enemyFire(x, nave)
+                shield_fire(shields, bigShip)
+            step += 1
+
+        for x in bigShip:
+            if x.health <= 0:
+                deathCont[bigShip.index(x)] += 1
+                if deathCont[bigShip.index(x)] >= 60:
+                    shootCont.pop(bigShip.index(x))
+                    responseEnemy.pop(bigShip.index(x))
+                    deathCont.pop(bigShip.index(x))
+                    bigShip.remove(x)
+                x.explode()
 
 
         shield_enemy(shields, objarrg)
@@ -231,3 +328,5 @@ def lvl_1():
         clock.tick(fps)
 
     pygame.quit()
+
+lvl_3()

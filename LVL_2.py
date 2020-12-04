@@ -7,7 +7,7 @@ import main_menu
 import random
 from clases.Shield import Escudo
 from clases.MiniEnemy import MiniEnemy
-import LVL_2
+import LVL_3
 
 
 
@@ -15,7 +15,7 @@ response = 0
 boom = []
 boomExplode = []
 cont = 0
-def lvl_1():
+def lvl_2():
     global response
     global boom
     global boomExplode
@@ -31,7 +31,7 @@ def lvl_1():
     screen = pygame.display.set_mode(size)
 
     #Global values
-    background = pygame.image.load("assets/visual/gameplay_assets/BG_level1.png")
+    background = pygame.image.load("assets/visual/gameplay_assets/last_level.png")
     background = pygame.transform.scale(background, size)
     vidaImage = pygame.image.load("assets/visual/gameplay_assets/navevidas.png")
     # settings = pygame.image.load("assets/settings.png")
@@ -44,7 +44,7 @@ def lvl_1():
     objarrg = []
     #enemigos
     cantidad = 20
-    rows = 3
+    rows = 5
     mainExplode = False
     response = 0
     shields = []
@@ -152,7 +152,7 @@ def lvl_1():
         if vidas <= 0:
             break
         if rows < 0:
-            LVL_2.lvl_2()
+            LVL_3.lvl_3()
         screen.blit(background, [width * 0, height * 0])
         screen.blit(nave.image, nave.rect)
         if rows > -1 and len(objarrg) == 0:

@@ -39,7 +39,7 @@ def tutorial():
     ban = False
     cont = 0
     mag = True
-    time = 1.5
+    time = 1.2
     objarrg = []
     cantidad = 1
     shootCont = 0

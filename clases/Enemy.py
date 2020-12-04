@@ -26,6 +26,7 @@ class Enemy():
         self.misilbool = True
         self.misilimage = self.misil.subsurface(self.misil.get_clip())
         self.misilrect = self.misilimage.get_rect()
+        self.health = 5
 
         #Explosion
         self.boom = Explosion(

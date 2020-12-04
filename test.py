@@ -42,6 +42,7 @@ def boss_fight():
     mainExplode = False
     response = 0
 
+
     boss = Boss(
         (int(width * 0.50), int(height * 0.35)),
         size,
@@ -58,6 +59,17 @@ def boss_fight():
         (int(width * (-.1)), int(height * 0.8)),
         size
     )
+
+
+    def magazine(screen, x, y, data):
+        largo  = 180
+        ancho = 15
+        calculo_barra = int((data/100 * largo))
+        borde = pygame.Rect(x, y, 160, ancho)
+        rectangulo = pygame.Rect(x, y, calculo_barra, ancho)
+        pygame.draw.rect(screen, (255, 255, 255), borde, 3)
+        pygame.draw.rect(screen, (255, 255, 255), rectangulo)
+
 
     def specialLaser(spcLaser):
         if not spcLaser.off:
@@ -92,7 +104,8 @@ def boss_fight():
         boss.update()
         screen.blit(boss.image,boss.rect)
         screen.blit(nave.image, nave.rect)
-        specialLaser(spcLaser)
+        #specialLaser(spcLaser)
+        magazine(screen, width * 0, height * .97, cont )
         print(cont)
         if ban:
             if cont < fps * time:

@@ -16,6 +16,7 @@ class Escudo():
         self.screenSize = screenSize
         self.change = False
         self.print = True
+        self.hit = 2
 
     def update(self, damaged):
         if damaged and not self.change:

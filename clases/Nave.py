@@ -27,6 +27,7 @@ class Nave():
         self.misilbool = True
         self.misilimage = self.misil.subsurface(self.misil.get_clip())
         self.misilrect = self.misilimage.get_rect()
+        self.exploded = False
 
         #Mixer
         #self.shoot_sound = pygame.mixer.Sound("assets/music/SFX/player_shoot.wav")
