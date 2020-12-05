@@ -1,16 +1,17 @@
 import pygame, textwrap, const
 
 class Texto():
-    def __init__(self, text, pos, font, screen, wrap_criteria):
+    def __init__(self, text, pos, font, screen, wrap_criteria, text_color = const.BLACK):
         self.text = text
         self.pos = pos
         self.font = font
         self.screen = screen
         self.wrap_criteria = wrap_criteria
+        self.text_color = text_color
 
     def show_text(self):
         if self.wrap_criteria == None:
-            texto = self.font.render(self.text, True, const.BLACK)
+            texto = self.font.render(self.text, True, self.text_color)
             texto_rect = texto.get_rect()
             texto_rect.x, texto_rect.y = self.pos
             self.text_rect = texto_rect
@@ -26,7 +27,7 @@ class Texto():
                     text_list.append(text_wrapped[i])
 
             for i in range(len(text_list)):
-                texto = self.font.render(text_list[i], True, const.BLACK)
+                texto = self.font.render(text_list[i], True, self.text_color)
                 texto_rect = texto.get_rect()
                 texto_rect.x, texto_rect.y = (self.pos[0], self.pos[1] + (30 * i))
                 self.text_rect = texto_rect

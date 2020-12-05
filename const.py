@@ -8,6 +8,8 @@ MUSIC_VOLUME = 0.1
 
 #Textos
 
+SETTINGS_DESCRIPTION = "Este es el menu de opciones, aqui podras cambiar alguna que otras cosas para diferente experiencia de juego, mucha suerte configurando como quieres salvar la tierra jugador"
+
 ESCENAS = [
     "assets/visual/history_scenes/1.png",
     "assets/visual/history_scenes/2.png",
@@ -45,6 +47,7 @@ DARK_GREEN = (51, 97, 28)
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GRAY = (150, 150, 150)
+TRANSPARENT = (0, 0, 0, 0)
 
 #Fuente principal
 FONT = "fonts/ufonts.com_windpower.ttf"

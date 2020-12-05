@@ -3,7 +3,7 @@ import sys
 from pygame import mixer
 from clases.Button import Button
 from clases.Music import Music
-import main_menu, const, my_settings, demo
+import main_menu, const, option_screen, demo
 
 def title_screen():
     music = Music()
@@ -56,7 +56,7 @@ def title_screen():
                 if menu_button.is_pressed(event, x, y):
                     main_menu.main_menu()
                 if settingsRect.collidepoint(x, y):
-                    my_settings.settings()
+                    option_screen.option_screen()
 
     while True:
         event_manager()
