@@ -1,6 +1,7 @@
 import pygame
 import sys
 from pygame import mixer
+from clases.Music import Music
 from clases.Nave import Nave
 import const
 from clases.Enemy import Enemy
@@ -36,6 +37,8 @@ def boss_fight():
     global objeto1
     pygame.init()
     pygame.display.set_caption("Alien Strike: Retribution Day")
+    music = Music()
+    music.boss()
     #pygame.mixer.music.load("assets/music/special_tracks/teachmenow.mp3")
     #pygame.mixer.music.set_volume(.1)
     #pygame.mixer.music.play(-1)
@@ -457,5 +460,3 @@ def boss_fight():
         clock.tick(fps)
 
     pygame.quit()
-
-boss_fight()

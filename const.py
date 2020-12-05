@@ -10,6 +10,9 @@ MUSIC_VOLUME = 0.1
 
 SETTINGS_DESCRIPTION = "Este es el menu de opciones, aqui podras cambiar alguna que otras cosas para diferente experiencia de juego, mucha suerte configurando como quieres salvar la tierra jugador"
 
+EASY_DESCRIPTION = "Al parecer eres de los que no toman riesgos en la vida, la dificultad fácil hará que tus escudos se regeneren por cada nivel que pases"
+HARD_DESCRIPTION = "Prueba tu valentía con el modo difícil del juego, esta dificultad hará que tus escudos no se regeneren por nivel y sigan de la misma forma que el nivel anterior"
+
 ESCENAS = [
     "assets/visual/history_scenes/1.png",
     "assets/visual/history_scenes/2.png",

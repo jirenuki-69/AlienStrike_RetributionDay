@@ -38,6 +38,11 @@ class Music():
         self.music.music.play(-1)
         pass
 
+    def boss(self):
+        self.music.music.load("assets/music/boss/final_boss_theme.mp3")
+        self.music.music.play(-1)
+        pass
+
     def get_volume(self):
         with open ("volumen.txt") as archivo:
             for linea in archivo.readlines():

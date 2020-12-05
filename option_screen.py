@@ -43,6 +43,9 @@ def option_screen():
 
     diffuculty_shields = pygame.image.load("assets/visual/difficulty/example.png")
     diffuculty_no_shields = pygame.image.load("assets/visual/difficulty/example2.png")
+    diffuculty_shields = pygame.transform.scale(diffuculty_shields, (500, 200))
+    diffuculty_no_shields = pygame.transform.scale(diffuculty_no_shields, (500, 200))
+
     back_arrow = pygame.image.load("assets/visual/difficulty/back.png")
     next_arrow = pygame.image.load("assets/visual/difficulty/next.png")
     back_arrow_rect = back_arrow.get_rect()
@@ -241,6 +244,24 @@ def option_screen():
         const.WHITE
     )
 
+    texto_facil = Texto(
+        const.EASY_DESCRIPTION,
+        (width * 0.05, height * 0.32),
+        font3,
+        screen,
+        70,
+        const.WHITE
+    )
+
+    texto_dificil = Texto(
+        const.HARD_DESCRIPTION,
+        (width * 0.05, height * 0.32),
+        font3,
+        screen,
+        70,
+        const.WHITE
+    )
+
     #Del volumen del juego
     minus_rect.x, minus_rect.y = (int(width * 0.4), int(height * 0.257))
     small_minus_rect.x, small_minus_rect.y = (int(width * 0.45), int(height * 0.266))
@@ -281,7 +302,13 @@ def option_screen():
         texto_dificultad.show_text()
         texto_dificultad_placeholder.show_text()
 
-        screen.blit(diffuculty_shields, (int(width * 0.18), int(height * 0.4)))
+        if conseguir_dificultad() == "easy":
+            screen.blit(diffuculty_shields, (int(width * 0.18), int(height * 0.45)))
+            texto_facil.show_text()
+        else:
+            screen.blit(diffuculty_no_shields, (int(width * 0.18), int(height * 0.45)))
+            texto_dificil.show_text()
+
         screen.blit(back_arrow, (back_arrow_rect.x, back_arrow_rect.y))
         screen.blit(next_arrow, ((next_arrow_rect.x, next_arrow_rect.y)))
 
