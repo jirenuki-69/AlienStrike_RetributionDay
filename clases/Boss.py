@@ -35,7 +35,7 @@ class Boss(pygame.sprite.Sprite):
         self.contador = 0
         self.hit_left = 0
         self.hit_right = 0
-        self.health = 0
+        self.health = 100
         self.attTime = 10
         self.activity = False
         self.boom_left = Explosion(
