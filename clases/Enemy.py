@@ -27,6 +27,7 @@ class Enemy():
         self.misilimage = self.misil.subsurface(self.misil.get_clip())
         self.misilrect = self.misilimage.get_rect()
         self.health = 5
+        self.cont = 0
 
         #Explosion
         self.boom = Explosion(
@@ -34,6 +35,15 @@ class Enemy():
             screenSize
         )
         self.exploded = False
+
+    def move(self):
+        if self.cont < 60:
+            self.rect.y += self.movementSpeed
+
+        self.cont += 1
+
+        if self.cont >= 600:
+            self.rect.y -= self.movementSpeed
 
     def update_explode_position(self):
         self.boom.rect.x, self.boom.rect.y = (self.rect.x, self.rect.y)

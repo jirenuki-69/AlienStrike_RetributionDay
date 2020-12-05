@@ -4,15 +4,36 @@ from pygame import mixer
 from clases.Nave import Nave
 import const
 from clases.Enemy import Enemy
+from clases.MiniEnemy import MiniEnemy
 import main_menu
 import random
 from clases.Kboom import Explosion
 from clases.Boss import Boss
 from clases.BigLaser import Laser
+from clases.Shield import Escudo
+from clases.SpecialLaser import SpecialLaser
 
 response = 0
+vidas = 0
+objeto2 = 0
+objeto3 = 0
+boom = []
+cont = 0
+enemyShoot = True
+mainExplode = False
+nave = 0
+objeto1 = 0
 def boss_fight():
+    global nave
     global response
+    global vidas
+    global objeto3
+    global boom
+    global cont
+    global objeto2
+    global mainExplode
+    global enemyShoot
+    global objeto1
     pygame.init()
     pygame.display.set_caption("Alien Strike: Retribution Day")
     #pygame.mixer.music.load("assets/music/special_tracks/teachmenow.mp3")
@@ -41,8 +62,23 @@ def boss_fight():
     boolEnemy = True
     mainExplode = False
     response = 0
+    attCont = 0
+    vidas = 5
+    objeto1 = 0
+    objeto2 = 0
+    objeto3 = 0
+    boom = []
+    shields = []
+    shootCont = [0, 0, 0]
+    responseEnemy = [0, 0, 0]
+    deathCont = [0, 0, 0]
+    step = 0
 
 
+    laser = SpecialLaser(
+        (0, 0),
+        size
+    )
     boss = Boss(
         (int(width * 0.50), int(height * 0.35)),
         size,
@@ -56,9 +92,187 @@ def boss_fight():
         "assets/visual/gameplay_assets/main_ship.png"
     )
     spcLaser = Laser(
-        (int(width * (-.1)), int(height * 0.8)),
+        (int(boss.rect.center[0] + 10), int(boss.rect.center[1]) + 435),
         size
     )
+
+    shield1 = Escudo(
+        (int(width * .20), int(height * .75)),
+        size,
+        screen
+    )
+    shield2 = Escudo(
+        (int(width * .5), int(height * .75)),
+        size,
+        screen
+    )
+    shield3 = Escudo(
+        (int(width * .80), int(height * .75)),
+        size,
+        screen
+    )
+
+    shields.append(shield1)
+    shields.append(shield2)
+    shields.append(shield3)
+
+    def startLaser():
+        global objeto1
+        laser = SpecialLaser(
+            (0, 0),
+            size
+        )
+
+        objeto1 = laser
+
+    def moveLaser(laser):
+        global nave
+        laser.update(nave.rect.center[0])
+        screen.blit(laser.image, (laser.rect[0], 0))
+
+    def bigShips():
+        global objeto2
+        bigShip = []
+        size = (1200, 800)
+        screen = pygame.display.set_mode(size)
+        enemigo1 = Enemy(
+            (int(width * 0.20), int(height * -0.15)),
+            5,
+            size,
+            screen,
+            "assets/visual/gameplay_assets/other_ship.png"
+        )
+        enemigo2 = Enemy(
+            (int(width * 0.50), int(height * -0.15)),
+            5,
+            size,
+            screen,
+            "assets/visual/gameplay_assets/other_ship.png"
+        )
+        enemigo3 = Enemy(
+            (int(width * 0.80), int(height * -0.15)),
+            5,
+            size,
+            screen,
+            "assets/visual/gameplay_assets/other_ship.png"
+        )
+
+        bigShip.append(enemigo1)
+        bigShip.append(enemigo2)
+        bigShip.append(enemigo3)
+
+
+        objeto2 = bigShip
+
+
+    def print_Enemy(bigShip):
+        for x in bigShip:
+            x.move()
+            screen.blit(x.image, x.rect)
+
+    def enemyFire(character, objarrg):
+        global mainExplode
+        global enemyShoot
+        global vidas
+        screen.blit(character.misilimage, character.misilrect)
+        character.get_frame()
+        character.misilrect.y += 10
+        if character.misilrect.colliderect(objarrg.rect):
+            vidas -= 1
+            objarrg.exploded = True
+            character.misilrect.y = 900
+            enemyShoot = False
+
+    def shield_fire(shields, bigShip):
+        for i in shields:
+            for x in bigShip:
+                if x.misilrect.colliderect(i.rect)and i.print:
+                    x.misilrect.y = 900
+                    if i.change:
+                        i.destroy()
+                        return
+                    i.update(True)
+
+    def shield_enemy(shields, objarrg):
+        for x in shields:
+            for i in objarrg:
+                if i.rect.colliderect(x.rect) and x.print and not i.damageShield:
+                    i.damageShield = True
+                    objarrg.remove(i)
+                    if x.change:
+                        x.destroy()
+                        return
+                    x.update(True)
+
+    def explosion(list):
+        global boom
+        global cont
+        for x in boom:
+            x.explode()
+            if x in list:
+                list.remove(x)
+        if len(boom) == 1 and cont > fps:
+            boom.pop()
+
+
+    def select_attack(boss):
+        global objeto2
+        global objeto3
+        list = [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4]
+        attack = random.randint(0, len(list) - 1)
+        list[attack]  = 1
+        print(list[attack])
+        if list[attack] == 1:
+            startLaser()
+        if list[attack] == 2:
+            bigShips()
+            #print(objeto2)
+        if list[attack] == 3:
+            smallEnemy((1200, 800))
+        if list[attack] == 4:
+            print(4)
+
+
+
+    def smallEnemy(size):
+        global objeto3
+        objarrg = []
+        screen = pygame.display.set_mode(size)
+        for x in range(20):
+            num = random.randint(1, 3)
+            if num == 1:
+                ship = "assets/visual/gameplay_assets/alien_ships/1.png"
+            elif num == 2:
+                ship = "assets/visual/gameplay_assets/alien_ships/2.png"
+            if num == 3:
+                ship = "assets/visual/gameplay_assets/alien_ships/3.png"
+
+            enemy = MiniEnemy(
+                (int(1200 * 0.045 *(x+1)), int(800 * (-.1))),
+                num,
+                size,
+                screen,
+                ship
+            )
+            objarrg.append(enemy)
+
+        objeto3 = objarrg
+
+
+    def fire(character, objarrg):
+        global boom
+        screen.blit(character.misilimage, character.misilrect)
+        character.get_frame()
+        #character.misilrect.y -= 10
+
+        if len(objarrg) > 0:
+            for x in objarrg:
+                if character.misilrect.colliderect(x.rect):
+                    #objarrg.remove(x)
+                    boom.append(x)
+                    character.misilrect.y = -100
+                    break
+
 
     def health_bar(screen, x, y, boss):
         largo  = 800
@@ -120,17 +334,64 @@ def boss_fight():
 
         response = nave.event_manager()
 
+    def spcLaser_nave(nave, spcLaser):
+        global vidas
+        if nave.rect.colliderect(spcLaser) and not spcLaser.off and not spcLaser.hit_ship:
+            spcLaser.hit_ship = True
+            vidas -= 1
+
+    def main_enemy(nave, objarrg):
+        damage = 0
+        for i in objarrg:
+            if i.rect.colliderect(nave.rect) and not i.damageNave:
+                i.damageNave = True
+                nave.exploded = True
+                objarrg.remove(i)
+                damage += 1
+        return damage
+
+    def bigLaser(spcLaser, shields):
+        for x in shields:
+            if spcLaser.rect.colliderect(x) and not spcLaser.off:
+                if x.change:
+                    x.destroy()
+                    return
+                x.update(True)
+
+
     while True:
         event_manager()
         screen.blit(background, [width * 0, height * 0])
         boss.update()
         screen.blit(boss.image,boss.rect)
         screen.blit(nave.image, nave.rect)
-        #specialLaser(spcLaser)
+        if objeto1 != 0:
+            moveLaser(objeto1)
+        if objeto3 != 0:
+            if len(objeto3) == 0:
+                attCont = 0
+                boss.activity = False
+                objeto3 = 0
+            else:
+                for i in objeto3:
+                    i.move()
+                    if not i.alive:
+                        objeto3.remove(i)
+                    screen.blit(i.image, i.rect)
+
+        if objeto2 != 0:
+            boss.activity = True
+            print_Enemy(objeto2)
+
+        #print(objeto3)
+        specialLaser(spcLaser)
         magazine(screen, width * 0, height * .97, cont )
         if ban:
             if cont < fps * time:
                 cont += 1
+            if objeto3 != 0:
+                fire(nave, objeto3)
+                explosion(objeto3)
             shootBoss(nave, boss)
             nave.get_frame()
 
@@ -145,8 +406,53 @@ def boss_fight():
             nave.misilrect.center = response.center
             nave.misilrect.y -= nave.rect.y * .1
             ban = True
+
+        if nave.exploded:
+            exCont += 1
+            nave.explode()
+            if exCont >= 60 / 3:
+                nave.exploded = False
+                exCont = 0
+
+        attCont += 1
+        if attCont == fps * boss.attTime and not boss.activity:
+            boss.activity = True
+            select_attack(boss)
+            attCont = 0
+        step = 0
+        if objeto2 != 0 and len(objeto2) > 0:
+            for x in objeto2:
+                shootCont[step] += 1
+                responseEnemy[step] = x.event_manager(shootCont[step])
+                if responseEnemy[step] != 0:
+                    x.misilrect.center = responseEnemy[step].center
+                      #objeto2[x].misilrect.y += objeto2[x].rect.y * .1
+                if shootCont[step] >= 180:
+                    if x.misilrect.y > height:
+                          shootCont[step] = 0
+                    enemyFire(x, nave)
+                    shield_fire(shields, objeto2)
+                step += 1
+
+        if objeto2 != 0:
+            if objeto2[0].cont > 800:
+                    shootCont = [0, 0, 0]
+                    responseEnemy = [0, 0, 0]
+                    deathCont = [0, 0, 0]
+                    objeto2 = 0
+            boss.activity = False
+            attCont = 0
+
+        spcLaser_nave(nave, spcLaser)
         health_bar(screen, 200, 30, boss)
+        if objeto3 != 0:
+            shield_enemy(shields, objeto3)
+            vidas -= main_enemy(nave, objeto3)
         boss.show()
+        bigLaser(spcLaser, shields)
+        for i in shields:
+            if i.print:
+                screen.blit(i.image, i.rect)
         pygame.display.flip()
         clock.tick(fps)
 
