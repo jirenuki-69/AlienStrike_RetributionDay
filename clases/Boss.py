@@ -1,4 +1,6 @@
 import pygame
+from clases.MiniKboom import Explosion
+from clases.Kboom import Explosion
 
 class Boss(pygame.sprite.Sprite):
     def __init__(self, position, screenSize, screen):
@@ -36,6 +38,68 @@ class Boss(pygame.sprite.Sprite):
         self.health = 100
         self.attTime = 10
         self.activity = False
+        self.boom_left = Explosion(
+            (int(position[0] * 0.50), int(position[1] * .5)),
+            screenSize
+        )
+        self.boom_right = Explosion(
+            (int(position[0] * 0.50), int(position[1] * .5)),
+            screenSize
+        )
+
+        self.enrage = 1
+
+        #End
+        self.boom1 = Explosion(
+            (int(position[0] * 0.50), int(position[1] * .5)),
+            screenSize
+        )
+        self.boom2 = Explosion(
+            (int(position[0] * 0.50), int(position[1] * .5)),
+            screenSize
+        )
+        self.boom3 = Explosion(
+            (int(position[0] * 0.50), int(position[1] * .5)),
+            screenSize
+        )
+        self.boom4 = Explosion(
+            (int(position[0] * 0.50), int(position[1] * .5)),
+            screenSize
+        )
+        self.boom5 = Explosion(
+            (int(position[0] * 0.50), int(position[1] * .5)),
+            screenSize
+        )
+
+
+    def explode_end(self):
+        # self.update_explode_position()
+        self.boom1.update()
+        self.screen.blit(self.boom1.image, (self.rect.center[0] - 300, self.rect.center[1] - 300))
+        self.boom2.update()
+        self.screen.blit(self.boom2.image, (self.rect.center[0] + 50, self.rect.center[1] - 300))
+        self.boom3.update()
+        self.screen.blit(self.boom3.image, (self.rect.center[0] - 330, self.rect.center[1] - 10))
+        self.boom4.update()
+        self.screen.blit(self.boom4.image, (self.rect.center[0] + 100, self.rect.center[1] - 10))
+        self.boom5.update()
+        self.screen.blit(self.boom5.image, (self.rect.center[0] - 120, self.rect.center[1] - 140))
+
+    def update_explode_position(self):
+        self.boom_left.rect.x, self.boom_left.rect.y = (self.rect.center[0] - 120, self.rect.center[1] - 30)
+
+    def explode(self):
+        # self.update_explode_position()
+        self.boom_left.update()
+        self.screen.blit(self.boom_left.image, (self.rect.center[0] - 150, self.rect.center[1] - 80))
+
+    def update_explode_position_right(self):
+          self.boom_right.rect.x, self.boom_right.rect.y = (self.rect.center[0] - 120, self.rect.center[1] - 30)
+
+    def explode_right(self):
+          # self.update_explode_position()
+          self.boom_right.update()
+          self.screen.blit(self.boom_right.image, (self.rect.center[0] + 80, self.rect.center[1] - 80))
 
     def get_frame(self, frame_set):
         if self.cont % 3 * self.secs == 0:

@@ -2,7 +2,7 @@ import pygame
 from clases.MiniKboom import Explosion
 
 class MiniEnemy():
-    def __init__(self, position, movementSpeed, screenSize, screen, img):
+    def __init__(self, position, movementSpeed, screenSize, screen, img, enrage):
         #Cargo la imagen en memoria
         self.sheet = pygame.image.load(img)
         #self.sheet = pygame.transform.scale(self.sheet, (int(screenSize[0] * 0.15), int(screenSize[1] * 0.15)))
@@ -21,7 +21,7 @@ class MiniEnemy():
         self.alive = True
         self.damageShield = False
         self.damageNave = False
-
+        self.enrage = enrage
         self.cont = 0
         self.boom = Explosion(
             (int(position[0] * 0.50), int(position[1] * .5)),
@@ -40,7 +40,7 @@ class MiniEnemy():
     def move(self):
         self.cont += 1
         if self.cont % (6 * self.movementSpeed) == 0:
-            self.rect.y += 5
+            self.rect.y += 5 * self.enrage
 
         if self.rect.y > self.screenSize[1]:
             self.alive = False
