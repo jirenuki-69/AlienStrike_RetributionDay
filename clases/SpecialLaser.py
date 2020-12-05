@@ -27,8 +27,12 @@ class SpecialLaser(pygame.sprite.Sprite):
         self.off = True
         self.direction = True
         self.hit_ship = False
-        self.ship_value = True
-        self.num = 0
+        self.laser_start = None
+        self.num = -1
+        self.move_left = False
+        self.move_right = False
+        self.enter = False
+        self.direction = 1
 
     def get_frame(self, frame_set):
         if self.cont % 5 * self.secs == 0:
@@ -47,30 +51,34 @@ class SpecialLaser(pygame.sprite.Sprite):
         return clipped_rect
 
 
-    def update(self, ship):
+    def update(self):
+        if not self.enter:
+            self.enter = True
+            if self.num < 600:
+                self.laser_start = "-+"
+            if self.num >= 600:
+                self.laser_start = "+-"
 
-        if self.ship_value:
-            self.num = ship
-            self.ship_value = False
+        if self.laser_start == "-+":
+            self.rect.x = -144
+            self.laser_start = None
+            self.move_right = True
+            self.move_left = False
 
-        if self.num <= 600:
-            if self.direction:
-                print(self.rect.center[0])
-                self.rect.center = (0, self.rect.center[1])
-                self.direction = False
-            self.rect.x += 2.5
-        elif self.num > 600 and not self.direction:
-            self.rect.x -= 2.5
+        if self.laser_start == "+-":
+            self.laser_start = None
+            self.move_left = True
+            self.move_right = False
+            self.rect.x = 1200
 
-        if self.num > 600:
-            if self.direction:
-                self.rect.center = (1100, self.rect.center[1])
-                self.direciton = False
-            self.rect.x -= 2.5
-        elif self.num <= 600 and not self.direction:
-            self.rect.x += 2.5
-
-
+        if self.move_right:
+            if self.rect.x >= 466:
+                self.direction = -1
+            self.rect.x += 2 * self.direction
+        if self.move_left:
+            if self.rect.x < 600:
+                self.direction = -1
+            self.rect.x -= 2 * self.direction
 
         self.cont += 1
         self.clip(self.states)

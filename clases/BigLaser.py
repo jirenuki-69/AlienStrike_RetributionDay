@@ -48,10 +48,10 @@ class Laser(pygame.sprite.Sprite):
 
 
     def update(self):
-        if self.cont > 300 and self.off:
+        if self.cont > 360 and self.off:
             self.off = False
             self.cont = 0
-        if self.cont > 180 and not self.off:
+        if self.cont > 150 and not self.off:
             self.off = True
             self.hit_ship = False
             self.cont = 0

@@ -34,7 +34,7 @@ class Boss(pygame.sprite.Sprite):
         self.hit_left = 0
         self.hit_right = 0
         self.health = 100
-        self.attTime = 7
+        self.attTime = 10
         self.activity = False
 
     def get_frame(self, frame_set):

@@ -50,6 +50,7 @@ def boss_fight():
     #Global values
     background = pygame.image.load("assets/visual/gameplay_assets/boss_background.png")
     background = pygame.transform.scale(background, size)
+    vidaImage = pygame.image.load("assets/visual/gameplay_assets/navevidas.png")
     # settings = pygame.image.load("assets/settings.png")
     clock = pygame.time.Clock()
     fps = 60
@@ -78,10 +79,7 @@ def boss_fight():
     step = 0
 
 
-    laser = SpecialLaser(
-        (0, 0),
-        size
-    )
+
     boss = Boss(
         (int(width * 0.50), int(height * 0.35)),
         size,
@@ -119,6 +117,12 @@ def boss_fight():
     shields.append(shield2)
     shields.append(shield3)
 
+    def nave_Laser(nave, blueLaser):
+        global vidas
+        if nave.rect.colliderect((blueLaser.rect.x, 0, 144, 800)) and not blueLaser.hit_ship:
+            blueLaser.hit_ship = True
+            vidas -= 1
+
     def startLaser():
         global objeto1
         laser = SpecialLaser(
@@ -130,7 +134,9 @@ def boss_fight():
 
     def moveLaser(laser):
         global nave
-        laser.update(nave.rect.center[0])
+        if laser.num < 0:
+            laser.num = nave.rect.center[0]
+        laser.update()
         screen.blit(laser.image, (laser.rect[0], 0))
 
     def bigShips():
@@ -217,13 +223,12 @@ def boss_fight():
         if len(boom) == 1 and cont > fps:
             boom.pop()
 
-
     def select_attack(boss):
         global objeto2
         global objeto3
         list = [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4]
         attack = random.randint(0, len(list) - 1)
-        list[attack]  = 1
+        list[attack]  = random.randint(1, 3)
         print(list[attack])
         if list[attack] == 1:
             startLaser()
@@ -235,10 +240,10 @@ def boss_fight():
         if list[attack] == 4:
             print(4)
 
-
-
     def smallEnemy(size):
         global objeto3
+        global boom
+        boom = []
         objarrg = []
         screen = pygame.display.set_mode(size)
         for x in range(20):
@@ -339,7 +344,7 @@ def boss_fight():
 
     def spcLaser_nave(nave, spcLaser):
         global vidas
-        if nave.rect.colliderect(spcLaser) and not spcLaser.off and not spcLaser.hit_ship:
+        if nave.rect.colliderect((spcLaser.rect.x + 50, spcLaser.rect.y, 154 - 130, 954)) and not spcLaser.off and not spcLaser.hit_ship:
             spcLaser.hit_ship = True
             vidas -= 1
 
@@ -364,10 +369,19 @@ def boss_fight():
 
     while True:
         event_manager()
+        if vidas <= 0:
+            break
+        if boss.health <= 0:
+            break
         screen.blit(background, [width * 0, height * 0])
         boss.update()
         screen.blit(boss.image,boss.rect)
         screen.blit(nave.image, nave.rect)
+        for x in range(vidas):
+            if x == 0:
+                screen.blit(vidaImage, [width - 40 * (x) - 40 - 1, height * .95])
+            else:
+                screen.blit(vidaImage, [width - 40 * (x) - 40 - (10 * x), height * .95])
         if objeto1 != 0:
             moveLaser(objeto1)
         if objeto3 != 0:
@@ -386,7 +400,7 @@ def boss_fight():
             boss.activity = True
             print_Enemy(objeto2)
 
-        #print(objeto3)
+        print(vidas)
         specialLaser(spcLaser)
         magazine(screen, width * 0, height * .97, cont )
         if ban:
@@ -422,6 +436,8 @@ def boss_fight():
             boss.activity = True
             select_attack(boss)
             attCont = 0
+
+
         step = 0
         if objeto2 != 0 and len(objeto2) > 0:
             for x in objeto2:
@@ -446,6 +462,7 @@ def boss_fight():
             boss.activity = False
             attCont = 0
 
+
         spcLaser_nave(nave, spcLaser)
         health_bar(screen, 200, 30, boss)
         if objeto3 != 0:
@@ -456,7 +473,17 @@ def boss_fight():
         for i in shields:
             if i.print:
                 screen.blit(i.image, i.rect)
+        if objeto1 != 0:
+            if objeto1.rect.x <= -150 or objeto1.rect.x >= 1350:
+                objeto1 = 0
+                attCont = 0
+                boss.activity = False
+        if objeto1 != 0:
+            nave_Laser(nave, objeto1)
+            moveLaser(objeto1)
         pygame.display.flip()
         clock.tick(fps)
 
     pygame.quit()
+
+boss_fight()
