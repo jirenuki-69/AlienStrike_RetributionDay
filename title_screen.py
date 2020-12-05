@@ -14,8 +14,8 @@ def title_screen():
     screen = pygame.display.set_mode(size)
 
     #Global values
-    background = pygame.image.load("assets/visual/menu.png")
-    background = pygame.transform.scale(background, size)
+    logo = pygame.image.load("assets/visual/gameplay_assets/logo.png")
+    logo = pygame.transform.scale(logo, (1000, 600))
     settings = pygame.image.load("assets/visual/settings.png")
 
     settings = pygame.transform.scale(settings, (80, 80))
@@ -23,8 +23,14 @@ def title_screen():
     settingsRect[0], settingsRect[1] = 20, int(height * 0.85)
 
     clock = pygame.time.Clock()
-    fps = 60
+    fps = 30
     font = pygame.font.Font("fonts/ufonts.com_windpower.ttf", 50)
+
+    cont = 0
+    index = 0
+    secs = 10
+    first_loop = True
+    second_loop = False
 
     #My values
     rectSize = (275, 100)
@@ -60,10 +66,30 @@ def title_screen():
 
     while True:
         event_manager()
+        background = pygame.image.load(const.CITY_PULSING_LIGHTS[index])
+        background = pygame.transform.scale(background, size)
 
         screen.blit(background, [0, 0])
+        screen.blit(logo, (int(width * 0.1), int(height * 0.05)))
         screen.blit(settings, [settingsRect[0], settingsRect[1]])
         menu_button.init_button()
+
+        cont += 1
+
+        if first_loop and cont % 3 * secs == 0:
+            index += 1
+
+        if second_loop and cont % 3 * secs == 0:
+            index -= 1
+
+        if cont >= 12 * secs:
+            first_loop = not first_loop
+            second_loop = not second_loop
+            if first_loop:
+                index += 1
+            if second_loop:
+                index -= 1
+            cont = 0
 
         pygame.display.flip()
         clock.tick(fps)

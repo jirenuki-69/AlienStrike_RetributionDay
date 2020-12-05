@@ -16,6 +16,12 @@ class Sound():
         # self.sound.play()
         pass
 
+    def boss_laser(self):
+        # self.sound = pygame.mixer.Sound("assets/music/SFX/master_laser_super_ray.wav")
+        # self.sound.set_volume(self.get_SFX_volume())
+        # self.sound.play()
+        pass
+
     def alien_explosion(self):
         # self.sound = pygame.mixer.Sound("assets/music/SFX/dead_boom.wav")
         # self.sound.set_volume(self.get_SFX_volume())

@@ -2,10 +2,9 @@ import pygame, const
 
 class Music():
     def __init__(self):
-        # self.music = pygame.mixer
-        # self.music.init()
-        # self.music.music.set_volume(self.get_volume())
-        # self.jump = "music/jump.mp3"
+        self.music = pygame.mixer
+        self.music.init()
+        self.music.music.set_volume(self.get_volume())
         pass
 
     def chilling_grilling(self):
@@ -39,14 +38,19 @@ class Music():
         pass
 
     def boss(self):
-        # self.music.music.load("assets/music/boss/final_boss_theme.mp3")
-        # self.music.music.play(-1)
+        self.music.music.load("assets/music/boss/final_boss_theme.mp3")
+        self.music.music.play(-1)
+        pass
+
+    def credits(self):
+        self.music.music.load("assets/music/special_tracks/creditos.mp3")
+        self.music.music.play(-1)
         pass
 
     def get_volume(self):
-        # with open ("volumen.txt") as archivo:
-        #     for linea in archivo.readlines():
-        #         return float(str(linea.split("-")[0]))
+        with open ("volumen.txt") as archivo:
+            for linea in archivo.readlines():
+                return float(str(linea.split("-")[0]))
         pass
 
     def set_volume(self, new_volume):
