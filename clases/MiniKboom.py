@@ -25,6 +25,8 @@ class Explosion(pygame.sprite.Sprite):
         self.cont = 0
         self.secs = 1
         self.boom_initiaded = False
+        self.exploded = False
+        self.boom_end = False
         #Mixer
         #pygame.mixer.init()
         #self.boom_sound = pygame.mixer.Sound("assets/music/SFX/dead_boom.wav")
@@ -34,6 +36,7 @@ class Explosion(pygame.sprite.Sprite):
         if self.cont % 4 * self.secs == 0:
             self.frame += 1
         if self.frame > (len(frame_set) - 1):
+
             self.frame = 0
         return frame_set[self.frame]
 
@@ -50,6 +53,8 @@ class Explosion(pygame.sprite.Sprite):
     def update(self):
         if self.cont > 60 * self.secs:
             self.cont = 0
+            self.boom_end = True
+            #self.exploded = True
             #self.boom_sound.stop()
             self.boom_initiaded = False
 

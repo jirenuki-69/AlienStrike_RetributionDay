@@ -27,6 +27,7 @@ class Laser(pygame.sprite.Sprite):
         self.cont = 0
         self.secs = 1
         self.off = True
+        self.speed = 360
 
         self.hit_ship = False
 
@@ -48,14 +49,14 @@ class Laser(pygame.sprite.Sprite):
 
 
     def update(self):
-        if self.cont > 360 and self.off:
+        if self.cont > self.speed and self.off:
+            print(self.cont)
             self.off = False
             self.cont = 0
-        if self.cont > 150 and not self.off:
+        if self.cont > 120 and not self.off:
             self.off = True
             self.hit_ship = False
             self.cont = 0
-        #self.rect.x += 2.5
 
 
 
