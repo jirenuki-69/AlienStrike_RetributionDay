@@ -1,5 +1,6 @@
 import pygame
 import const, title_screen, sys, os
+from clases.Sound import Sound
 
 my_file = open("nombre.txt", "w")
 my_file.writelines("James")
@@ -15,6 +16,7 @@ def cambiar_nombre(nombre):
 def username():
     pygame.init()
     pygame.display.set_caption("Alien Strike: Retribution Day")
+    sound = Sound()
     width = 1200
     height = 800
     size = (width, height)
@@ -40,14 +42,17 @@ def username():
                 if event.key == pygame.K_RETURN:
                     if text.strip() != "":
                         cambiar_nombre(text)
+                        sound.type()
                         return
                     else:
                         return
                 elif event.key == pygame.K_BACKSPACE:
+                    sound.type()
                     text = text[:-1]
                     if text_cont > 0:
                         text_cont -= 1
                 else:
+                    sound.type()
                     text += event.unicode
                     text_cont += 1
 

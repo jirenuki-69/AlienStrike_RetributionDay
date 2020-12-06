@@ -8,9 +8,18 @@ import random
 from clases.Shield import Escudo
 from clases.MiniEnemy import MiniEnemy
 from clases.Music import Music
+from clases.Texto import Texto
 import LVL_3
 
+def conseguir_nombre():
+    with open ("nombre.txt") as archivo:
+        for linea in archivo.readlines():
+            return str(linea.split("-")[0])
 
+def conseguir_dificultad():
+    with open ("difficulty.txt") as archivo:
+        for linea in archivo.readlines():
+            return str(linea.split("-")[0])
 
 response = 0
 boom = []
@@ -34,6 +43,10 @@ def lvl_2(difficulty, shields, vidas):
     background = pygame.image.load("assets/visual/gameplay_assets/mas_ciudad.png")
     background = pygame.transform.scale(background, size)
     vidaImage = pygame.image.load("assets/visual/gameplay_assets/navevidas.png")
+    vidaImage = pygame.transform.scale(vidaImage, (25, 25))
+    HUD = pygame.image.load("assets/visual/gameplay_assets/HUD.png")
+    HUD = pygame.transform.scale(HUD, (325, 150))
+    font = pygame.font.Font("fonts/Pixel LCD-7.ttf", 18)
     # settings = pygame.image.load("assets/settings.png")
     clock = pygame.time.Clock()
     fps = 60
@@ -84,9 +97,34 @@ def lvl_2(difficulty, shields, vidas):
         "assets/visual/gameplay_assets/main_ship.png"
     )
 
+    texto_nombre = Texto(
+        conseguir_nombre(),
+        (width * 0.1, height * 0.84),
+        font,
+        screen,
+        None,
+        const.WHITE
+    )
 
+    texto_dificultad = Texto(
+        conseguir_dificultad(),
+        (width * 0.1, height * 0.87),
+        font,
+        screen,
+        None,
+        const.WHITE
+    )
 
+    texto_level = Texto(
+        "- nivel 2",
+        (width * 0.15, height * 0.87),
+        font,
+        screen,
+        None,
+        const.WHITE
+    )
 
+    #<rect(510, 636, 180, 120)>
 
     def fire(character, objarrg):
         global boom
@@ -134,13 +172,13 @@ def lvl_2(difficulty, shields, vidas):
         return damage
 
     def magazine(screen, x, y, data):
-        largo  = 180
-        ancho = 15
+        largo = 130
+        ancho = 20
         calculo_barra = int((data/100 * largo))
-        borde = pygame.Rect(x, y, 130, ancho)
+        borde = pygame.Rect(x, y, 90, ancho)
         rectangulo = pygame.Rect(x, y, calculo_barra, ancho)
-        pygame.draw.rect(screen, (255, 255, 255), borde, 3)
-        pygame.draw.rect(screen, (255, 255, 255), rectangulo)
+        pygame.draw.rect(screen, const.WHITE, borde, 3)
+        pygame.draw.rect(screen, const.GREEN, rectangulo)
 
 
     def event_manager():
@@ -150,7 +188,7 @@ def lvl_2(difficulty, shields, vidas):
             if event.type == pygame.QUIT:
                 sys.exit()
 
-        response = nave.event_manager()
+        response = nave.event_manager(cont)
 
     while True:
         event_manager()
@@ -159,8 +197,15 @@ def lvl_2(difficulty, shields, vidas):
         if rows < 0:
             LVL_3.lvl_3(difficulty, shields, vidas)
             break
+
         screen.blit(background, [width * 0, height * 0])
+        screen.blit(HUD, [0, height - 150])
+        texto_nombre.show_text()
+        texto_dificultad.show_text()
+        texto_level.show_text()
         screen.blit(nave.image, nave.rect)
+        pygame.draw.rect(screen, const.RED, nave.rect, 1)
+
         if rows > -1 and len(objarrg) == 0:
             while len(boom) > 0:
                 boom.pop()
@@ -185,12 +230,9 @@ def lvl_2(difficulty, shields, vidas):
                 objarrg.append(enemy)
             rows -= 1
 
-        magazine(screen, width * 0, height * .97, cont )
+        magazine(screen, width * 0.01, height * .94, cont )
         for x in range(vidas):
-            if x == 0:
-                screen.blit(vidaImage, [width - 40 * (x) - 40 - 1, height * .95])
-            else:
-                screen.blit(vidaImage, [width - 40 * (x) - 40 - (10 * x), height * .95])
+            screen.blit(vidaImage, [width * 0.1 + (x * 40), height * .935])
 
 
         for i in objarrg:

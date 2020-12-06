@@ -44,7 +44,7 @@ def lvl_1():
     objarrg = []
     #enemigos
     cantidad = 20
-    rows = 3
+    rows = 0
     mainExplode = False
     response = 0
     shields = []
@@ -154,7 +154,7 @@ def lvl_1():
             if event.type == pygame.QUIT:
                 sys.exit()
 
-        response = nave.event_manager()
+        response = nave.event_manager(cont)
 
     while True:
         event_manager()
@@ -241,5 +241,3 @@ def lvl_1():
         clock.tick(fps)
 
     pygame.quit()
-
-lvl_1()

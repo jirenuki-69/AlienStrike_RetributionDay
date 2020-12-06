@@ -1,4 +1,4 @@
-import pygame
+import pygame, game_over
 import sys
 from pygame import mixer
 from clases.Nave import Nave
@@ -9,7 +9,7 @@ from clases.Shield import Escudo
 from clases.MiniEnemy import MiniEnemy
 from clases.Enemy import Enemy
 from clases.Music import Music
-import boss_fight
+import boss_fight, intro_boss
 
 response = 0
 boom = []
@@ -17,14 +17,12 @@ boomExplode = []
 cont = 0
 enemyShoot = True
 mainExplode = False
-vidas = 0
 
 def lvl_3(difficulty, shields, vidas):
     global response
     global boom
     global boomExplode
     global cont
-    global vidas
     pygame.init()
     pygame.display.set_caption("Alien Strike: Retribution Day")
     pygame.display.set_icon(const.LOGO)
@@ -49,7 +47,7 @@ def lvl_3(difficulty, shields, vidas):
     objarrg = []
     #enemigos
     cantidad = 20
-    rows = 3
+    rows = 0
     mainExplode = False
     response = 0
     boom = []
@@ -234,14 +232,15 @@ def lvl_3(difficulty, shields, vidas):
             if event.type == pygame.QUIT:
                 sys.exit()
 
-        response = nave.event_manager()
+        response = nave.event_manager(cont)
 
     while True:
         event_manager()
         if vidas <= 0:
-            break
-        if rows < 0 and len(bigShip) <= 0:
-            boss_fight.boss_fight(difficulty, shields, vidas)
+            game_over.game_over()
+            #boss_fight.boss_fight(difficulty, shields, vidas)
+        if rows <= 0 and len(bigShip) <= 0:
+            intro_boss.intro_boss(difficulty, shields, vidas)
             break
         screen.blit(background, [width * 0, height * 0])
         screen.blit(nave.image, nave.rect)

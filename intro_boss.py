@@ -10,7 +10,7 @@ def conseguir_nombre():
         for linea in archivo.readlines():
             return str(linea.split("-")[0])
 
-def intro_boss():
+def intro_boss(difficulty, shields, vidas):
     music = Music()
     music.game_over()
     sound = Sound()
@@ -117,7 +117,7 @@ def intro_boss():
         if is_get_ready_opened:
             cont2 += 1
             if cont2 >= secs * 2:
-                boss_fight.boss_fight()
+                boss_fight.boss_fight(difficulty, shields, vidas)
             screen.blit(get_ready, [width / 2 - 150, height / 2 - 75])
 
         pygame.display.flip()

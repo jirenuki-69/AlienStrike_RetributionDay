@@ -13,7 +13,7 @@ class Nave():
         #Se representa la imagen y moverla
         self.rect = self.image.get_rect()
         #Paso el rect a la posicion del personaje
-        self.rect.center = position
+        self.rect.center = (position[0] - 20, position[1])
         #En qué superficie se encuentra
         self.screen = screen
         self.screenSize = screenSize

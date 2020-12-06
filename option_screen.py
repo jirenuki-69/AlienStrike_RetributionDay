@@ -418,14 +418,17 @@ def option_screen():
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RETURN:
                         if texto_new_name.text.strip() != "":
+                            sound.type()
                             editar_nombre(texto_new_name.text)
                             texto_titulo.text = f"Ex piloto estrella de la armada 15 - {conseguir_nombre()}"
 
                     elif event.key == pygame.K_BACKSPACE:
+                        sound.type()
                         texto_new_name.text = texto_new_name.text[:-1]
                         if text_cont > 0:
                             text_cont -= 1
                     else:
+                        sound.type()
                         texto_new_name.text += event.unicode
                         text_cont += 1
 

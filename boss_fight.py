@@ -16,7 +16,6 @@ from clases.Shield import Escudo
 from clases.SpecialLaser import SpecialLaser
 
 response = 0
-vidas = 0
 objeto2 = 0
 objeto3 = 0
 boom = []
@@ -29,7 +28,6 @@ boss = 0
 def boss_fight(difficulty, shields, vidas):
     global nave
     global response
-    global vidas
     global objeto3
     global boom
     global cont
