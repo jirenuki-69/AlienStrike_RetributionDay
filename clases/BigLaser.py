@@ -1,5 +1,6 @@
 import pygame
 import random
+from clases.Sound import Sound
 
 class Laser(pygame.sprite.Sprite):
     def __init__(self, position, screenSize):
@@ -31,6 +32,8 @@ class Laser(pygame.sprite.Sprite):
 
         self.hit_ship = False
 
+        self.sound = Sound()
+
     def get_frame(self, frame_set):
         if self.cont % 5 * self.secs == 0:
             self.frame += 1
@@ -50,10 +53,11 @@ class Laser(pygame.sprite.Sprite):
 
     def update(self):
         if self.cont > self.speed and self.off:
+            self.sound.boss_laser()
             print(self.cont)
             self.off = False
             self.cont = 0
-        if self.cont > 120 and not self.off:
+        if self.cont > 140 and not self.off:
             self.off = True
             self.hit_ship = False
             self.cont = 0

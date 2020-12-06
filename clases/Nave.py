@@ -1,6 +1,7 @@
 import pygame
 from pygame import mixer
 from clases.MiniKboom import Explosion
+from clases.Sound import Sound
 
 class Nave():
     def __init__(self, position, movementSpeed, screenSize, screen, img):
@@ -29,9 +30,7 @@ class Nave():
         self.misilrect = self.misilimage.get_rect()
         self.exploded = False
 
-        #Mixer
-        #self.shoot_sound = pygame.mixer.Sound("assets/music/SFX/player_shoot.wav")
-        #self.shoot_sound.set_volume(.01)
+        self.sound = Sound()
 
 
         self.boom = Explosion(
@@ -44,6 +43,7 @@ class Nave():
         self.boom.rect.x, self.boom.rect.y = (self.rect.x, self.rect.y)
 
     def explode(self):
+        self.sound.player_explosion()
         self.update_explode_position()
         self.boom.update()
         self.screen.blit(self.boom.image, (self.rect.x + 20, self.rect.y + 15))
@@ -57,7 +57,7 @@ class Nave():
             self.misilbool = True
 
     def shoot(self):
-        #self.shoot_sound.play()
+        self.sound.player_shoot()
         self.response = self.rect
 
     def update(self, direction):

@@ -32,6 +32,13 @@ ESCENAS = [
     "assets/visual/history_scenes/15.png",
 ]
 
+ESCENAS_ENDGAME = [
+    "assets/visual/history_scenes/endgame/1.png",
+    "assets/visual/history_scenes/endgame/2.png",
+    "assets/visual/history_scenes/endgame/3.png",
+    "assets/visual/history_scenes/endgame/3.png",
+]
+
 TUTORIAL = [
     "Presione la tecla Enter para continuar en el tutorial",
     "Manten presionado D para mover a la derecha",
@@ -40,6 +47,13 @@ TUTORIAL = [
     "Hay enemigos en cada nivel y debes eliminarlos",
     "O pueden atacarte y quitarte vida",
     "Vuelve a presionar Enter para regresar al menu principal"
+]
+
+ENDGAME_STORY = [
+    "Teniendo todo en tu contra y destruir la nave principal de la invacion alienígena, regresaste a casa donde eres recibido por tu mejor amigo, Joseph Brawn. Eres un héroe, ¿pero a qué costo? perdiste todo lo que te importaba en ese momento, tu querida esposa.",
+    "Todos tus amigos y conocidos te aplauden mientras bajas del auto... tienes una gran fiesta. pero como todo en la vida, tiene que terminar.",
+    "Regresas a tu oficina y simplemente te recuestas en tu silla pensando... 'No importa que haya salvado a la humanidad si yo dejé de vivir cuando mi esposa murió...'",
+    "El trabajo de piloto nunca fue mas conflictivo, pero prendes tu cigarrillo y dices en voz alta: 'Servir y proteger... así es el trabajo'"
 ]
 
 CITY_PULSING_LIGHTS = [

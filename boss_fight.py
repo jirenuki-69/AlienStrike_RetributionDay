@@ -1,12 +1,13 @@
-import pygame
+import pygame, boss_end_scene, game_over
 import sys
 from pygame import mixer
 from clases.Music import Music
+from clases.Sound import Sound
 from clases.Nave import Nave
 import const
 from clases.Enemy import Enemy
 from clases.MiniEnemy import MiniEnemy
-import main_menu
+import main_menu, endgame_history
 import random
 from clases.Kboom import Explosion
 from clases.Boss import Boss
@@ -37,10 +38,9 @@ def boss_fight():
     global enemyShoot
     global objeto1
     global boss
-    pygame.init()
-    pygame.display.set_caption("Alien Strike: Retribution Day")
     music = Music()
     music.boss()
+    sound = Sound()
     #pygame.mixer.music.load("assets/music/special_tracks/teachmenow.mp3")
     #pygame.mixer.music.set_volume(.1)
     #pygame.mixer.music.play(-1)
@@ -376,8 +376,10 @@ def boss_fight():
     while True:
         event_manager()
         if vidas <= 0:
-            break
+            game_over.game_over()
         if boss.health <= 0:
+            sound.boss_explosion()
+            music.stop()
             while boss.health <= 0:
                 cont += 1
                 event_manager()
@@ -395,7 +397,9 @@ def boss_fight():
 
                 boss.explode_end()
                 #duración 8 secs
-                if cont >= 60 * 8:
+                if cont >= 60 * 5:
+                    #Aqui puedo poner una escena despues de derrotar al boss
+                    boss_end_scene.boss_end_scene((nave.rect.x, nave.rect.y))
                     break
 
                 pygame.display.flip()
@@ -516,5 +520,3 @@ def boss_fight():
         clock.tick(fps)
 
     pygame.quit()
-
-boss_fight()

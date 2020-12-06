@@ -86,7 +86,7 @@ def option_screen():
 
     texto_descripcion = Texto(
         const.SETTINGS_DESCRIPTION,
-        (width * 0.15, height * 0.80),
+        (width * 0.13, height * 0.79),
         description_font,
         screen,
         60,

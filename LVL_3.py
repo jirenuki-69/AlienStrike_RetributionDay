@@ -8,8 +8,7 @@ import random
 from clases.Shield import Escudo
 from clases.MiniEnemy import MiniEnemy
 from clases.Enemy import Enemy
-
-
+from clases.Music import Music
 
 response = 0
 boom = []
@@ -18,6 +17,7 @@ cont = 0
 enemyShoot = True
 mainExplode = False
 vidas = 0
+
 def lvl_3():
     global response
     global boom
@@ -27,9 +27,8 @@ def lvl_3():
     pygame.init()
     pygame.display.set_caption("Alien Strike: Retribution Day")
     pygame.display.set_icon(const.LOGO)
-    #pygame.mixer.music.load("assets/music/special_tracks/teachmenow.mp3")
-    #pygame.mixer.music.set_volume(.1)
-    #pygame.mixer.music.play(-1)
+    music = Music()
+    music.lvl_3()
     width = 1200
     height = 800
     size = (width, height)
@@ -241,7 +240,8 @@ def lvl_3():
                     num,
                     size,
                     screen,
-                    ship
+                    ship,
+                    1
                 )
                 objarrg.append(enemy)
             rows -= 1

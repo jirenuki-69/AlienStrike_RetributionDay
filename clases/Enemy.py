@@ -1,5 +1,6 @@
 import pygame
 from clases.Kboom import Explosion
+from clases.Sound import Sound
 
 class Enemy():
     def __init__(self, position, movementSpeed, screenSize, screen, img):
@@ -28,6 +29,8 @@ class Enemy():
         self.misilrect = self.misilimage.get_rect()
         self.health = 5
         self.cont = 0
+
+        self.sound = Sound()
 
         #Explosion
         self.boom = Explosion(
@@ -62,6 +65,7 @@ class Enemy():
             self.misilbool = True
 
     def shoot(self):
+        self.sound.alien_shoot()
         self.response = self.rect
 
     def update(self, direction):

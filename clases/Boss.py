@@ -1,6 +1,7 @@
 import pygame
-from clases.MiniKboom import Explosion
+from clases.MiniKboom import Explosion as MiniExplosion
 from clases.Kboom import Explosion
+from clases.Sound import Sound
 
 class Boss(pygame.sprite.Sprite):
     def __init__(self, position, screenSize, screen):
@@ -35,14 +36,14 @@ class Boss(pygame.sprite.Sprite):
         self.contador = 0
         self.hit_left = 0
         self.hit_right = 0
-        self.health = 100
+        self.health = 4
         self.attTime = 10
         self.activity = False
-        self.boom_left = Explosion(
+        self.boom_left = MiniExplosion(
             (int(position[0] * 0.50), int(position[1] * .5)),
             screenSize
         )
-        self.boom_right = Explosion(
+        self.boom_right = MiniExplosion(
             (int(position[0] * 0.50), int(position[1] * .5)),
             screenSize
         )

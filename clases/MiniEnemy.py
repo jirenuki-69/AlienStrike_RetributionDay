@@ -1,5 +1,6 @@
 import pygame
 from clases.MiniKboom import Explosion
+from clases.Sound import Sound
 
 class MiniEnemy():
     def __init__(self, position, movementSpeed, screenSize, screen, img, enrage):
@@ -29,10 +30,13 @@ class MiniEnemy():
         )
         self.exploded = False
 
+        self.sound = Sound()
+
     def update_explode_position(self):
         self.boom.rect.x, self.boom.rect.y = (self.rect.x, self.rect.y)
 
     def explode(self):
+        self.sound.alien_explosion()
         self.update_explode_position()
         self.boom.update()
         self.screen.blit(self.boom.image, (self.rect.x - 20, self.rect.y - 20))
