@@ -114,8 +114,9 @@ class Nave():
             self.misil = pygame.image.load("assets/visual/gameplay_assets/laser/propersize/2.png")
             self.misilbool = True
 
-    def shoot(self):
-        self.sound.player_shoot()
+    def shoot(self, cont):
+        if cont == 0:
+            self.sound.player_shoot()
         self.response = self.rect
 
     def update(self, direction):
@@ -127,7 +128,7 @@ class Nave():
 
             self.rect.x += self.movementSpeed
 
-    def event_manager(self):
+    def event_manager(self, cont):
         keys = pygame.key.get_pressed()
         mouse = pygame.mouse.get_pressed()
 
@@ -137,7 +138,7 @@ class Nave():
             self.update("right")
         if mouse[0] or keys[pygame.K_SPACE]:
             self.ban = True
-            self.shoot()
+            self.shoot(cont)
         else:
             self.ban = False
             self.response = 0
