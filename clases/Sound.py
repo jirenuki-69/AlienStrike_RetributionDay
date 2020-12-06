@@ -46,6 +46,12 @@ class Sound():
         self.sound.play()
         pass
 
+    def dialogue_change(self):
+        self.sound = pygame.mixer.Sound("assets/music/SFX/dialogue_change.wav")
+        self.sound.set_volume(self.get_SFX_volume())
+        self.sound.play()
+        pass
+
     def get_SFX_volume(self):
         with open ("SFX.txt") as archivo:
             for linea in archivo.readlines():

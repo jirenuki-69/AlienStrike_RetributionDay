@@ -8,6 +8,7 @@ import main_menu
 import random
 from clases.Kboom import Explosion
 from clases.Music import Music
+from clases.Sound import Sound
 
 step = 0
 response = 0
@@ -22,6 +23,7 @@ def tutorial():
     step = 0
     music = Music()
     music.tutorial()
+    sound = Sound()
     width = 1200
     height = 800
     size = (width, height)
@@ -47,8 +49,6 @@ def tutorial():
     enemyShoot = True
     boolEnemy = True
     mainExplode = False
-
-
 
     nave = Nave(
         (int(width * 0.10), int(height * 0.65)),
@@ -111,6 +111,7 @@ def tutorial():
                 if event.key == pygame.K_RETURN:
                     if step == len(const.TUTORIAL) - 1:
                         main_menu.main_menu()
+                    sound.dialogue_change()
                     step += 1
 
 

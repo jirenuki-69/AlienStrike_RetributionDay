@@ -76,6 +76,8 @@ def history():
                     if index < len(const.ESCENAS) - 1:
                         index += 1
                         change_scene()
+                        pygame.time.set_timer(timer_event, 0)
+                        pygame.time.set_timer(timer_event, 10000)
                     else:
                         title_screen.title_screen()
                 if escena.skip_pressed(x, y):

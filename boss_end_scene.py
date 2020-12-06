@@ -12,7 +12,7 @@ def conseguir_nombre():
 def boss_end_scene(nave_pos):
     nave_pos = (nave_pos[0] + 90, nave_pos[1] + 60)
     music = Music()
-
+    sound = Sound()
     width = 1200
     height = 800
     size = (width, height)
@@ -74,6 +74,7 @@ def boss_end_scene(nave_pos):
                         rotated = True
 
                     else:
+                        sound.dialogue_change()
                         index += 1
                         texto.text = DIALOGO_FINAL[index]
                         print("Si pasa")

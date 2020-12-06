@@ -80,6 +80,7 @@ def intro_boss():
                             is_get_ready_opened = True
                             dialogue_open = False
                     else:
+                        sound.dialogue_change()
                         index += 1
                         texto.text = dialogo_intro[index]
 
