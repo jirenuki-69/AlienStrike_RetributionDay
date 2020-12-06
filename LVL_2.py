@@ -16,7 +16,7 @@ response = 0
 boom = []
 boomExplode = []
 cont = 0
-def lvl_2():
+def lvl_2(difficulty, shields, vidas):
     global response
     global boom
     global boomExplode
@@ -47,10 +47,33 @@ def lvl_2():
     rows = 5
     mainExplode = False
     response = 0
-    shields = []
+
     boom = []
     boomExplode = []
-    vidas = 5
+    if difficulty == "easy" or difficulty == "easy ":
+        print("enter")
+        vidas = 5
+        shields = []
+        shield1 = Escudo(
+            (int(width * .20), int(height * .75)),
+            size,
+            screen
+        )
+        shield2 = Escudo(
+            (int(width * .5), int(height * .75)),
+            size,
+            screen
+        )
+        shield3 = Escudo(
+            (int(width * .80), int(height * .75)),
+            size,
+            screen
+        )
+
+        shields.append(shield1)
+        shields.append(shield2)
+        shields.append(shield3)
+
     exCont = 0
 
     nave = Nave(
@@ -60,25 +83,7 @@ def lvl_2():
         screen,
         "assets/visual/gameplay_assets/main_ship.png"
     )
-    shield1 = Escudo(
-        (int(width * .20), int(height * .75)),
-        size,
-        screen
-    )
-    shield2 = Escudo(
-        (int(width * .5), int(height * .75)),
-        size,
-        screen
-    )
-    shield3 = Escudo(
-        (int(width * .80), int(height * .75)),
-        size,
-        screen
-    )
 
-    shields.append(shield1)
-    shields.append(shield2)
-    shields.append(shield3)
 
 
 
@@ -152,7 +157,7 @@ def lvl_2():
         if vidas <= 0:
             break
         if rows < 0:
-            LVL_3.lvl_3()
+            LVL_3.lvl_3(difficulty, shields, vidas)
             break
         screen.blit(background, [width * 0, height * 0])
         screen.blit(nave.image, nave.rect)
