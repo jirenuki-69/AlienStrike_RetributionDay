@@ -29,7 +29,6 @@ boss = 0
 def boss_fight(difficulty, shields, vidas):
     global nave
     global response
-    global vidas
     global objeto3
     global boom
     global cont

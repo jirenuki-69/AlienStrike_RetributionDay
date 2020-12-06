@@ -18,13 +18,11 @@ cont = 0
 enemyShoot = True
 mainExplode = False
 vidas = 0
-
 def lvl_3(difficulty, shields, vidas):
     global response
     global boom
     global boomExplode
     global cont
-    global vidas
     pygame.init()
     pygame.display.set_caption("Alien Strike: Retribution Day")
     pygame.display.set_icon(const.LOGO)
@@ -239,6 +237,24 @@ def lvl_3(difficulty, shields, vidas):
     while True:
         event_manager()
         if vidas <= 0:
+            cont = 0
+            while vidas <= 0:
+                cont += 1
+                event_manager()
+                screen.blit(background, [width * 0, height * 0])
+                screen.blit(nave.image, nave.rect)
+                magazine(screen, width * 0, height * .97, 0 )
+                for x in range(vidas):
+                    if x == 0:
+                        screen.blit(vidaImage, [width - 40 * (x) - 40 - 1, height * .95])
+                    else:
+                        screen.blit(vidaImage, [width - 40 * (x) - 40 - (10 * x), height * .95])
+                nave.update_explode_position_end()
+                nave.explode_end(cont)
+                if cont >= 60 * 5:
+                    break
+                pygame.display.flip()
+                clock.tick(fps)
             break
         if rows < 0 and len(bigShip) <= 0:
             boss_fight.boss_fight(difficulty, shields, vidas)
@@ -352,3 +368,4 @@ def lvl_3(difficulty, shields, vidas):
         clock.tick(fps)
 
     pygame.quit()
+lvl_3("easy", 0, 0)
