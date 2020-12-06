@@ -52,6 +52,8 @@ def endgame_history():
                 if escena.next_pressed(x, y):
                     if index < len(const.ESCENAS_ENDGAME) - 1:
                         index += 1
+                        pygame.time.set_timer(timer_event, 0)
+                        pygame.time.set_timer(timer_event, 10000)
                         if index == len(const.ESCENAS_ENDGAME) - 1:
                             escena.last_scene()
                         change_scene()

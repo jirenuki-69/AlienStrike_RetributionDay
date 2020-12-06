@@ -376,6 +376,7 @@ def boss_fight():
     while True:
         event_manager()
         if vidas <= 0:
+            sound.stop()
             game_over.game_over()
         if boss.health <= 0:
             sound.boss_explosion()

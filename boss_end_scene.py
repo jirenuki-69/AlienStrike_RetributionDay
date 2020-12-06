@@ -79,6 +79,18 @@ def boss_end_scene(nave_pos):
                         texto.text = DIALOGO_FINAL[index]
                         print("Si pasa")
 
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if pygame.mouse.get_pressed()[0] and dialogue_open:
+                    if index + 1 == len(DIALOGO_FINAL):
+                        print("Final")
+                        rotated = True
+
+                    else:
+                        sound.dialogue_change()
+                        index += 1
+                        texto.text = DIALOGO_FINAL[index]
+                        print("Si pasa")
+
         if rotated and not finalizado:
             grados += 3
 

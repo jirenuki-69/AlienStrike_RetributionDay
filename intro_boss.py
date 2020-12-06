@@ -84,6 +84,18 @@ def intro_boss():
                         index += 1
                         texto.text = dialogo_intro[index]
 
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if pygame.mouse.get_pressed()[0]:
+                    if index + 1 == len(dialogo_intro):
+                        if not is_get_ready_opened and dialogue_open:
+                            sound.get_ready()
+                            is_get_ready_opened = True
+                            dialogue_open = False
+                    else:
+                        sound.dialogue_change()
+                        index += 1
+                        texto.text = dialogo_intro[index]
+
         screen.blit(background, [0 , 0])
         boss.update()
         screen.blit(boss.image,boss.rect)

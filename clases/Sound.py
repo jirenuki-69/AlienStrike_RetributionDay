@@ -2,7 +2,7 @@ import pygame, const
 
 class Sound():
     def __init__(self):
-        pass
+        self.sound = pygame.mixer.Sound("assets/music/SFX/player_shoot.wav")
 
     def player_shoot(self):
         self.sound = pygame.mixer.Sound("assets/music/SFX/player_shoot.wav")
@@ -68,3 +68,6 @@ class Sound():
         self.sound.set_volume(self.get_SFX_volume())
         self.sound.play()
         pass
+
+    def stop(self):
+        self.sound.stop()
