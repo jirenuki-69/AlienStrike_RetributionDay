@@ -346,7 +346,7 @@ def boss_fight():
             if event.type == pygame.QUIT:
                 sys.exit()
 
-        response = nave.event_manager()
+        response = nave.event_manager(cont)
 
     def spcLaser_nave(nave, spcLaser):
         global vidas
