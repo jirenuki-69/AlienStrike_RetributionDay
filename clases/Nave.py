@@ -29,6 +29,9 @@ class Nave():
         self.misilimage = self.misil.subsurface(self.misil.get_clip())
         self.misilrect = self.misilimage.get_rect()
         self.exploded = False
+        self.direction = True
+        self.direction_y = None
+        self.step = 30
 
         self.sound = Sound()
 
@@ -38,6 +41,61 @@ class Nave():
             screenSize
         )
         self.exploded = False
+
+        self.boom1 = Explosion(
+            (int(position[0] * 0.50), int(position[1] * .5)),
+            screenSize
+        )
+        self.boom2 = Explosion(
+            (int(position[0] * 0.50), int(position[1] * .5)),
+            screenSize
+        )
+        self.boom3 = Explosion(
+            (int(position[0] * 0.50), int(position[1] * .5)),
+            screenSize
+        )
+        self.boom4 = Explosion(
+            (int(position[0] * 0.50), int(position[1] * .5)),
+            screenSize
+        )
+        self.boom5 = Explosion(
+            (int(position[0] * 0.50), int(position[1] * .5)),
+            screenSize
+        )
+
+    def update_explode_position_end(self):
+        self.boom1.rect.x, self.boom1.rect.y = (self.rect.x + 20, self.rect.y + 15)
+        self.boom2.rect.x, self.boom2.rect.y = (self.rect.x + 60, self.rect.y - 20)
+        self.boom3.rect.x, self.boom3.rect.y = (self.rect.x + 60, self.rect.y + 40)
+        self.boom4.rect.x, self.boom4.rect.y = (self.rect.x + 100, self.rect.y + 15)
+
+    def explode_end(self, cont):
+        # self.update_explode_position()
+        self.boom1.update()
+        self.screen.blit(self.boom1.image, (self.rect.x + 20, self.rect.y + 15))
+        self.boom2.update()
+        self.screen.blit(self.boom2.image, (self.rect.x + 60, self.rect.y - 20))
+        self.boom3.update()
+        self.screen.blit(self.boom3.image, (self.rect.x + 60, self.rect.y + 40))
+        self.boom4.update()
+        self.screen.blit(self.boom4.image, (self.rect.x + 100, self.rect.y + 15))
+
+        if cont == self.step * 1 or cont == self.step * 3 or cont == self.step * 5 or cont == self.step * 7 or cont == self.step * 9:
+            self.direction = False
+        if cont == self.step * 0 or cont == self.step * 2 or cont == self.step * 4 or cont == self.step * 6 or cont == self.step * 9 or cont == self.step * 10:
+            self.direction = True
+        if cont > self.step * 5:
+            self.direction_y = "down"
+
+        if self.direction:
+            self.rect.x += 1
+        else:
+            self.rect.x -= 1
+
+        if self.direction_y == "down":
+            self.rect.y += 2
+
+
 
     def update_explode_position(self):
         self.boom.rect.x, self.boom.rect.y = (self.rect.x, self.rect.y)
