@@ -53,6 +53,15 @@ def lvl_1():
     vidas = 5
     exCont = 0
 
+    def conseguir_dificultad():
+        with open ("difficulty.txt") as archivo:
+            for linea in archivo.readlines():
+                return str(linea.split("-")[0])
+
+    difficulty = conseguir_dificultad()
+
+    print(len(difficulty))
+
     nave = Nave(
         (int(width * 0.50), int(height * 0.87)),
         5,
@@ -148,12 +157,11 @@ def lvl_1():
         response = nave.event_manager()
 
     while True:
-        print(rows)
         event_manager()
         if vidas <= 0:
             break
         if rows < 0:
-            LVL_2.lvl_2()
+            LVL_2.lvl_2(difficulty, shields, vidas)
         screen.blit(background, [width * 0, height * 0])
         screen.blit(nave.image, nave.rect)
         if rows > -1 and len(objarrg) == 0:
@@ -233,3 +241,5 @@ def lvl_1():
         clock.tick(fps)
 
     pygame.quit()
+
+lvl_1()

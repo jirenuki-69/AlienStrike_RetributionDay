@@ -9,6 +9,7 @@ from clases.Shield import Escudo
 from clases.MiniEnemy import MiniEnemy
 from clases.Enemy import Enemy
 from clases.Music import Music
+import boss_fight
 
 response = 0
 boom = []
@@ -18,7 +19,7 @@ enemyShoot = True
 mainExplode = False
 vidas = 0
 
-def lvl_3():
+def lvl_3(difficulty, shields, vidas):
     global response
     global boom
     global boomExplode
@@ -51,15 +52,37 @@ def lvl_3():
     rows = 3
     mainExplode = False
     response = 0
-    shields = []
     boom = []
     boomExplode = []
-    vidas = 5
     exCont = 0
     bigShip = []
     shootCont = [0, 0, 0]
     responseEnemy = [0, 0, 0]
     deathCont = [0, 0, 0]
+
+    if difficulty == "easy" or difficulty == "easy ":
+        print("enter")
+        vidas = 5
+        shields = []
+        shield1 = Escudo(
+            (int(width * .20), int(height * .75)),
+            size,
+            screen
+        )
+        shield2 = Escudo(
+            (int(width * .5), int(height * .75)),
+            size,
+            screen
+        )
+        shield3 = Escudo(
+            (int(width * .80), int(height * .75)),
+            size,
+            screen
+        )
+
+        shields.append(shield1)
+        shields.append(shield2)
+        shields.append(shield3)
 
     nave = Nave(
         (int(width * 0.50), int(height * 0.87)),
@@ -218,7 +241,7 @@ def lvl_3():
         if vidas <= 0:
             break
         if rows < 0 and len(bigShip) <= 0:
-            print("finished")
+            boss_fight.boss_fight(difficulty, shields, vidas)
             break
         screen.blit(background, [width * 0, height * 0])
         screen.blit(nave.image, nave.rect)

@@ -26,7 +26,7 @@ mainExplode = False
 nave = 0
 objeto1 = 0
 boss = 0
-def boss_fight():
+def boss_fight(difficulty, shields, vidas):
     global nave
     global response
     global vidas
@@ -69,16 +69,37 @@ def boss_fight():
     mainExplode = False
     response = 0
     attCont = 0
-    vidas = 5
     objeto1 = 0
     objeto2 = 0
     objeto3 = 0
     boom = []
-    shields = []
     shootCont = [0, 0, 0]
     responseEnemy = [0, 0, 0]
     deathCont = [0, 0, 0]
     step = 0
+    if difficulty == "easy" or difficulty == "easy ":
+        print("enter")
+        vidas = 5
+        shields = []
+        shield1 = Escudo(
+            (int(width * .20), int(height * .75)),
+            size,
+            screen
+        )
+        shield2 = Escudo(
+            (int(width * .5), int(height * .75)),
+            size,
+            screen
+        )
+        shield3 = Escudo(
+            (int(width * .80), int(height * .75)),
+            size,
+            screen
+        )
+
+        shields.append(shield1)
+        shields.append(shield2)
+        shields.append(shield3)
 
 
 
