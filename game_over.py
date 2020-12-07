@@ -1,8 +1,9 @@
 import pygame, const, sys, main_menu
 from clases.Button import Button
 from clases.Music import Music
+from clases.Cursor import Cursor
 
-def game_over():
+def game_over(cursor, controller):
     #Pygame values
     music = Music()
     music.game_over()
@@ -31,7 +32,7 @@ def game_over():
         const.WHITE
     )
 
-    def event_manager():
+    def event_manager(cursor, controller):
         for event in pygame.event.get():
             mouse_x, mouse_y = pygame.mouse.get_pos()
 
@@ -44,13 +45,23 @@ def game_over():
             if pygame.mouse.get_pressed()[0]:
                 x, y = pygame.mouse.get_pos()
                 if button.is_pressed(event, x, y):
-                    main_menu.main_menu()
+                    main_menu.main_menu(cursor.x, cursor.y, controller)
+
+            if event.type == pygame.JOYBUTTONDOWN:
+                if button.is_pressed(event, cursor.x, cursor.y):
+                    main_menu.main_menu(cursor.x, cursor.y, controller)
 
     while True:
-        event_manager()
+        event_manager(cursor, controller)
 
         screen.blit(background, [0, 0])
         button.init_button()
+
+        cursor.update()
+
+        if controller != None:
+            x_controller, y_controller = controller.get_left_stick()
+            cursor.movement(x_controller, y_controller)
 
         pygame.display.flip()
         clock.tick(fps)

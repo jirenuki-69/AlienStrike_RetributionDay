@@ -22,9 +22,11 @@ class Escena():
         self.next_button_rect.x, self.next_button_rect.y, = (self.screen_size[0] * 0.75, self.screen_size[1] * 0.9)
         self.skip_button_rect.x, self.skip_button_rect.y, = (self.screen_size[0] * 0.82, self.screen_size[1] * 0.9)
         self.enter_image = pygame.image.load("assets/visual/history_scenes/endgame/enter_key.png")
-        self.enter_image = pygame.transform.scale(self.enter_image, (70, 40))
+        self.enter_image = pygame.transform.scale(self.enter_image, (40, 40))
+        self.a_button = pygame.image.load("assets/visual/history_scenes/endgame/a_button.png")
+        self.a_button = pygame.transform.scale(self.a_button, (40, 40))
         self.enter_image_rect = self.enter_image.get_rect()
-        self.enter_image_rect.x, self.enter_image_rect.y = (self.screen_size[0] * 0.75, self.screen_size[1] * 0.9)
+        self.enter_image_rect.x, self.enter_image_rect.y = (self.screen_size[0] * 0.8, self.screen_size[1] * 0.9)
         self.is_last_scene = False
         self.cont = 0
 
@@ -52,7 +54,7 @@ class Escena():
         self.skip_button_rect.x, self.skip_button_rect.y = (2000, 300)
 
     def show_scene(self):
-        if self.cont > 60 * 1:
+        if self.cont >= 90:
             self.cont = 0
 
         self.cont += 1
@@ -61,8 +63,9 @@ class Escena():
         self.screen.blit(self.skip_button, [self.skip_button_rect.x, self.skip_button_rect.y])
 
         if self.is_last_scene:
-            if self.cont % 25 * 1 >= 1:
+            if self.cont < 60:
                 self.screen.blit(self.enter_image, [self.enter_image_rect.x, self.enter_image_rect.y])
+                self.screen.blit(self.a_button, [self.enter_image_rect.x + 50, self.enter_image_rect.y])
 
         text_wrapped = textwrap.wrap(self.text, self.wrap_criteria)
 

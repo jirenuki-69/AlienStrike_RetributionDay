@@ -9,7 +9,7 @@ def conseguir_nombre():
         for linea in archivo.readlines():
             return str(linea.split("-")[0])
 
-def boss_end_scene(nave_pos):
+def boss_end_scene(nave_pos, cursor, controller):
     nave_pos = (nave_pos[0] + 90, nave_pos[1] + 60)
     music = Music()
     sound = Sound()
@@ -91,6 +91,17 @@ def boss_end_scene(nave_pos):
                         texto.text = DIALOGO_FINAL[index]
                         print("Si pasa")
 
+            if event.type == pygame.JOYBUTTONDOWN:
+                if index + 1 == len(DIALOGO_FINAL):
+                    print("Final")
+                    rotated = True
+
+                else:
+                    sound.dialogue_change()
+                    index += 1
+                    texto.text = DIALOGO_FINAL[index]
+                    print("Si pasa")
+
         if rotated and not finalizado:
             grados += 3
 
@@ -105,7 +116,7 @@ def boss_end_scene(nave_pos):
         if nave.rect.y > height:
             cont += 1
             if cont >= 60:
-                endgame_history.endgame_history()
+                endgame_history.endgame_history(cursor.x, cursor.y, controller)
 
         if not rotated:
             screen.blit(nave.image, nave.rect)

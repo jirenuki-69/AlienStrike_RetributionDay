@@ -3,7 +3,7 @@ import sys, title_screen
 from pygame import mixer
 from clases.Music import Music
 
-def credits():
+def credits(cursor, controller):
     music = Music()
     music.credits()
     width = 1200
@@ -25,7 +25,10 @@ def credits():
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
-                    title_screen.title_screen()
+                    title_screen.title_screen(cursor.x, cursor.y, controller)
+
+            if event.type == pygame.JOYBUTTONDOWN:
+                title_screen.title_screen(cursor.x, cursor.y, controller)
 
         screen.blit(background, [0 , 0])
 

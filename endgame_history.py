@@ -1,11 +1,11 @@
-import pygame, sys, const, credits
+import pygame, sys, const, credits, xbox360_controller
 from clases.Escena import Escena
 from clases.Music import Music
+from clases.Cursor import Cursor
 
 index = 0
 
-def endgame_history():
-    global index
+def endgame_history(cursor_x, cursor_y, controller):
 
     music = Music()
     music.endgame()
@@ -14,7 +14,7 @@ def endgame_history():
     size = (width, height)
     screen = pygame.display.set_mode(size)
     clock = pygame.time.Clock()
-    fps = 30
+    fps = 60
     font = pygame.font.Font("fonts/ufonts.com_windpower.ttf", 25)
     timer_event = pygame.USEREVENT + 1
     pygame.time.set_timer(timer_event, 10000)
@@ -30,13 +30,18 @@ def endgame_history():
         35
     )
 
+    cursor = Cursor(
+        (cursor_x, cursor_y),
+        screen
+    )
+
     def change_scene():
         escena.load_new_image(
             const.ESCENAS_ENDGAME[index],
             const.ENDGAME_STORY[index],
         )
 
-    def event_manager():
+    def event_manager(cursor, controller):
         global index
 
         for event in pygame.event.get():
@@ -45,7 +50,12 @@ def endgame_history():
 
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN and escena.is_last_scene:
-                    credits.credits()
+                    credits.credits(cursor, controller)
+
+            elif event.type == pygame.JOYBUTTONDOWN:
+                if event.joy == controller.get_id():
+                    if event.button == xbox360_controller.A and escena.is_last_scene:
+                        credits.credits(cursor, controller)
 
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 x, y = pygame.mouse.get_pos()
@@ -58,9 +68,23 @@ def endgame_history():
                             escena.last_scene()
                         change_scene()
                     elif index >= len(const.ESCENAS_ENDGAME) - 1 and not escena.is_last_scene:
-                        credits.credits()
+                        credits.credits(cursor, controller)
                 if escena.skip_pressed(x, y):
-                    credits.credits()
+                    credits.credits(cursor, controller)
+
+            elif event.type == pygame.JOYBUTTONDOWN:
+                if escena.next_pressed(cursor.x, cursor.y):
+                    if index < len(const.ESCENAS_ENDGAME) - 1:
+                        index += 1
+                        pygame.time.set_timer(timer_event, 0)
+                        pygame.time.set_timer(timer_event, 10000)
+                        if index == len(const.ESCENAS_ENDGAME) - 1:
+                            escena.last_scene()
+                        change_scene()
+                    elif index >= len(const.ESCENAS_ENDGAME) - 1 and not escena.is_last_scene:
+                        credits.credits(cursor, controller)
+                if escena.skip_pressed(cursor.x, cursor.y):
+                    credits.credits(cursor, controller)
 
             elif event.type == timer_event:
                 if index < len(const.ESCENAS_ENDGAME) - 1 and not escena.is_last_scene:
@@ -69,12 +93,18 @@ def endgame_history():
                         escena.last_scene()
                     change_scene()
                 elif index >= len(const.ESCENAS_ENDGAME) - 1 and not escena.is_last_scene:
-                    credits.credits()
+                    credits.credits(cursor, controller)
+
+        if controller != None:
+            x_controller, y_controller = controller.get_left_stick()
+            cursor.movement(x_controller, y_controller)
 
     while True:
-        event_manager()
+        event_manager(cursor, controller)
 
         escena.show_scene()
+
+        cursor.update()
 
         pygame.display.flip()
         clock.tick(fps)

@@ -1,9 +1,10 @@
-import pygame, sys, const
+import pygame, sys, const, main_menu
 from pygame import mixer
 from clases.Music import Music
 from clases.Sound import Sound
+from clases.Cursor import Cursor
 
-def practice_splash_screen():
+def practice_splash_screen(cursor_x, cursor_y, controller):
     music = Music()
     music.splash_screen()
     sound = Sound()
@@ -24,17 +25,25 @@ def practice_splash_screen():
     in_position = False
     y = height
 
-    def event_manager():
+    cursor = Cursor(
+        (cursor_x, cursor_y),
+        screen
+    )
+
+    def event_manager(cursor, controller):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
 
             if event.type == pygame.KEYDOWN:
                 print("Ir a practica")
-                #LVL_1.lvl_1()
+                main_menu.main_menu(cursor.x, cursor.y, controller)
+            if event.type == pygame.JOYBUTTONDOWN:
+                print("Ir a practica")
+                main_menu.main_menu(cursor.x, cursor.y, controller)
 
     while True:
-        event_manager()
+        event_manager(cursor, controller)
 
         if not in_position:
             y -= 20

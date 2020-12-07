@@ -3,9 +3,10 @@ import sys
 from pygame import mixer
 from clases.Button import Button
 from clases.Music import Music
-import main_menu, const, option_screen, demo
+from clases.Cursor import Cursor
+import main_menu, const, option_screen, demo, xbox360_controller
 
-def title_screen():
+def title_screen(cursor_x, cursor_y, controller):
     music = Music()
     music.title_screen()
     width = 1200
@@ -47,7 +48,13 @@ def title_screen():
         const.WHITE
     )
 
-    def event_manager():
+    cursor = Cursor(
+        (cursor_x, cursor_y),
+        screen
+    )
+
+    def event_manager(cursor, controller):
+
         for event in pygame.event.get():
             mouse_x, mouse_y = pygame.mouse.get_pos()
 
@@ -56,16 +63,24 @@ def title_screen():
 
             #Compruebo la posicion del cursos para validar el hover del botón
             menu_button.is_hovered(mouse_x, mouse_y)
+            if controller != None:
+                menu_button.is_hovered(cursor.x, cursor.y)
 
             if pygame.mouse.get_pressed()[0]:
                 x, y = pygame.mouse.get_pos()
                 if menu_button.is_pressed(event, x, y):
-                    main_menu.main_menu()
+                    main_menu.main_menu(cursor.x, cursor.y, controller)
                 if settingsRect.collidepoint(x, y):
-                    option_screen.option_screen()
+                    option_screen.option_screen(controller, cursor.x, cursor.y)
+
+            elif event.type == pygame.JOYBUTTONDOWN:
+                if menu_button.is_pressed(event, cursor.x, cursor.y):
+                    main_menu.main_menu(cursor.x, cursor.y, controller)
+                if settingsRect.collidepoint(cursor.x, cursor.y):
+                    option_screen.option_screen(controller, cursor.x, cursor.y)
 
     while True:
-        event_manager()
+        event_manager(cursor, controller)
         background = pygame.image.load(const.CITY_PULSING_LIGHTS[index])
         background = pygame.transform.scale(background, size)
 
@@ -73,6 +88,12 @@ def title_screen():
         screen.blit(logo, (int(width * 0.1), int(height * 0.05)))
         screen.blit(settings, [settingsRect[0], settingsRect[1]])
         menu_button.init_button()
+
+        cursor.update()
+
+        if controller != None:
+            x_controller, y_controller = controller.get_left_stick()
+            cursor.movement(x_controller, y_controller)
 
         cont += 1
 

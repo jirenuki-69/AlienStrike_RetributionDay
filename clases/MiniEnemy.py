@@ -36,7 +36,8 @@ class MiniEnemy():
         self.boom.rect.x, self.boom.rect.y = (self.rect.x, self.rect.y)
 
     def explode(self):
-        self.sound.alien_explosion()
+        if self.cont == 0:
+            self.sound.alien_explosion()
         self.update_explode_position()
         self.boom.update()
         self.screen.blit(self.boom.image, (self.rect.x - 20, self.rect.y - 20))

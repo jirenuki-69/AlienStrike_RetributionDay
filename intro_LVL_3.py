@@ -10,7 +10,7 @@ def conseguir_nombre():
         for linea in archivo.readlines():
             return str(linea.split("-")[0])
 
-def intro_lvl_3(difficulty, shields, vidas):
+def intro_lvl_3(cursor, controller, difficulty, shields, vidas):
     music = Music()
     music.stop()
     sound = Sound()
@@ -118,6 +118,18 @@ def intro_lvl_3(difficulty, shields, vidas):
                         index += 1
                         texto.text = dialogo_intro[index]
 
+            elif event.type == pygame.JOYBUTTONDOWN:
+                if index + 1 == len(dialogo_intro):
+                    if not is_get_ready_opened and dialogue_open:
+                        sound.get_ready()
+                        music.lvl_3()
+                        is_get_ready_opened = True
+                        dialogue_open = False
+                else:
+                    sound.dialogue_change()
+                    index += 1
+                    texto.text = dialogo_intro[index]
+
         screen.blit(background, [0 , 0])
         screen.blit(nave.image, nave.rect)
 
@@ -140,7 +152,7 @@ def intro_lvl_3(difficulty, shields, vidas):
         if is_get_ready_opened:
             cont2 += 1
             if cont2 >= secs * 2:
-                LVL_3.lvl_3(difficulty, shields, vidas)
+                LVL_3.lvl_3(cursor, controller, difficulty, shields, vidas)
             screen.blit(get_ready, [width / 2 - 150, height / 2 - 75])
 
         pygame.display.flip()

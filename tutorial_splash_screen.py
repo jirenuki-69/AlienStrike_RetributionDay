@@ -2,8 +2,9 @@ import pygame, sys, const, tutorial
 from pygame import mixer
 from clases.Music import Music
 from clases.Sound import Sound
+from clases.Cursor import Cursor
 
-def tutorial_splash_screen():
+def tutorial_splash_screen(cursor_x, cursor_y, controller):
     music = Music()
     music.splash_screen()
     sound = Sound()
@@ -24,13 +25,22 @@ def tutorial_splash_screen():
     in_position = False
     y = height
 
+    cursor = Cursor(
+        (cursor_x, cursor_y),
+        screen
+    )
+
     def event_manager():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
 
             if event.type == pygame.KEYDOWN:
-                tutorial.tutorial()
+                tutorial.tutorial(cursor.x, cursor.y, controller)
+
+            if controller != None:
+                if event.type == pygame.JOYBUTTONDOWN:
+                    tutorial.tutorial(cursor.x, cursor.y, controller)
 
     while True:
         event_manager()

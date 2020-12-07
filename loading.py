@@ -3,8 +3,9 @@ import intro_LVL_1, intro_LVL_2, intro_LVL_3, intro_boss
 from clases.Shield import Escudo
 from clases.Texto import Texto
 from clases.Sound import Sound
+from clases.Cursor import Cursor
 
-def loading(next_level, difficulty = "easy", shields = [], vidas = 5):
+def loading(next_level, cursor, controller, difficulty = "easy", shields = [], vidas = 5):
     pygame.init()
     sound = Sound()
     width = 1200
@@ -61,13 +62,13 @@ def loading(next_level, difficulty = "easy", shields = [], vidas = 5):
 
         if cont >= 90:
             if next_level == "1":
-                intro_LVL_1.intro_lvl_1()
+                intro_LVL_1.intro_lvl_1(cursor, controller)
             elif next_level == "2":
-                intro_LVL_2.intro_lvl_2(difficulty, shields, vidas)
+                intro_LVL_2.intro_lvl_2(cursor, controller, difficulty, shields, vidas)
             elif next_level == "3":
-                intro_LVL_3.intro_lvl_3(difficulty, shields, vidas)
+                intro_LVL_3.intro_lvl_3(cursor, controller, difficulty, shields, vidas)
             elif next_level == "boss":
-                intro_boss.intro_boss(difficulty, shields, vidas)
+                intro_boss.intro_boss(cursor, controller, difficulty, shields, vidas)
 
 
         pygame.display.flip()

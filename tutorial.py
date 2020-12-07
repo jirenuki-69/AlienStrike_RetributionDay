@@ -9,13 +9,14 @@ import random
 from clases.Kboom import Explosion
 from clases.Music import Music
 from clases.Sound import Sound
+from clases.Cursor import Cursor
 
 step = 0
 response = 0
 exploded = False
 EnemyShoot = True
 mainExplode = False
-def tutorial():
+def tutorial(cursor_x, cursor_y, controller):
     global enemyShoot
     global step
     global exploded
@@ -61,6 +62,11 @@ def tutorial():
     #My values
     rectSize = (275, 100)
 
+    cursor = Cursor(
+        (cursor_x, cursor_y),
+        screen
+    )
+
     def text(data, x, y, color, size, screen):
         font = pygame.font.Font(const.FONT_v2, size)
         texto_marcador = font.render(data, True, color)
@@ -101,7 +107,7 @@ def tutorial():
             enemyShoot = False
 
 
-    def event_manager():
+    def event_manager(cursor, controller):
         global step
         global response
         for event in pygame.event.get():
@@ -110,16 +116,28 @@ def tutorial():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     if step == len(const.TUTORIAL) - 1:
-                        main_menu.main_menu()
+                        main_menu.main_menu(cursor.x, cursor.y, controller)
                     sound.dialogue_change()
                     step += 1
 
+            if controller != None:
+                if event.type == pygame.JOYBUTTONDOWN:
+                    if step == len(const.TUTORIAL) - 1:
+                        main_menu.main_menu(cursor.x, cursor.y, controller)
+                    sound.dialogue_change()
+                    step += 1
+
+            print(cont)
+            response = nave.event_manager(cont, controller, event)
+
+        if controller != None:
+            controller_x = controller.get_left_stick()[0]
+            nave.controller_update(controller_x)
 
 
-        response = nave.event_manager(cont)
 
     while True:
-        event_manager()
+        event_manager(cursor, controller)
         screen.blit(background, [width * 0, height * 0])
         screen.blit(dialogo, [0, height - 200])
 
@@ -138,7 +156,7 @@ def tutorial():
 
         screen.blit(nave.image, nave.rect)
         text(const.TUTORIAL[step], width * .135, height * .88, const.BLACK, 18, screen)
-        if cont == fps * time:
+        if cont >= fps * time:
             cont = 0
             mag = True
 

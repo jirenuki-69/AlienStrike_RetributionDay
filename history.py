@@ -1,7 +1,8 @@
-import pygame, sys
+import pygame, sys, xbox360_controller
 from pygame import mixer
 from clases.Escena import Escena
 from clases.Music import Music
+from clases.Cursor import Cursor
 import const, title_screen
 
 index = 0
@@ -58,13 +59,23 @@ def history():
         (size[0], size[1])
     )
 
+    cursor = Cursor(
+        (int(width * 0.9), int(height * 0.3)),
+        screen
+    )
+
+    try:
+        controller = xbox360_controller.Controller()
+    except:
+        controller = None
+
     def change_scene():
         escena.load_new_image(
             const.ESCENAS[index],
             ESCENAS_TEXTO[index],
         )
 
-    def event_manager():
+    def event_manager(cursor):
         global index
 
         for event in pygame.event.get():
@@ -79,22 +90,42 @@ def history():
                         pygame.time.set_timer(timer_event, 0)
                         pygame.time.set_timer(timer_event, 10000)
                     else:
-                        title_screen.title_screen()
+                        title_screen.title_screen(cursor.x, cursor.y, controller)
                 if escena.skip_pressed(x, y):
-                    title_screen.title_screen()
+                    title_screen.title_screen(cursor.x, cursor.y, controller)
+
+            #Eventos con el control
+            elif event.type == pygame.JOYBUTTONDOWN:
+                if escena.next_pressed(cursor.x, cursor.y):
+                    if index < len(const.ESCENAS) - 1:
+                        index += 1
+                        change_scene()
+                        pygame.time.set_timer(timer_event, 0)
+                        pygame.time.set_timer(timer_event, 10000)
+                    else:
+                        title_screen.title_screen(cursor.x, cursor.y, controller)
+                if escena.skip_pressed(cursor.x, cursor.y):
+                    title_screen.title_screen(cursor.x, cursor.y, controller)
 
             elif event.type == timer_event:
                 if index < len(const.ESCENAS) - 1:
                     index += 1
                     change_scene()
                 else:
-                    title_screen.title_screen()
+                    title_screen.title_screen(cursor.x, cursor.y, controller)
+
+        if controller != None:
+            x_controller, y_controller = controller.get_left_stick()
+            cursor.movement(x_controller, y_controller)
+
     while True:
-        event_manager()
+        event_manager(cursor)
 
         screen.fill(const.BLACK)
 
         escena.show_scene()
+
+        cursor.update()
 
         pygame.display.flip()
         clock.tick(fps)

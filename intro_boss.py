@@ -10,7 +10,7 @@ def conseguir_nombre():
         for linea in archivo.readlines():
             return str(linea.split("-")[0])
 
-def intro_boss(difficulty, shields, vidas):
+def intro_boss(cursor, controller, difficulty, shields, vidas):
     music = Music()
     music.game_over()
     sound = Sound()
@@ -96,6 +96,18 @@ def intro_boss(difficulty, shields, vidas):
                         index += 1
                         texto.text = dialogo_intro[index]
 
+            elif event.type == pygame.JOYBUTTONDOWN:
+                if index + 1 == len(dialogo_intro):
+                    if not is_get_ready_opened and dialogue_open:
+                        music.boss()
+                        sound.get_ready()
+                        is_get_ready_opened = True
+                        dialogue_open = False
+                else:
+                    sound.dialogue_change()
+                    index += 1
+                    texto.text = dialogo_intro[index]
+
         screen.blit(background, [0 , 0])
         boss.update()
         screen.blit(boss.image,boss.rect)
@@ -117,7 +129,7 @@ def intro_boss(difficulty, shields, vidas):
         if is_get_ready_opened:
             cont2 += 1
             if cont2 >= secs * 2:
-                boss_fight.boss_fight(difficulty, shields, vidas)
+                boss_fight.boss_fight(cursor, controller, difficulty, shields, vidas)
             screen.blit(get_ready, [width / 2 - 150, height / 2 - 75])
 
         pygame.display.flip()

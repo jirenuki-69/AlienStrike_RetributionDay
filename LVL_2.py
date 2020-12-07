@@ -25,7 +25,7 @@ response = 0
 boom = []
 boomExplode = []
 cont = 0
-def lvl_2(difficulty, shields, vidas):
+def lvl_2(cursor, controller, difficulty, shields, vidas):
     global response
     global boom
     global boomExplode
@@ -190,24 +190,28 @@ def lvl_2(difficulty, shields, vidas):
         pygame.draw.rect(screen, const.GREEN, rectangulo)
 
 
-    def event_manager():
+    def event_manager(controller):
         global step
         global response
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
 
-        response = nave.event_manager(cont)
+            response = nave.event_manager(cont, controller, event)
+
+        if controller != None:
+            controller_x = controller.get_left_stick()[0]
+            nave.controller_update(controller_x)
 
     while True:
-        event_manager()
+        event_manager(controller)
         if vidas <= 0:
             music.stop()
             sound.boss_explosion()
             cont = 0
             while vidas <= 0:
                 cont += 1
-                event_manager()
+                event_manager(controller)
                 screen.blit(background, [width * 0, height * 0])
                 screen.blit(nave.image, nave.rect)
                 nave.update_explode_position_end()
@@ -219,7 +223,7 @@ def lvl_2(difficulty, shields, vidas):
                     break
                 pygame.display.flip()
                 clock.tick(fps)
-            game_over.game_over()
+            game_over.game_over(cursor, controller)
         if rows < 0:
             music.stop()
             #Outro del nivel
@@ -253,6 +257,15 @@ def lvl_2(difficulty, shields, vidas):
                                 index2 += 1
                                 texto2.text = const.OUTRO_2[index2]
 
+                    if event.type == pygame.JOYBUTTONDOWN:
+                        if index2 + 1 == len(const.OUTRO_2):
+                            sound.dialogue_change()
+                            leaving = True
+                        else:
+                            sound.dialogue_change()
+                            index2 += 1
+                            texto2.text = const.OUTRO_2[index2]
+
                 screen.blit(background, [width * 0, height * 0])
                 screen.blit(nave.image, nave.rect)
 
@@ -282,7 +295,7 @@ def lvl_2(difficulty, shields, vidas):
                 pygame.display.flip()
                 clock.tick(fps)
 
-            loading.loading("3", difficulty, shields, vidas)
+            loading.loading("3", cursor, controller, difficulty, shields, vidas)
 
         screen.blit(background, [width * 0, height * 0])
         screen.blit(HUD, [0, height - 150])

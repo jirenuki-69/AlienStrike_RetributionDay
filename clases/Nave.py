@@ -1,4 +1,4 @@
-import pygame
+import pygame, xbox360_controller
 from pygame import mixer
 from clases.MiniKboom import Explosion
 from clases.Sound import Sound
@@ -101,7 +101,6 @@ class Nave():
         self.boom.rect.x, self.boom.rect.y = (self.rect.x, self.rect.y)
 
     def explode(self):
-        self.sound.player_explosion()
         self.update_explode_position()
         self.boom.update()
         self.screen.blit(self.boom.image, (self.rect.x + 20, self.rect.y + 15))
@@ -119,6 +118,16 @@ class Nave():
             self.sound.player_shoot()
         self.response = self.rect
 
+    def controller_update(self, x):
+        #Se va a la izquierda
+        if x < 0:
+            if self.rect.x - self.movementSpeed > -15:
+                self.rect.x -= self.movementSpeed
+        #Se va a la derecha
+        elif x > 0:
+            if self.rect.x + self.movementSpeed < self.screenSize[0] - self.rect.x * .15:
+                self.rect.x += self.movementSpeed
+
     def update(self, direction):
         if direction == "left" and self.rect.x - self.movementSpeed > -15:
 
@@ -128,15 +137,22 @@ class Nave():
 
             self.rect.x += self.movementSpeed
 
-    def event_manager(self, cont):
+    def event_manager(self, cont, controller, event):
         keys = pygame.key.get_pressed()
         mouse = pygame.mouse.get_pressed()
+        triggers = controller.get_triggers()
 
         if keys[pygame.K_a]:
             self.update("left")
         if keys[pygame.K_d]:
             self.update("right")
         if mouse[0] or keys[pygame.K_SPACE]:
+            self.ban = True
+            self.shoot(cont)
+        elif triggers > -1.0 and triggers < -0.9:
+            self.ban = True
+            self.shoot(cont)
+        elif triggers > 0.9:
             self.ban = True
             self.shoot(cont)
         else:

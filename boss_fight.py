@@ -36,7 +36,7 @@ mainExplode = False
 nave = 0
 objeto1 = 0
 boss = 0
-def boss_fight(difficulty, shields, vidas):
+def boss_fight(cursor, controller, difficulty, shields, vidas):
     global nave
     global response
     global objeto3
@@ -48,7 +48,6 @@ def boss_fight(difficulty, shields, vidas):
     global objeto1
     global boss
     music = Music()
-    music.boss()
     sound = Sound()
     #pygame.mixer.music.load("assets/music/special_tracks/teachmenow.mp3")
     #pygame.mixer.music.set_volume(.1)
@@ -386,14 +385,18 @@ def boss_fight(difficulty, shields, vidas):
               boss.boom_left.boom_end = False
               boss.boom_right.boom_end = False
 
-    def event_manager():
+    def event_manager(controller):
         global step
         global response
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
 
-        response = nave.event_manager(cont)
+            response = nave.event_manager(cont, controller, event)
+
+        if controller != None:
+            controller_x = controller.get_left_stick()[0]
+            nave.controller_update(controller_x)
 
     def spcLaser_nave(nave, spcLaser, vidas):
         if nave.rect.colliderect((spcLaser.rect.x + 60, spcLaser.rect.y, 154 - 155, 954)) and not spcLaser.off and not spcLaser.hit_ship:
@@ -420,14 +423,14 @@ def boss_fight(difficulty, shields, vidas):
 
 
     while True:
-        event_manager()
+        event_manager(controller)
         if vidas <= 0:
             music.stop()
             sound.boss_explosion()
             cont = 0
             while vidas <= 0:
                 cont += 1
-                event_manager()
+                event_manager(controller)
                 screen.blit(background, [width * 0, height * 0])
                 screen.blit(nave.image, nave.rect)
                 nave.update_explode_position_end()
@@ -439,13 +442,13 @@ def boss_fight(difficulty, shields, vidas):
                     break
                 pygame.display.flip()
                 clock.tick(fps)
-            game_over.game_over()
+            game_over.game_over(cursor, controller)
         if boss.health <= 0:
             sound.boss_explosion()
             music.stop()
             while boss.health <= 0:
                 cont += 1
-                event_manager()
+                event_manager(controller)
                 screen.blit(background, [width * 0, height * 0])
                 boss.update()
                 screen.blit(boss.image,boss.rect)
@@ -456,7 +459,7 @@ def boss_fight(difficulty, shields, vidas):
                 #duración 8 secs
                 if cont >= 60 * 5:
                     #Aqui puedo poner una escena despues de derrotar al boss
-                    boss_end_scene.boss_end_scene((nave.rect.x, nave.rect.y))
+                    boss_end_scene.boss_end_scene((nave.rect.x, nave.rect.y), cursor, controller)
                     break
 
                 pygame.display.flip()

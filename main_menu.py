@@ -4,13 +4,14 @@ import const, tutorial
 import title_screen
 from clases.Texto import Texto
 from clases.Music import Music
+from clases.Cursor import Cursor
 
 def conseguir_nombre():
     with open ("nombre.txt") as archivo:
         for linea in archivo.readlines():
             return str(linea.split("-")[0])
 
-def main_menu():
+def main_menu(cursor_x, cursor_y, controller):
     music = Music()
     music.chilling_grilling()
     width = 1200
@@ -70,7 +71,12 @@ def main_menu():
         55
     )
 
-    def event_manager():
+    cursor = Cursor(
+        (cursor_x, cursor_y),
+        screen
+    )
+
+    def event_manager(cursor, controller):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
@@ -78,16 +84,26 @@ def main_menu():
             if pygame.mouse.get_pressed()[0]:
                 x, y = pygame.mouse.get_pos()
                 if texto_arcade.text_rect.collidepoint(x, y):
-                    arcade_splash_screen.arcade_splash_screen()
+                    arcade_splash_screen.arcade_splash_screen(cursor.x, cursor.y, controller)
                 elif texto_practice.text_rect.collidepoint(x, y):
-                    practice_splash_screen.practice_splash_screen()
+                    practice_splash_screen.practice_splash_screen(cursor.x, cursor.y, controller)
                 elif texto_tutorial.text_rect.collidepoint(x, y):
-                    tutorial_splash_screen.tutorial_splash_screen()
+                    tutorial_splash_screen.tutorial_splash_screen(cursor.x, cursor.y, controller)
                 elif texto_return.text_rect.collidepoint(x, y):
-                    title_screen.title_screen()
+                    title_screen.title_screen(cursor.x, cursor.y, controller)
+
+            elif event.type == pygame.JOYBUTTONDOWN:
+                if texto_arcade.text_rect.collidepoint(cursor.x, cursor.y):
+                    arcade_splash_screen.arcade_splash_screen(cursor.x, cursor.y, controller)
+                elif texto_practice.text_rect.collidepoint(cursor.x, cursor.y):
+                    practice_splash_screen.practice_splash_screen(cursor.x, cursor.y, controller)
+                elif texto_tutorial.text_rect.collidepoint(cursor.x, cursor.y):
+                    tutorial_splash_screen.tutorial_splash_screen(cursor.x, cursor.y, controller)
+                elif texto_return.text_rect.collidepoint(cursor.x, cursor.y):
+                    title_screen.title_screen(cursor.x, cursor.y, controller)
 
     while True:
-        event_manager()
+        event_manager(cursor, controller)
 
         screen.blit(background, [0, 0])
 
@@ -96,6 +112,12 @@ def main_menu():
         texto_tutorial.show_text()
         texto_return.show_text()
         texto_descripcion.show_text()
+
+        cursor.update()
+
+        if controller != None:
+            x_controller, y_controller = controller.get_left_stick()
+            cursor.movement(x_controller, y_controller)
 
         pygame.display.flip()
         clock.tick(fps)

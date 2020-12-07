@@ -2,8 +2,9 @@ import pygame, sys, const, loading
 from pygame import mixer
 from clases.Music import Music
 from clases.Sound import Sound
+from clases.Cursor import Cursor
 
-def arcade_splash_screen():
+def arcade_splash_screen(cursor_x, cursor_y, controller):
     music = Music()
     music.splash_screen()
     sound = Sound()
@@ -24,16 +25,24 @@ def arcade_splash_screen():
     in_position = False
     y = height
 
-    def event_manager():
+    cursor = Cursor(
+        (cursor_x, cursor_y),
+        screen
+    )
+
+    def event_manager(cursor, controller):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
 
             if event.type == pygame.KEYDOWN:
-                loading.loading("1")
+                loading.loading("1", cursor, controller)
+
+            if event.type == pygame.JOYBUTTONDOWN:
+                loading.loading("1", cursor, controller)
 
     while True:
-        event_manager()
+        event_manager(cursor, controller)
 
         if not in_position:
             y -= 20

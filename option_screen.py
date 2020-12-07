@@ -1,8 +1,9 @@
-import pygame, sys, const, title_screen
+import pygame, sys, const, title_screen, xbox360_controller
 from clases.Texto import Texto
 from clases.Button import Button
 from clases.Music import Music
 from clases.Sound import Sound
+from clases.Cursor import Cursor
 
 def conseguir_nombre():
     with open ("nombre.txt") as archivo:
@@ -26,7 +27,7 @@ def cambiar_dificultad(dificultad):
 
     my_file.close()
 
-def option_screen():
+def option_screen(controller, cursor_x, cursor_y):
     music = Music()
     music.options()
     sound = Sound()
@@ -262,6 +263,11 @@ def option_screen():
         const.WHITE
     )
 
+    cursor = Cursor(
+        (cursor_x, cursor_y),
+        screen
+    )
+
     #Del volumen del juego
     minus_rect.x, minus_rect.y = (int(width * 0.4), int(height * 0.257))
     small_minus_rect.x, small_minus_rect.y = (int(width * 0.45), int(height * 0.266))
@@ -312,7 +318,7 @@ def option_screen():
         screen.blit(back_arrow, (back_arrow_rect.x, back_arrow_rect.y))
         screen.blit(next_arrow, ((next_arrow_rect.x, next_arrow_rect.y)))
 
-    def event_manager():
+    def event_manager(cursor, controller):
         new_volume = music.get_volume()
         new_sound_volume = sound.get_SFX_volume()
         text_cont = len(texto_new_name.text)
@@ -342,7 +348,7 @@ def option_screen():
                     display[1] = False
 
                 if exit_button.is_pressed(event, x, y):
-                    title_screen.title_screen()
+                    title_screen.title_screen(cursor.x, cursor.y, controller)
 
                 if display[0]:
                     if small_minus_rect.collidepoint(x, y):
@@ -414,6 +420,129 @@ def option_screen():
 
                         texto_dificultad_placeholder.text = conseguir_dificultad()
 
+                    if back_arrow_rect.collidepoint(x, y):
+                        if dificultad == "easy":
+                            cambiar_dificultad("hard")
+                        else:
+                            cambiar_dificultad("easy")
+
+                        texto_dificultad_placeholder.text = conseguir_dificultad()
+
+                    if next_arrow_rect.collidepoint(x, y):
+                        if dificultad == "easy":
+                            cambiar_dificultad("hard")
+                        else:
+                            cambiar_dificultad("easy")
+
+                        texto_dificultad_placeholder.text = conseguir_dificultad()
+
+            if event.type == pygame.JOYBUTTONDOWN:
+                if event.joy == controller.get_id():
+                    if event.button == xbox360_controller.B or event.button == xbox360_controller.A:
+                        if volume_button.is_pressed(event, cursor.x, cursor.y):
+                            display[0] = True
+                            display[1] = False
+                            display[2] = False
+
+                        if name_button.is_pressed(event, cursor.x, cursor.y):
+                            display[1] = True
+                            display[0] = False
+                            display[2] = False
+
+                        if dificulty_button.is_pressed(event, cursor.x, cursor.y):
+                            display[2] = True
+                            display[0] = False
+                            display[1] = False
+
+                        if exit_button.is_pressed(event, cursor.x, cursor.y):
+                            title_screen.title_screen(cursor.x, cursor.y, controller)
+
+                    if display[0]:
+                        if small_minus_rect.collidepoint(cursor.x, cursor.y):
+                            if new_volume - 0.01 >= 0:
+                                new_volume -= 0.01
+                                music.set_volume(round(new_volume, 2))
+                                music.reset_volume()
+                                texto_new_volume.text = str(music.get_volume())
+
+                        if minus_rect.collidepoint(cursor.x, cursor.y):
+                            if new_volume - 0.1 >= 0:
+                                new_volume -= 0.1
+                                music.set_volume(round(new_volume, 2))
+                                music.reset_volume()
+                                texto_new_volume.text = str(music.get_volume())
+
+                        if plus_rect.collidepoint(cursor.x, cursor.y):
+                            if new_volume + 0.1 <= 1:
+                                new_volume += 0.1
+                                music.set_volume(round(new_volume, 2))
+                                music.reset_volume()
+                                texto_new_volume.text = str(music.get_volume())
+
+                        if small_plus_rect.collidepoint(cursor.x, cursor.y):
+                            if new_volume + 0.01 <= 1:
+                                new_volume += 0.01
+                                music.set_volume(round(new_volume, 2))
+                                music.reset_volume()
+                                texto_new_volume.text = str(music.get_volume())
+
+                        if sound_small_minus_rect.collidepoint(cursor.x, cursor.y):
+                            if new_sound_volume - 0.01 >= 0:
+                                new_sound_volume -= 0.01
+                                sound.set_SFX_volume(round(new_sound_volume, 2))
+                                texto_new_SFX.text = str(sound.get_SFX_volume())
+
+                        if sound_minus_rect.collidepoint(cursor.x, cursor.y):
+                            if new_sound_volume - 0.1 >= 0:
+                                new_sound_volume -= 0.1
+                                sound.set_SFX_volume(round(new_sound_volume, 2))
+                                texto_new_SFX.text = str(sound.get_SFX_volume())
+
+                        if sound_small_plus_rect.collidepoint(cursor.x, cursor.y):
+                            if new_sound_volume + 0.01 <= 1:
+                                new_sound_volume += 0.01
+                                sound.set_SFX_volume(round(new_sound_volume, 2))
+                                texto_new_SFX.text = str(sound.get_SFX_volume())
+
+                        if sound_plus_rect.collidepoint(cursor.x, cursor.y):
+                            if new_sound_volume + 0.1 <= 1:
+                                new_sound_volume += 0.1
+                                sound.set_SFX_volume(round(new_sound_volume, 2))
+                                texto_new_SFX.text = str(sound.get_SFX_volume())
+
+                    if display[2]:
+                        if back_arrow_rect.collidepoint(cursor.x, cursor.y):
+                            if dificultad == "easy":
+                                cambiar_dificultad("hard")
+                            else:
+                                cambiar_dificultad("easy")
+
+                            texto_dificultad_placeholder.text = conseguir_dificultad()
+
+                        if next_arrow_rect.collidepoint(cursor.x, cursor.y):
+                            if dificultad == "easy":
+                                cambiar_dificultad("hard")
+                            else:
+                                cambiar_dificultad("easy")
+
+                            texto_dificultad_placeholder.text = conseguir_dificultad()
+
+                        if back_arrow_rect.collidepoint(cursor.x, cursor.y):
+                            if dificultad == "easy":
+                                cambiar_dificultad("hard")
+                            else:
+                                cambiar_dificultad("easy")
+
+                            texto_dificultad_placeholder.text = conseguir_dificultad()
+
+                        if next_arrow_rect.collidepoint(cursor.x, cursor.y):
+                            if dificultad == "easy":
+                                cambiar_dificultad("hard")
+                            else:
+                                cambiar_dificultad("easy")
+
+                            texto_dificultad_placeholder.text = conseguir_dificultad()
+
             if display[1]:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RETURN:
@@ -431,9 +560,8 @@ def option_screen():
                         sound.type()
                         texto_new_name.text += event.unicode
                         text_cont += 1
-
     while True:
-        event_manager()
+        event_manager(cursor, controller)
 
         volume_button.init_button()
         name_button.init_button()
@@ -443,6 +571,12 @@ def option_screen():
         screen.blit(background, [0, 0])
 
         texto_descripcion.show_text()
+
+        cursor.update()
+
+        if controller != None:
+            x_controller, y_controller = controller.get_left_stick()
+            cursor.movement(x_controller, y_controller)
 
         if display[0]:
             display_volume()
