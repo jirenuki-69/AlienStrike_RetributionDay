@@ -31,6 +31,11 @@ class Music():
         self.music.music.play(-1)
         pass
 
+    def intro_level(self):
+        self.music.music.load("assets/music/special_tracks/Alien Soldier - Slap-Up.mp3")
+        self.music.music.play(-1)
+        pass
+
     def game_over(self):
         self.music.music.load("assets/music/GAME OVER MUSIC.mp3")
         self.music.music.play(-1)
@@ -38,6 +43,11 @@ class Music():
 
     def options(self):
         self.music.music.load("assets/music/Smocking shibuya decks.mp3")
+        self.music.music.play(-1)
+        pass
+
+    def splash_screen(self):
+        self.music.music.load("assets/music/special_tracks/Star Fox 2 Soundtrack Continue (1080p).mp3")
         self.music.music.play(-1)
         pass
 

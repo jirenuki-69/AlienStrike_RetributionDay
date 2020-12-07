@@ -49,6 +49,31 @@ TUTORIAL = [
     "Vuelve a presionar Enter para regresar al menu principal"
 ]
 
+OUTRO_1 = [
+    "Eso fue sencillo, pero no puedo confiarme, mientras mas avance, mas dificil sera combatirlos...",
+    "Pero no puedo rendirme, no despues de lo que le hicieron a mi esposa."
+]
+
+OUTRO_2 = [
+    "Excele...",
+    "¿Puedes cerrar la boca un rato por favor?, quiero salvar el mundo pero necesito mas tranquilidad.",
+    "esta bien.",
+    "gracias, ya siento que estoy cerca del final de esta locura."
+]
+
+OUTRO_3 = [
+    "uff, eso fue muy estresante.",
+    "ya estoy cerca de la base de los snatchers, siento el final muy cerca.",
+    "...",
+    "Emm, ¿Joseph?",
+    "¿Estas alla?",
+    "¿No dijiste que me callara?",
+    "...",
+    "......",
+    "perdon.",
+    "Sin problemas amigo."
+]
+
 ENDGAME_STORY = [
     "Teniendo todo en tu contra y destruir la nave principal de la invacion alienígena, regresaste a casa donde eres recibido por tu mejor amigo, Joseph Brawn. Eres un héroe, ¿pero a qué costo? perdiste todo lo que te importaba en ese momento, tu querida esposa.",
     "Todos tus amigos y conocidos te aplauden mientras bajas del auto... tienes una gran fiesta. pero como todo en la vida, tiene que terminar.",

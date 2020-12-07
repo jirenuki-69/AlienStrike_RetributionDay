@@ -116,7 +116,7 @@ def tutorial():
 
 
 
-        response = nave.event_manager()
+        response = nave.event_manager(cont)
 
     while True:
         event_manager()

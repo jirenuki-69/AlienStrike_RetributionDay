@@ -1,4 +1,4 @@
-import pygame
+import pygame, game_over, loading
 import sys
 from pygame import mixer
 from clases.Nave import Nave
@@ -8,9 +8,18 @@ import random
 from clases.Shield import Escudo
 from clases.MiniEnemy import MiniEnemy
 from clases.Music import Music
-import LVL_2
+from clases.Sound import Sound
+from clases.Texto import Texto
 
+def conseguir_nombre():
+    with open ("nombre.txt") as archivo:
+        for linea in archivo.readlines():
+            return str(linea.split("-")[0])
 
+def conseguir_dificultad():
+    with open ("difficulty.txt") as archivo:
+        for linea in archivo.readlines():
+            return str(linea.split("-")[0])
 
 response = 0
 boom = []
@@ -24,7 +33,7 @@ def lvl_1():
     pygame.init()
     pygame.display.set_caption("Alien Strike: Retribution Day")
     music = Music()
-    music.lvl_1()
+    sound = Sound()
     width = 1200
     height = 800
     size = (width, height)
@@ -34,6 +43,12 @@ def lvl_1():
     background = pygame.image.load("assets/visual/gameplay_assets/BG_level1.png")
     background = pygame.transform.scale(background, size)
     vidaImage = pygame.image.load("assets/visual/gameplay_assets/navevidas.png")
+    vidaImage = pygame.transform.scale(vidaImage, (25, 25))
+    HUD = pygame.image.load("assets/visual/gameplay_assets/HUD.png")
+    HUD = pygame.transform.scale(HUD, (325, 150))
+    dialogo = pygame.image.load("assets/visual/gameplay_assets/dialogo_negro.png")
+    dialogo_HERO = pygame.image.load("assets/visual/gameplay_assets/dialogo_negro_HERO.png")
+    font = pygame.font.Font("fonts/Pixel LCD-7.ttf", 18)
     # settings = pygame.image.load("assets/settings.png")
     clock = pygame.time.Clock()
     fps = 60
@@ -85,12 +100,45 @@ def lvl_1():
         screen
     )
 
+    texto_nombre = Texto(
+        conseguir_nombre(),
+        (width * 0.1, height * 0.84),
+        font,
+        screen,
+        None,
+        const.WHITE
+    )
+
+    texto_dificultad = Texto(
+        conseguir_dificultad(),
+        (width * 0.1, height * 0.87),
+        font,
+        screen,
+        None,
+        const.WHITE
+    )
+
+    texto_level = Texto(
+        "- nivel 1",
+        (width * 0.15, height * 0.87),
+        font,
+        screen,
+        None,
+        const.WHITE
+    )
+
+    texto_muerte = Texto(
+        f"{conseguir_nombre()} NOOOOOOOOOOOOOOOOOO",
+        (int(width * 0.15), int(height * 0.9)),
+        font,
+        screen,
+        75,
+        const.WHITE,
+    )
+
     shields.append(shield1)
     shields.append(shield2)
     shields.append(shield3)
-
-
-
 
     def fire(character, objarrg):
         global boom
@@ -138,13 +186,13 @@ def lvl_1():
         return damage
 
     def magazine(screen, x, y, data):
-        largo  = 180
-        ancho = 15
+        largo = 130
+        ancho = 20
         calculo_barra = int((data/100 * largo))
-        borde = pygame.Rect(x, y, 130, ancho)
+        borde = pygame.Rect(x, y, 90, ancho)
         rectangulo = pygame.Rect(x, y, calculo_barra, ancho)
-        pygame.draw.rect(screen, (255, 255, 255), borde, 3)
-        pygame.draw.rect(screen, (255, 255, 255), rectangulo)
+        pygame.draw.rect(screen, const.WHITE, borde, 3)
+        pygame.draw.rect(screen, const.GREEN, rectangulo)
 
 
     def event_manager():
@@ -159,31 +207,92 @@ def lvl_1():
     while True:
         event_manager()
         if vidas <= 0:
-            #de aqui
+            music.stop()
+            sound.boss_explosion()
             cont = 0
             while vidas <= 0:
                 cont += 1
                 event_manager()
                 screen.blit(background, [width * 0, height * 0])
                 screen.blit(nave.image, nave.rect)
-                magazine(screen, width * 0, height * .97, 0 )
-                for x in range(vidas):
-                    if x == 0:
-                        screen.blit(vidaImage, [width - 40 * (x) - 40 - 1, height * .95])
-                    else:
-                        screen.blit(vidaImage, [width - 40 * (x) - 40 - (10 * x), height * .95])
                 nave.update_explode_position_end()
                 nave.explode_end(cont)
-                if cont >= 60 * 5:
+                if cont >= 60 * 4:
+                    screen.blit(dialogo, [0, height - 200])
+                    texto_muerte.show_text()
+                if cont >= 60 * 8:
                     break
                 pygame.display.flip()
                 clock.tick(fps)
-            #termina
-            break
+            game_over.game_over()
         if rows < 0:
-            LVL_2.lvl_2(difficulty, shields, vidas)
+            music.stop()
+            #Outro del nivel
+            index2 = 0
+            cont = 0
+            second_dialog_open = False
+            leaving = False
+            font = pygame.font.Font("fonts/Pixel LCD-7.ttf", 15)
+
+            texto2 = Texto(
+                const.OUTRO_1[index2],
+                (int(width * 0.15), int(height * 0.9)),
+                font,
+                screen,
+                75,
+                const.WHITE,
+            )
+
+            while True:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        sys.exit()
+
+                    if event.type == pygame.KEYDOWN:
+                        if event.key == pygame.K_RETURN and second_dialog_open:
+                            if index2 + 1 == len(const.OUTRO_1):
+                                sound.dialogue_change()
+                                leaving = True
+                            else:
+                                sound.dialogue_change()
+                                index2 += 1
+                                texto2.text = const.OUTRO_1[index2]
+
+                screen.blit(background, [width * 0, height * 0])
+                screen.blit(nave.image, nave.rect)
+
+                if second_dialog_open and not leaving:
+                    screen.blit(dialogo_HERO, [0, height - 200])
+                    texto2.show_text()
+
+                if nave.rect.y > height / 2 - nave.rect.height / 2:
+                    nave.rect.y -= nave.movementSpeed
+
+                print((nave.rect.y, height / 2 - nave.rect.height / 2))
+
+                if nave.rect.y <= height / 2 - nave.rect.height / 2:
+                    second_dialog_open = True
+
+                if leaving:
+                    cont += 1
+                    nave.rect.y -= nave.movementSpeed * 1.5
+
+                if cont >= 60:
+                    break
+
+                pygame.display.flip()
+                clock.tick(fps)
+
+            loading.loading("2", difficulty, shields, vidas)
+
         screen.blit(background, [width * 0, height * 0])
         screen.blit(nave.image, nave.rect)
+        screen.blit(HUD, [0, height - 150])
+        texto_nombre.show_text()
+        texto_dificultad.show_text()
+        texto_level.show_text()
+        screen.blit(nave.image, nave.rect)
+
         if rows > -1 and len(objarrg) == 0:
             while len(boom) > 0:
                 boom.pop()
@@ -208,12 +317,9 @@ def lvl_1():
                 objarrg.append(enemy)
             rows -= 1
 
-        magazine(screen, width * 0, height * .97, cont )
+        magazine(screen, width * 0.01, height * .94, cont)
         for x in range(vidas):
-            if x == 0:
-                screen.blit(vidaImage, [width - 40 * (x) - 40 - 1, height * .95])
-            else:
-                screen.blit(vidaImage, [width - 40 * (x) - 40 - (10 * x), height * .95])
+            screen.blit(vidaImage, [width * 0.1 + (x * 40), height * .935])
 
 
         for i in objarrg:

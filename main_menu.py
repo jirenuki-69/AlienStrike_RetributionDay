@@ -1,4 +1,4 @@
-import pygame, sys
+import pygame, sys, LVL_1, arcade_splash_screen, practice_splash_screen, tutorial_splash_screen
 from pygame import mixer
 import const, tutorial
 import title_screen
@@ -78,11 +78,11 @@ def main_menu():
             if pygame.mouse.get_pressed()[0]:
                 x, y = pygame.mouse.get_pos()
                 if texto_arcade.text_rect.collidepoint(x, y):
-                    print("ARCADE SELECCIONADO")
+                    arcade_splash_screen.arcade_splash_screen()
                 elif texto_practice.text_rect.collidepoint(x, y):
-                    print("PRACTICE SELECCIONADO")
+                    practice_splash_screen.practice_splash_screen()
                 elif texto_tutorial.text_rect.collidepoint(x, y):
-                    tutorial.tutorial()
+                    tutorial_splash_screen.tutorial_splash_screen()
                 elif texto_return.text_rect.collidepoint(x, y):
                     title_screen.title_screen()
 

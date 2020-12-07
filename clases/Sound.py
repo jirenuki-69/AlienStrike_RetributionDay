@@ -47,6 +47,24 @@ class Sound():
         self.sound.play()
         pass
 
+    def arcade_mode(self):
+        self.sound = pygame.mixer.Sound("assets/music/SFX/arcade_mode_final.wav")
+        self.sound.set_volume(self.get_SFX_volume())
+        self.sound.play()
+        pass
+
+    def practice_mode(self):
+        self.sound = pygame.mixer.Sound("assets/music/SFX/practice_mode.wav")
+        self.sound.set_volume(self.get_SFX_volume())
+        self.sound.play()
+        pass
+
+    def tutorial_mode(self):
+        self.sound = pygame.mixer.Sound("assets/music/SFX/tutorial_mode.wav")
+        self.sound.set_volume(self.get_SFX_volume())
+        self.sound.play()
+        pass
+
     def dialogue_change(self):
         self.sound = pygame.mixer.Sound("assets/music/SFX/dialogue_change.wav")
         self.sound.set_volume(self.get_SFX_volume())

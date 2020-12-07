@@ -11,33 +11,7 @@ pygame.init()
 pygame.display.set_caption("Alien Strike: Retribution Day")
 pygame.display.set_icon(const.LOGO)
 
-screen = pygame.display.set_mode((1200, 800))
-shields = []
-
-vidas = 5
-shield1 = Escudo(
-    (int(1200 * .20), int(800 * .75)),
-    (1200, 800),
-    screen
-)
-shield2 = Escudo(
-    (int(1200 * .5), int(800 * .75)),
-    (1200, 800),
-    screen
-)
-shield3 = Escudo(
-    (int(1200 * .80), int(800 * .75)),
-    (1200, 800),
-    screen
-)
-
-shields.append(shield1)
-shields.append(shield2)
-shields.append(shield3)
-
-
-LVL_2.lvl_2("hard", shields, vidas)
-#intro_boss.intro_boss()
+#intro_boss.intro_boss("hard", shields, vidas)
 #endgame_history.endgame_history()
 #LVL_1.lvl_1()
 #LVL_2.lvl_2()

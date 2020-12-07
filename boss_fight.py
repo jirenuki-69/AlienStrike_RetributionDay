@@ -14,6 +14,17 @@ from clases.Boss import Boss
 from clases.BigLaser import Laser
 from clases.Shield import Escudo
 from clases.SpecialLaser import SpecialLaser
+from clases.Texto import Texto
+
+def conseguir_nombre():
+    with open ("nombre.txt") as archivo:
+        for linea in archivo.readlines():
+            return str(linea.split("-")[0])
+
+def conseguir_dificultad():
+    with open ("difficulty.txt") as archivo:
+        for linea in archivo.readlines():
+            return str(linea.split("-")[0])
 
 response = 0
 objeto2 = 0
@@ -51,6 +62,11 @@ def boss_fight(difficulty, shields, vidas):
     background = pygame.image.load("assets/visual/gameplay_assets/boss_background.png")
     background = pygame.transform.scale(background, size)
     vidaImage = pygame.image.load("assets/visual/gameplay_assets/navevidas.png")
+    vidaImage = pygame.transform.scale(vidaImage, (25, 25))
+    HUD = pygame.image.load("assets/visual/gameplay_assets/HUD.png")
+    HUD = pygame.transform.scale(HUD, (325, 150))
+    dialogo = pygame.image.load("assets/visual/gameplay_assets/dialogo_negro.png")
+    font = pygame.font.Font("fonts/Pixel LCD-7.ttf", 18)
     # settings = pygame.image.load("assets/settings.png")
     clock = pygame.time.Clock()
     fps = 60
@@ -99,8 +115,6 @@ def boss_fight(difficulty, shields, vidas):
         shields.append(shield2)
         shields.append(shield3)
 
-
-
     boss = Boss(
         (int(width * 0.50), int(height * 0.35)),
         size,
@@ -118,28 +132,43 @@ def boss_fight(difficulty, shields, vidas):
         size
     )
 
-    shield1 = Escudo(
-        (int(width * .20), int(height * .75)),
-        size,
-        screen
-    )
-    shield2 = Escudo(
-        (int(width * .5), int(height * .75)),
-        size,
-        screen
-    )
-    shield3 = Escudo(
-        (int(width * .80), int(height * .75)),
-        size,
-        screen
+    texto_nombre = Texto(
+        conseguir_nombre(),
+        (width * 0.1, height * 0.84),
+        font,
+        screen,
+        None,
+        const.WHITE
     )
 
-    shields.append(shield1)
-    shields.append(shield2)
-    shields.append(shield3)
+    texto_dificultad = Texto(
+        conseguir_dificultad(),
+        (width * 0.1, height * 0.87),
+        font,
+        screen,
+        None,
+        const.WHITE
+    )
 
-    def nave_Laser(nave, blueLaser):
-        global vidas
+    texto_level = Texto(
+        "- Boss",
+        (width * 0.15, height * 0.87),
+        font,
+        screen,
+        None,
+        const.WHITE
+    )
+
+    texto_muerte = Texto(
+        f"{conseguir_nombre()} NOOOOOOOOOOOOOOOOOO",
+        (int(width * 0.15), int(height * 0.9)),
+        font,
+        screen,
+        75,
+        const.WHITE,
+    )
+
+    def nave_Laser(nave, blueLaser, vidas):
         if nave.rect.colliderect((blueLaser.rect.x, 0, 144, 800)) and not blueLaser.hit_ship:
             blueLaser.hit_ship = True
             vidas -= 1
@@ -199,10 +228,9 @@ def boss_fight(difficulty, shields, vidas):
             x.move()
             screen.blit(x.image, x.rect)
 
-    def enemyFire(character, objarrg):
+    def enemyFire(character, objarrg, vidas):
         global mainExplode
         global enemyShoot
-        global vidas
         screen.blit(character.misilimage, character.misilrect)
         character.get_frame()
         character.misilrect.y += 10
@@ -309,13 +337,13 @@ def boss_fight(difficulty, shields, vidas):
             pygame.draw.rect(screen, (0, 255, 0), rectangulo)
 
     def magazine(screen, x, y, data):
-        largo  = 180
-        ancho = 15
+        largo = 130
+        ancho = 20
         calculo_barra = int((data/100 * largo))
-        borde = pygame.Rect(x, y, 160, ancho)
+        borde = pygame.Rect(x, y, 90, ancho)
         rectangulo = pygame.Rect(x, y, calculo_barra, ancho)
-        pygame.draw.rect(screen, (255, 255, 255), borde, 3)
-        pygame.draw.rect(screen, (255, 255, 255), rectangulo)
+        pygame.draw.rect(screen, const.WHITE, borde, 3)
+        pygame.draw.rect(screen, const.GREEN, rectangulo)
 
     def specialLaser(spcLaser):
         if not spcLaser.off:
@@ -367,8 +395,7 @@ def boss_fight(difficulty, shields, vidas):
 
         response = nave.event_manager(cont)
 
-    def spcLaser_nave(nave, spcLaser):
-        global vidas
+    def spcLaser_nave(nave, spcLaser, vidas):
         if nave.rect.colliderect((spcLaser.rect.x + 60, spcLaser.rect.y, 154 - 155, 954)) and not spcLaser.off and not spcLaser.hit_ship:
             spcLaser.hit_ship = True
             vidas -= 1
@@ -395,7 +422,23 @@ def boss_fight(difficulty, shields, vidas):
     while True:
         event_manager()
         if vidas <= 0:
-            sound.stop()
+            music.stop()
+            sound.boss_explosion()
+            cont = 0
+            while vidas <= 0:
+                cont += 1
+                event_manager()
+                screen.blit(background, [width * 0, height * 0])
+                screen.blit(nave.image, nave.rect)
+                nave.update_explode_position_end()
+                nave.explode_end(cont)
+                if cont >= 60 * 4:
+                    screen.blit(dialogo, [0, height - 200])
+                    texto_muerte.show_text()
+                if cont >= 60 * 8:
+                    break
+                pygame.display.flip()
+                clock.tick(fps)
             game_over.game_over()
         if boss.health <= 0:
             sound.boss_explosion()
@@ -407,13 +450,7 @@ def boss_fight(difficulty, shields, vidas):
                 boss.update()
                 screen.blit(boss.image,boss.rect)
                 screen.blit(nave.image, nave.rect)
-                for x in range(vidas):
-                    if x == 0:
-                        screen.blit(vidaImage, [width - 40 * (x) - 40 - 1, height * .95])
-                    else:
-                        screen.blit(vidaImage, [width - 40 * (x) - 40 - (10 * x), height * .95])
                 health_bar(screen, 200, 30, boss)
-                magazine(screen, width * 0, height * .97, 0 )
 
                 boss.explode_end()
                 #duración 8 secs
@@ -426,15 +463,17 @@ def boss_fight(difficulty, shields, vidas):
                 clock.tick(fps)
             break
         screen.blit(background, [width * 0, height * 0])
+        screen.blit(HUD, [0, height - 150])
+        texto_nombre.show_text()
+        texto_dificultad.show_text()
+        texto_level.show_text()
         boss.update()
         screen.blit(boss.image,boss.rect)
         screen.blit(nave.image, nave.rect)
 
+        magazine(screen, width * 0.01, height * .94, cont )
         for x in range(vidas):
-            if x == 0:
-                screen.blit(vidaImage, [width - 40 * (x) - 40 - 1, height * .95])
-            else:
-                screen.blit(vidaImage, [width - 40 * (x) - 40 - (10 * x), height * .95])
+            screen.blit(vidaImage, [width * 0.1 + (x * 40), height * .935])
         if objeto1 != 0:
             moveLaser(objeto1)
         if objeto3 != 0:
@@ -454,7 +493,6 @@ def boss_fight(difficulty, shields, vidas):
             print_Enemy(objeto2)
 
         specialLaser(spcLaser)
-        magazine(screen, width * 0, height * .97, cont )
         if ban:
             if cont < fps * time:
                 cont += 1
@@ -501,7 +539,7 @@ def boss_fight(difficulty, shields, vidas):
                 if shootCont[step] >= 180:
                     if x.misilrect.y > height:
                           shootCont[step] = 0
-                    enemyFire(x, nave)
+                    enemyFire(x, nave, vidas)
                     shield_fire(shields, objeto2)
                 step += 1
 
@@ -518,7 +556,7 @@ def boss_fight(difficulty, shields, vidas):
             boss.attTime = 6
             boss.enrage = 2
 
-        spcLaser_nave(nave, spcLaser)
+        spcLaser_nave(nave, spcLaser, vidas)
         health_bar(screen, 200, 30, boss)
         if objeto3 != 0:
             shield_enemy(shields, objeto3)
@@ -534,7 +572,7 @@ def boss_fight(difficulty, shields, vidas):
                 attCont = 0
                 boss.activity = False
         if objeto1 != 0:
-            nave_Laser(nave, objeto1)
+            nave_Laser(nave, objeto1, vidas)
             moveLaser(objeto1)
         pygame.display.flip()
         clock.tick(fps)
