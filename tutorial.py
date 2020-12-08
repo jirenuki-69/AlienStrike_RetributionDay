@@ -2,7 +2,7 @@ import pygame
 import sys
 from pygame import mixer
 from clases.Nave import Nave
-import const
+import const, loading, xbox360_controller
 from clases.Enemy import Enemy
 import main_menu
 import random
@@ -10,14 +10,17 @@ from clases.Kboom import Explosion
 from clases.Music import Music
 from clases.Sound import Sound
 from clases.Cursor import Cursor
+from clases.Texto import Texto
 
 step = 0
 response = 0
 exploded = False
 EnemyShoot = True
 mainExplode = False
+warning_text = ""
+
 def tutorial(cursor_x, cursor_y, controller):
-    global enemyShoot
+    global enemyShoot, warning_text
     global step
     global exploded
     global mainExplode
@@ -67,6 +70,29 @@ def tutorial(cursor_x, cursor_y, controller):
         screen
     )
 
+    font = pygame.font.Font("fonts/Pixel LCD-7.ttf", 18)
+    warning_text = Texto(
+        "Presione esc o select en el control para salir",
+        (int(width * 0.65), int(height * 0.77)),
+        font,
+        screen,
+        30,
+        const.WHITE,
+    )
+
+    warning_cont = [0]
+
+    def exit_warning(screen, cont):
+        global warning_text
+
+        if cont[0] >= 90:
+            cont[0] = 0
+
+        cont[0] += 1
+
+        if cont[0] >= 45:
+            warning_text.show_text()
+
     def text(data, x, y, color, size, screen):
         font = pygame.font.Font(const.FONT_v2, size)
         texto_marcador = font.render(data, True, color)
@@ -110,6 +136,7 @@ def tutorial(cursor_x, cursor_y, controller):
     def event_manager(cursor, controller):
         global step
         global response
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
@@ -119,16 +146,26 @@ def tutorial(cursor_x, cursor_y, controller):
                         main_menu.main_menu(cursor.x, cursor.y, controller)
                     sound.dialogue_change()
                     step += 1
+                if event.key == pygame.K_ESCAPE:
+                    music.stop()
+                    loading.loading("menu", cursor, controller)
 
             if controller != None:
                 if event.type == pygame.JOYBUTTONDOWN:
-                    if step == len(const.TUTORIAL) - 1:
+                    if event.joy == controller.get_id():
+                        if event.button == xbox360_controller.BACK:
+                            music.stop()
+                            loading.loading("menu", cursor, controller)
+                    elif step == len(const.TUTORIAL) - 1:
                         main_menu.main_menu(cursor.x, cursor.y, controller)
                     sound.dialogue_change()
                     step += 1
 
-            print(cont)
-            response = nave.event_manager(cont, controller, event)
+            if controller != None:
+                response = nave.event_manager(mag, controller, event)
+
+        if response == 0:
+            response = nave.event_manager_mouse(mag)
 
         if controller != None:
             controller_x = controller.get_left_stick()[0]
@@ -140,7 +177,9 @@ def tutorial(cursor_x, cursor_y, controller):
         event_manager(cursor, controller)
         screen.blit(background, [width * 0, height * 0])
         screen.blit(dialogo, [0, height - 200])
+        exit_warning(screen, warning_cont)
 
+        print(nave.misilrect)
 
         if ban:
             if cont < fps * time:

@@ -72,7 +72,7 @@ def boss_fight(cursor, controller, difficulty, shields, vidas):
     ban = False
     cont = 0
     mag = True
-    time = 1.5
+    time = 1.2
     objarrg = []
     cantidad = 1
     shootCont = 0
@@ -119,6 +119,7 @@ def boss_fight(cursor, controller, difficulty, shields, vidas):
         size,
         screen
     )
+    backup = boss.health / 4
     nave = Nave(
         (int(width * 0.50), int(height * 0.9)),
         5,
@@ -167,10 +168,14 @@ def boss_fight(cursor, controller, difficulty, shields, vidas):
         const.WHITE,
     )
 
-    def nave_Laser(nave, blueLaser, vidas):
+    def nave_Laser(nave, blueLaser):
+
+        damage = 0
         if nave.rect.colliderect((blueLaser.rect.x, 0, 144, 800)) and not blueLaser.hit_ship:
             blueLaser.hit_ship = True
-            vidas -= 1
+            damage = 2
+
+        return damage
 
     def startLaser():
         global objeto1
@@ -227,17 +232,21 @@ def boss_fight(cursor, controller, difficulty, shields, vidas):
             x.move()
             screen.blit(x.image, x.rect)
 
-    def enemyFire(character, objarrg, vidas):
+    def enemyFire(character, objarrg):
         global mainExplode
         global enemyShoot
+
+        damage = 0
         screen.blit(character.misilimage, character.misilrect)
         character.get_frame()
         character.misilrect.y += 10
         if character.misilrect.colliderect(objarrg.rect):
-            vidas -= 1
+            damage = 1
             objarrg.exploded = True
             character.misilrect.y = 900
             enemyShoot = False
+
+        return damage
 
     def shield_fire(shields, bigShip):
         for i in shields:
@@ -388,20 +397,29 @@ def boss_fight(cursor, controller, difficulty, shields, vidas):
     def event_manager(controller):
         global step
         global response
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
 
-            response = nave.event_manager(cont, controller, event)
+            if controller != None:
+                response = nave.event_manager(mag, controller, event)
+
+        if response == 0:
+            response = nave.event_manager_mouse(mag)
 
         if controller != None:
             controller_x = controller.get_left_stick()[0]
             nave.controller_update(controller_x)
 
-    def spcLaser_nave(nave, spcLaser, vidas):
+    def spcLaser_nave(nave, spcLaser):
+        damage = 0
+
         if nave.rect.colliderect((spcLaser.rect.x + 60, spcLaser.rect.y, 154 - 155, 954)) and not spcLaser.off and not spcLaser.hit_ship:
             spcLaser.hit_ship = True
-            vidas -= 1
+            damage = 1
+
+        return damage
 
     def main_enemy(nave, objarrg):
         damage = 0
@@ -542,7 +560,8 @@ def boss_fight(cursor, controller, difficulty, shields, vidas):
                 if shootCont[step] >= 180:
                     if x.misilrect.y > height:
                           shootCont[step] = 0
-                    enemyFire(x, nave, vidas)
+
+                    vidas -= enemyFire(x, nave)
                     shield_fire(shields, objeto2)
                 step += 1
 
@@ -554,12 +573,12 @@ def boss_fight(cursor, controller, difficulty, shields, vidas):
                     objeto2 = 0
             boss.activity = False
             attCont = 0
-        if boss.health <= 25:
+        if boss.health <= backup:
             spcLaser.speed = 270
             boss.attTime = 6
             boss.enrage = 2
 
-        spcLaser_nave(nave, spcLaser, vidas)
+        vidas -= spcLaser_nave(nave, spcLaser)
         health_bar(screen, 200, 30, boss)
         if objeto3 != 0:
             shield_enemy(shields, objeto3)
@@ -575,7 +594,7 @@ def boss_fight(cursor, controller, difficulty, shields, vidas):
                 attCont = 0
                 boss.activity = False
         if objeto1 != 0:
-            nave_Laser(nave, objeto1, vidas)
+            vidas -= nave_Laser(nave, objeto1)
             moveLaser(objeto1)
         pygame.display.flip()
         clock.tick(fps)

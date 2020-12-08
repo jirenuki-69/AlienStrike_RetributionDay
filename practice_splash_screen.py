@@ -1,4 +1,4 @@
-import pygame, sys, const, main_menu
+import pygame, sys, const, main_menu, loading
 from pygame import mixer
 from clases.Music import Music
 from clases.Sound import Sound
@@ -36,11 +36,9 @@ def practice_splash_screen(cursor_x, cursor_y, controller):
                 sys.exit()
 
             if event.type == pygame.KEYDOWN:
-                print("Ir a practica")
-                main_menu.main_menu(cursor.x, cursor.y, controller)
+                loading.loading("practice", cursor, controller)
             if event.type == pygame.JOYBUTTONDOWN:
-                print("Ir a practica")
-                main_menu.main_menu(cursor.x, cursor.y, controller)
+                loading.loading("practice", cursor, controller)
 
     while True:
         event_manager(cursor, controller)

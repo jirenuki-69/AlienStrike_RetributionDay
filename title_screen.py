@@ -24,7 +24,7 @@ def title_screen(cursor_x, cursor_y, controller):
     settingsRect[0], settingsRect[1] = 20, int(height * 0.85)
 
     clock = pygame.time.Clock()
-    fps = 30
+    fps = 60
     font = pygame.font.Font("fonts/ufonts.com_windpower.ttf", 50)
 
     cont = 0

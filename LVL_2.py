@@ -59,7 +59,7 @@ def lvl_2(cursor, controller, difficulty, shields, vidas):
     objarrg = []
     #enemigos
     cantidad = 20
-    rows = 0
+    rows = 6
     mainExplode = False
     response = 0
 
@@ -197,7 +197,11 @@ def lvl_2(cursor, controller, difficulty, shields, vidas):
             if event.type == pygame.QUIT:
                 sys.exit()
 
-            response = nave.event_manager(cont, controller, event)
+            if controller != None:
+                response = nave.event_manager(cont, controller, event)
+
+        if response == 0:
+            response = nave.event_manager_mouse(cont)
 
         if controller != None:
             controller_x = controller.get_left_stick()[0]

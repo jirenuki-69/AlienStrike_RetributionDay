@@ -4,17 +4,16 @@ class Cursor():
     def __init__(self, position, screen):
         self.x, self.y = position
         self.screen = screen
-        self.size = 15
         self.movementSpeed = 12
         self.sheet = pygame.image.load("assets/visual/cursor.png")
-        self.sheet.set_clip(pygame.Rect(0, 0, 39, 41.66))
+        self.sheet.set_clip(pygame.Rect(0, 0, 31, 31))
         self.image = self.sheet.subsurface(self.sheet.get_clip())
         self.rect = self.image.get_rect()
         self.rect.center = position
         self.states = {
-            0: (0, 0, 39, 41.66), 1: (39, 0, 39, 41.66),
-            2: (0, 41.66, 39, 41.66), 3: (39, 41.66, 39, 41.66),
-            4: (0, 83.32, 39, 41.66), 5: (39, 83.32, 39, 41.66)
+            0: (0, 0, 31, 31), 1: (31, 0, 31, 31),
+            2: (0, 31, 31, 31), 3: (31, 31, 31, 31),
+            4: (0, 62, 31, 31), 5: (31, 62, 31, 31)
         }
         self.frame = 0
         self.cont = 0
@@ -24,7 +23,6 @@ class Cursor():
             self.cont = 0
 
         self.screen.blit(self.image, (self.x, self.y))
-        pygame.draw.circle(self.screen, const.RED, (self.x, self.y), self.size)
 
         self.cont += 1
         self.clip(self.states)

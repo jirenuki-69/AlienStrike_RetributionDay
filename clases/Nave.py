@@ -95,8 +95,6 @@ class Nave():
         if self.direction_y == "down":
             self.rect.y += 2
 
-
-
     def update_explode_position(self):
         self.boom.rect.x, self.boom.rect.y = (self.rect.x, self.rect.y)
 
@@ -114,7 +112,8 @@ class Nave():
             self.misilbool = True
 
     def shoot(self, cont):
-        if cont == 0:
+        if cont:
+            print("Sonido de disparo")
             self.sound.player_shoot()
         self.response = self.rect
 
@@ -138,18 +137,9 @@ class Nave():
             self.rect.x += self.movementSpeed
 
     def event_manager(self, cont, controller, event):
-        keys = pygame.key.get_pressed()
-        mouse = pygame.mouse.get_pressed()
         triggers = controller.get_triggers()
 
-        if keys[pygame.K_a]:
-            self.update("left")
-        if keys[pygame.K_d]:
-            self.update("right")
-        if mouse[0] or keys[pygame.K_SPACE]:
-            self.ban = True
-            self.shoot(cont)
-        elif triggers > -1.0 and triggers < -0.9:
+        if triggers > -1.0 and triggers < -0.9:
             self.ban = True
             self.shoot(cont)
         elif triggers > 0.9:
@@ -159,4 +149,23 @@ class Nave():
             self.ban = False
             self.response = 0
 
+        #print(f"Control {self.response}")
+        return self.response
+
+    def event_manager_mouse(self, cont):
+        keys = pygame.key.get_pressed()
+        mouse = pygame.mouse.get_pressed()
+
+        if keys[pygame.K_a]:
+            self.update("left")
+        if keys[pygame.K_d]:
+            self.update("right")
+        if mouse[0] or keys[pygame.K_SPACE]:
+            self.ban = True
+            self.shoot(cont)
+        else:
+            self.ban = False
+            self.response = 0
+
+        #print(f"Teclado {self.response}")
         return self.response

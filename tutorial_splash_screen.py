@@ -1,4 +1,4 @@
-import pygame, sys, const, tutorial
+import pygame, sys, const, tutorial, loading
 from pygame import mixer
 from clases.Music import Music
 from clases.Sound import Sound
@@ -36,11 +36,11 @@ def tutorial_splash_screen(cursor_x, cursor_y, controller):
                 sys.exit()
 
             if event.type == pygame.KEYDOWN:
-                tutorial.tutorial(cursor.x, cursor.y, controller)
+                loading.loading("tutorial", cursor, controller)
 
             if controller != None:
                 if event.type == pygame.JOYBUTTONDOWN:
-                    tutorial.tutorial(cursor.x, cursor.y, controller)
+                    loading.loading("tutorial", cursor, controller)
 
     while True:
         event_manager()

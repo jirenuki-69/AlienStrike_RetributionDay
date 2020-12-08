@@ -1,4 +1,4 @@
-import pygame, sys, const
+import pygame, sys, const, practice, main_menu, tutorial
 import intro_LVL_1, intro_LVL_2, intro_LVL_3, intro_boss
 from clases.Shield import Escudo
 from clases.Texto import Texto
@@ -69,7 +69,12 @@ def loading(next_level, cursor, controller, difficulty = "easy", shields = [], v
                 intro_LVL_3.intro_lvl_3(cursor, controller, difficulty, shields, vidas)
             elif next_level == "boss":
                 intro_boss.intro_boss(cursor, controller, difficulty, shields, vidas)
-
+            elif next_level == "menu":
+                main_menu.main_menu(cursor.x, cursor.y, controller)
+            elif next_level == "practice":
+                practice.practice(cursor, controller)
+            elif next_level == "tutorial":
+                tutorial.tutorial(cursor.x, cursor.y, controller)
 
         pygame.display.flip()
         clock.tick(fps)

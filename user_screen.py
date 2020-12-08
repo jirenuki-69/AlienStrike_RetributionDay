@@ -7,6 +7,21 @@ my_file.writelines("James")
 
 my_file.close()
 
+my_file = open("difficulty.txt", "w")
+my_file.writelines("easy")
+
+my_file.close()
+
+my_file = open("volumen.txt", "w")
+my_file.writelines("0.4")
+
+my_file.close()
+
+my_file = open("SFX.txt", "w")
+my_file.writelines("0.32")
+
+my_file.close()
+
 def cambiar_nombre(nombre):
     my_file = open("nombre.txt", "w")
     my_file.writelines(str(nombre))
