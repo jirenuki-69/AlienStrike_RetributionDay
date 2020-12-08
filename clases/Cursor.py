@@ -29,8 +29,10 @@ class Cursor():
         self.image = self.sheet.subsurface(self.sheet.get_clip())
 
     def movement(self, x, y):
-        self.x += int(x * self.movementSpeed)
-        self.y += int(y * self.movementSpeed)
+        if self.x + int(x * self.movementSpeed) < 1160 and self.x + int(x * self.movementSpeed) > 0:
+            self.x += int(x * self.movementSpeed)
+        if self.y + int(y * self.movementSpeed) < 760 and self.y + int(y * self.movementSpeed) > 0:
+            self.y += int(y * self.movementSpeed)
 
     def get_frame(self, frame_set):
         if self.cont % 8 * 3 == 0:
