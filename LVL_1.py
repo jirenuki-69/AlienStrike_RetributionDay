@@ -25,8 +25,9 @@ response = 0
 boom = []
 boomExplode = []
 cont = 0
+respCheck = False
 def lvl_1(cursor, controller):
-    global response
+    global response, respCheck
     global boom
     global boomExplode
     global cont
@@ -67,6 +68,7 @@ def lvl_1(cursor, controller):
     boomExplode = []
     vidas = 5
     exCont = 0
+    respCheck = False
 
     def conseguir_dificultad():
         with open ("difficulty.txt") as archivo:
@@ -196,17 +198,18 @@ def lvl_1(cursor, controller):
 
 
     def event_manager(controller):
-        global step
+        global step, respCheck
         global response
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
 
             if controller != None:
-                response = nave.event_manager(cont, controller, event)
+                respCheck = True
+                response = nave.event_manager(mag, controller, event)
 
         if response == 0:
-            response = nave.event_manager_mouse(cont)
+            response = nave.event_manager_mouse(mag)
 
         if controller != None:
             controller_x = controller.get_left_stick()[0]
@@ -357,6 +360,7 @@ def lvl_1(cursor, controller):
             cont = 0
             mag = True
             ban = False
+            respCheck = False
 
 
         if response != 0 and mag:

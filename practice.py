@@ -221,7 +221,7 @@ def practice(cursor, controller):
                 sys.exit()
 
             if controller != None:
-                response = nave.event_manager(cont, controller, event)
+                response = nave.event_manager(mag, controller, event)
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
@@ -235,7 +235,7 @@ def practice(cursor, controller):
                         loading.loading("menu", cursor, controller)
 
         if response == 0:
-            response = nave.event_manager_mouse(cont)
+            response = nave.event_manager_mouse(mag)
 
         if controller != None:
             controller_x = controller.get_left_stick()[0]

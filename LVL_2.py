@@ -198,10 +198,10 @@ def lvl_2(cursor, controller, difficulty, shields, vidas):
                 sys.exit()
 
             if controller != None:
-                response = nave.event_manager(cont, controller, event)
+                response = nave.event_manager(mag, controller, event)
 
         if response == 0:
-            response = nave.event_manager_mouse(cont)
+            response = nave.event_manager_mouse(mag)
 
         if controller != None:
             controller_x = controller.get_left_stick()[0]

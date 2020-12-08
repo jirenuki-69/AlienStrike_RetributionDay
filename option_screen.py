@@ -5,6 +5,9 @@ from clases.Music import Music
 from clases.Sound import Sound
 from clases.Cursor import Cursor
 
+mouse_on_movement = False
+mouse_x, mouse_y = 0, 0
+
 def conseguir_nombre():
     with open ("nombre.txt") as archivo:
         for linea in archivo.readlines():
@@ -28,6 +31,8 @@ def cambiar_dificultad(dificultad):
     my_file.close()
 
 def option_screen(controller, cursor_x, cursor_y):
+    global mouse_on_movement, mouse_x, mouse_y
+
     music = Music()
     music.options()
     sound = Sound()
@@ -268,6 +273,9 @@ def option_screen(controller, cursor_x, cursor_y):
         screen
     )
 
+    mouse_on_movement = False
+    mouse_x, mouse_y = cursor_x, cursor_y
+
     #Del volumen del juego
     minus_rect.x, minus_rect.y = (int(width * 0.4), int(height * 0.257))
     small_minus_rect.x, small_minus_rect.y = (int(width * 0.45), int(height * 0.266))
@@ -319,13 +327,19 @@ def option_screen(controller, cursor_x, cursor_y):
         screen.blit(next_arrow, ((next_arrow_rect.x, next_arrow_rect.y)))
 
     def event_manager(cursor, controller):
+        global mouse_on_movement, mouse_x, mouse_y
+
         new_volume = music.get_volume()
         new_sound_volume = sound.get_SFX_volume()
         text_cont = len(texto_new_name.text)
         dificultad = conseguir_dificultad()
 
         for event in pygame.event.get():
-            mouse_x, mouse_y = pygame.mouse.get_pos()
+
+            if controller.get_left_stick() == (0 , 0):
+                mouse_on_movement = True
+                if pygame.mouse.get_pos() != (mouse_x, mouse_y):
+                    cursor.mouse_movement(mouse_x, mouse_y)
 
             if event.type == pygame.QUIT:
                 sys.exit()
@@ -560,6 +574,17 @@ def option_screen(controller, cursor_x, cursor_y):
                         sound.type()
                         texto_new_name.text += event.unicode
                         text_cont += 1
+
+        if mouse_on_movement:
+            mouse_x, mouse_y = pygame.mouse.get_pos()
+
+        if controller != None:
+            x_controller, y_controller = controller.get_left_stick()
+            cursor.movement(x_controller, y_controller)
+
+            if (x_controller, y_controller) != (0, 0):
+                mouse_on_movement = False
+
     while True:
         event_manager(cursor, controller)
 
@@ -573,10 +598,6 @@ def option_screen(controller, cursor_x, cursor_y):
         texto_descripcion.show_text()
 
         cursor.update()
-
-        if controller != None:
-            x_controller, y_controller = controller.get_left_stick()
-            cursor.movement(x_controller, y_controller)
 
         if display[0]:
             display_volume()

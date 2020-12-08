@@ -6,7 +6,12 @@ from clases.Music import Music
 from clases.Cursor import Cursor
 import main_menu, const, option_screen, demo, xbox360_controller
 
+mouse_on_movement = False
+mouse_x, mouse_y = 0, 0
+
 def title_screen(cursor_x, cursor_y, controller):
+    global mouse_on_movement, mouse_x, mouse_y
+
     music = Music()
     music.title_screen()
     width = 1200
@@ -53,10 +58,17 @@ def title_screen(cursor_x, cursor_y, controller):
         screen
     )
 
+    mouse_on_movement = False
+    mouse_x, mouse_y = cursor_x, cursor_y
+
     def event_manager(cursor, controller):
+        global mouse_on_movement, mouse_x, mouse_y
 
         for event in pygame.event.get():
-            mouse_x, mouse_y = pygame.mouse.get_pos()
+            if controller.get_left_stick() == (0 , 0):
+                mouse_on_movement = True
+                if pygame.mouse.get_pos() != (mouse_x, mouse_y):
+                    cursor.mouse_movement(mouse_x, mouse_y)
 
             if event.type == pygame.QUIT:
                 sys.exit()
@@ -79,6 +91,16 @@ def title_screen(cursor_x, cursor_y, controller):
                 if settingsRect.collidepoint(cursor.x, cursor.y):
                     option_screen.option_screen(controller, cursor.x, cursor.y)
 
+        if mouse_on_movement:
+            mouse_x, mouse_y = pygame.mouse.get_pos()
+
+        if controller != None:
+            x_controller, y_controller = controller.get_left_stick()
+            cursor.movement(x_controller, y_controller)
+
+            if (x_controller, y_controller) != (0, 0):
+                mouse_on_movement = False
+
     while True:
         event_manager(cursor, controller)
         background = pygame.image.load(const.CITY_PULSING_LIGHTS[index])
@@ -90,10 +112,6 @@ def title_screen(cursor_x, cursor_y, controller):
         menu_button.init_button()
 
         cursor.update()
-
-        if controller != None:
-            x_controller, y_controller = controller.get_left_stick()
-            cursor.movement(x_controller, y_controller)
 
         cont += 1
 

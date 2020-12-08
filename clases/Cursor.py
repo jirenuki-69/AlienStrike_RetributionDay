@@ -34,6 +34,9 @@ class Cursor():
         if self.y + int(y * self.movementSpeed) < 760 and self.y + int(y * self.movementSpeed) > 0:
             self.y += int(y * self.movementSpeed)
 
+    def mouse_movement(self, x, y):
+        self.x, self.y = x, y
+
     def get_frame(self, frame_set):
         if self.cont % 8 * 3 == 0:
             self.frame += 1

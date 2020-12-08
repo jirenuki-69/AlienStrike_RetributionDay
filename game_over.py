@@ -3,7 +3,12 @@ from clases.Button import Button
 from clases.Music import Music
 from clases.Cursor import Cursor
 
+mouse_on_movement = False
+mouse_x, mouse_y = 0, 0
+
 def game_over(cursor, controller):
+    global mouse_on_movement, mouse_x, mouse_y
+
     #Pygame values
     music = Music()
     music.game_over()
@@ -32,15 +37,23 @@ def game_over(cursor, controller):
         const.WHITE
     )
 
+    mouse_on_movement = False
+    mouse_x, mouse_y = cursor.x, cursor.y
+
     def event_manager(cursor, controller):
+        global mouse_on_movement, mouse_x, mouse_y
+
         for event in pygame.event.get():
-            mouse_x, mouse_y = pygame.mouse.get_pos()
+            if controller.get_left_stick() == (0 , 0):
+                mouse_on_movement = True
+                if pygame.mouse.get_pos() != (mouse_x, mouse_y):
+                    cursor.mouse_movement(mouse_x, mouse_y)
 
             if event.type == pygame.QUIT:
                 sys.exit()
 
             #Compruebo la posicion del cursos para validar el hover del botón
-            button.is_hovered(mouse_x, mouse_y)
+            button.is_hovered(cursor.x, cursor.y)
 
             if pygame.mouse.get_pressed()[0]:
                 x, y = pygame.mouse.get_pos()
@@ -51,6 +64,16 @@ def game_over(cursor, controller):
                 if button.is_pressed(event, cursor.x, cursor.y):
                     main_menu.main_menu(cursor.x, cursor.y, controller)
 
+        if mouse_on_movement:
+            mouse_x, mouse_y = pygame.mouse.get_pos()
+
+        if controller != None:
+            x_controller, y_controller = controller.get_left_stick()
+            cursor.movement(x_controller, y_controller)
+
+            if (x_controller, y_controller) != (0, 0):
+                mouse_on_movement = False
+
     while True:
         event_manager(cursor, controller)
 
@@ -58,10 +81,6 @@ def game_over(cursor, controller):
         button.init_button()
 
         cursor.update()
-
-        if controller != None:
-            x_controller, y_controller = controller.get_left_stick()
-            cursor.movement(x_controller, y_controller)
 
         pygame.display.flip()
         clock.tick(fps)

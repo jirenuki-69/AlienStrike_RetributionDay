@@ -156,7 +156,7 @@ def tutorial(cursor_x, cursor_y, controller):
                         if event.button == xbox360_controller.BACK:
                             music.stop()
                             loading.loading("menu", cursor, controller)
-                    elif step == len(const.TUTORIAL) - 1:
+                    if step == len(const.TUTORIAL) - 1:
                         main_menu.main_menu(cursor.x, cursor.y, controller)
                     sound.dialogue_change()
                     step += 1

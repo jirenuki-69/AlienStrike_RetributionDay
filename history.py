@@ -1,4 +1,4 @@
-import pygame, sys, xbox360_controller
+import pygame, sys, xbox360_controller, endgame_history
 from pygame import mixer
 from clases.Escena import Escena
 from clases.Music import Music
@@ -6,6 +6,8 @@ from clases.Cursor import Cursor
 import const, title_screen
 
 index = 0
+mouse_on_movement = False
+x, y = 0, 0
 
 def conseguir_nombre():
     with open ("nombre.txt") as archivo:
@@ -13,7 +15,7 @@ def conseguir_nombre():
             return str(linea.split("-")[0])
 
 def history():
-    global index
+    global index, mouse_on_movement
 
     music = Music()
     music.history_music()
@@ -64,10 +66,15 @@ def history():
         screen
     )
 
+    mouse_on_movement = False
+    x, y = cursor.x, cursor.y
+
     try:
         controller = xbox360_controller.Controller()
     except:
         controller = None
+
+    #endgame_history.endgame_history(cursor.x, cursor.y, controller)
 
     def change_scene():
         escena.load_new_image(
@@ -76,13 +83,18 @@ def history():
         )
 
     def event_manager(cursor):
-        global index
+        global index, mouse_on_movement, x, y
 
         for event in pygame.event.get():
+            if controller.get_left_stick() == (0 , 0):
+                mouse_on_movement = True
+                if pygame.mouse.get_pos() != (x, y):
+                    cursor.mouse_movement(x, y)
+
             if event.type == pygame.QUIT:
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                x, y = pygame.mouse.get_pos()
+
                 if escena.next_pressed(x, y):
                     if index < len(const.ESCENAS) - 1:
                         index += 1
@@ -114,9 +126,15 @@ def history():
                 else:
                     title_screen.title_screen(cursor.x, cursor.y, controller)
 
+        if mouse_on_movement:
+            x, y = pygame.mouse.get_pos()
+
         if controller != None:
             x_controller, y_controller = controller.get_left_stick()
             cursor.movement(x_controller, y_controller)
+
+            if (x_controller, y_controller) != (0, 0):
+                mouse_on_movement = False
 
     while True:
         event_manager(cursor)

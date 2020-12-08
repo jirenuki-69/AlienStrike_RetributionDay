@@ -4,8 +4,11 @@ from clases.Music import Music
 from clases.Cursor import Cursor
 
 index = 0
+mouse_on_movement = False
+mouse_x, mouse_y = 0, 0
 
 def endgame_history(cursor_x, cursor_y, controller):
+    global mouse_on_movement, mouse_x, mouse_y
 
     music = Music()
     music.endgame()
@@ -35,6 +38,9 @@ def endgame_history(cursor_x, cursor_y, controller):
         screen
     )
 
+    mouse_on_movement = False
+    mouse_x, mouse_y = cursor_x, cursor_y
+
     def change_scene():
         escena.load_new_image(
             const.ESCENAS_ENDGAME[index],
@@ -42,9 +48,14 @@ def endgame_history(cursor_x, cursor_y, controller):
         )
 
     def event_manager(cursor, controller):
-        global index
+        global index, mouse_on_movement, mouse_x, mouse_y
 
         for event in pygame.event.get():
+            if controller.get_left_stick() == (0 , 0):
+                mouse_on_movement = True
+                if pygame.mouse.get_pos() != (mouse_x, mouse_y):
+                    cursor.mouse_movement(mouse_x, mouse_y)
+
             if event.type == pygame.QUIT:
                 sys.exit()
 
@@ -95,9 +106,15 @@ def endgame_history(cursor_x, cursor_y, controller):
                 elif index >= len(const.ESCENAS_ENDGAME) - 1 and not escena.is_last_scene:
                     credits.credits(cursor, controller)
 
+        if mouse_on_movement:
+            mouse_x, mouse_y = pygame.mouse.get_pos()
+
         if controller != None:
             x_controller, y_controller = controller.get_left_stick()
             cursor.movement(x_controller, y_controller)
+
+            if (x_controller, y_controller) != (0, 0):
+                mouse_on_movement = False
 
     while True:
         event_manager(cursor, controller)
