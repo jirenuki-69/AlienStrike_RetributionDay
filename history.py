@@ -86,7 +86,12 @@ def history():
         global index, mouse_on_movement, x, y
 
         for event in pygame.event.get():
-            if controller.get_left_stick() == (0 , 0):
+            if controller != None:
+                if controller.get_left_stick() == (0 , 0):
+                    mouse_on_movement = True
+                    if pygame.mouse.get_pos() != (x, y):
+                        cursor.mouse_movement(x, y)
+            else:
                 mouse_on_movement = True
                 if pygame.mouse.get_pos() != (x, y):
                     cursor.mouse_movement(x, y)

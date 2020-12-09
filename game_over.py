@@ -44,7 +44,12 @@ def game_over(cursor, controller):
         global mouse_on_movement, mouse_x, mouse_y
 
         for event in pygame.event.get():
-            if controller.get_left_stick() == (0 , 0):
+            if controller != None:
+                if controller.get_left_stick() == (0 , 0):
+                    mouse_on_movement = True
+                    if pygame.mouse.get_pos() != (mouse_x, mouse_y):
+                        cursor.mouse_movement(mouse_x, mouse_y)
+            else:
                 mouse_on_movement = True
                 if pygame.mouse.get_pos() != (mouse_x, mouse_y):
                     cursor.mouse_movement(mouse_x, mouse_y)
