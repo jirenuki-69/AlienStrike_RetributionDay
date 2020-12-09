@@ -68,7 +68,7 @@ def endgame_history(cursor_x, cursor_y, controller):
                 if event.key == pygame.K_RETURN and escena.is_last_scene:
                     credits.credits(cursor, controller)
 
-            elif event.type == pygame.JOYBUTTONDOWN:
+            if event.type == pygame.JOYBUTTONDOWN:
                 if event.joy == controller.get_id():
                     if event.button == xbox360_controller.A and escena.is_last_scene:
                         credits.credits(cursor, controller)
@@ -88,7 +88,7 @@ def endgame_history(cursor_x, cursor_y, controller):
                 if escena.skip_pressed(x, y):
                     credits.credits(cursor, controller)
 
-            elif event.type == pygame.JOYBUTTONDOWN:
+            if event.type == pygame.JOYBUTTONDOWN:
                 if escena.next_pressed(cursor.x, cursor.y):
                     if index < len(const.ESCENAS_ENDGAME) - 1:
                         index += 1
