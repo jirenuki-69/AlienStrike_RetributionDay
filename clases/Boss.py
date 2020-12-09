@@ -128,6 +128,7 @@ class Boss(pygame.sprite.Sprite):
         self.image = self.sheet.subsurface(self.sheet.get_clip())
 
     def show(self):
-        pygame.draw.rect(self.screen, (255, 0, 0),  self.hitBox_center, 1)
-        pygame.draw.rect(self.screen, (255, 0, 0),  self.hitBox_left)
-        pygame.draw.rect(self.screen, (255, 0, 0),  self.hitBox_right)
+        # pygame.draw.rect(self.screen, (255, 0, 0),  self.hitBox_center, 1)
+        # pygame.draw.rect(self.screen, (255, 0, 0),  self.hitBox_left)
+        # pygame.draw.rect(self.screen, (255, 0, 0),  self.hitBox_right)
+        pass

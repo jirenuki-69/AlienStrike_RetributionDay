@@ -13,12 +13,12 @@ my_file.writelines("easy")
 my_file.close()
 
 my_file = open("volumen.txt", "w")
-my_file.writelines("0.4")
+my_file.writelines("0.2")
 
 my_file.close()
 
 my_file = open("SFX.txt", "w")
-my_file.writelines("0.32")
+my_file.writelines("0.9")
 
 my_file.close()
 

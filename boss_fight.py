@@ -366,7 +366,7 @@ def boss_fight(cursor, controller, difficulty, shields, vidas):
           if boss.hit_left >= 4 and boss.hit_right >= 4:
               boss.contador += 1
               if character.misilrect.colliderect(boss.hitBox_center):
-                  boss.health -= 4
+                  boss.health -= 3
                   character.misilrect.y = -100
 
           if boss.hit_left < 4:
